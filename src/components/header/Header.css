@@ -36,8 +36,12 @@ nav ul {
     transition: all 0.2s;
 }
 
-.nav-element:hover,
-.nav-element:active {
+.nav-element.active {
+    background-color: rgba(75, 91, 151, 1);
+    padding: .4rem 3.3rem;
+}
+
+.nav-element:hover {
     background-color: rgba(75, 91, 151, 1);
     padding: .4rem 3.3rem;
 }

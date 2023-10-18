@@ -12,10 +12,10 @@ const Header = () => {
             <nav>
                 <ul>
                     <li><NavLink className='nav-element' to='/operations'>Əməliyyatlar</NavLink></li>
-                    <li><NavLink className='nav-element' to='/operations'>İşçilər</NavLink></li>
-                    <li><NavLink className='nav-element' to='/operations'>Ezamiyyətlər</NavLink></li>
-                    <li><NavLink className='nav-element' to='/operations'>Hesabatlar</NavLink></li>
-                    <li><NavLink className='nav-element' to='/operations'>Digər əməliyyatlar</NavLink></li>
+                    <li><NavLink className='nav-element' to='/workers'>İşçilər</NavLink></li>
+                    <li><NavLink className='nav-element' to='/business-trips'>Ezamiyyətlər</NavLink></li>
+                    <li><NavLink className='nav-element' to='/reports'>Hesabatlar</NavLink></li>
+                    <li><NavLink className='nav-element' to='/other-operations'>Digər əməliyyatlar</NavLink></li>
                 </ul>
             </nav>
         </header>

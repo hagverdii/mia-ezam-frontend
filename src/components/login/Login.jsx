@@ -1,7 +1,7 @@
 import {useRef, useState, useEffect} from "react";
 import {loginUser} from "../../api/axiosApi.js";
 import './Login.css'
-import {EyeIcon, EyeSlashIcon} from "../../assets/icons.jsx";
+import {EyeIcon, EyeSlashIcon} from "../../assets/heroicons.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import {Link, useNavigate, useLocation} from "react-router-dom";
 
@@ -91,7 +91,7 @@ const Login = () => {
                                 {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
                             </span>
                         </div>
-                        <button disabled={!user || !pwd}>Daxil ol</button>
+                        <button disabled={!user || !pwd}>Təsdiqlə</button>
                     </form>
                 </section>
             </div>
