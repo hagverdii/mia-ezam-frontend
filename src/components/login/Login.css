@@ -1,0 +1,112 @@
+.login-container  {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.login-header {
+    width: 100%;
+    padding: .3rem;
+    background-color: #252E85;
+}
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+.login-header img {
+    width: 3rem;
+}
+
+.login-page section {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: rgb(57, 66, 148);
+}
+
+.login-page form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    padding-bottom: 1rem;
+}
+
+.login-page a,
+.login-page a:visited {
+    color: #fff;
+}
+
+.login-page input,
+.login-page button,
+.login-page textarea {
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    width: 100%;
+}
+
+.login-page label,
+.login-page button {
+    margin-top: 1rem;
+}
+
+.login-page button {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.5rem;
+    width: 9rem;
+    align-self: center;
+    transition: background-color 0.2s;
+}
+
+.login-page button:hover:not(:disabled) {
+    background-color: #9499CD;
+}
+
+.login-page .errmsg {
+    background-color: lightpink;
+    border-radius: 8px;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-page .line {
+    display: inline-block;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+}
+
+.pwd-icon {
+    position: absolute;
+    width: 1.1rem;
+    color: #5e5e5e;
+    right: 2.5%;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
