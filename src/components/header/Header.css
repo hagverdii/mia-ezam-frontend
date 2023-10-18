@@ -11,7 +11,7 @@ header {
 
 header img {
     width: 2.2rem;
-    margin-left: 10px;
+    margin-left: 1rem;
 }
 
 nav {
@@ -44,4 +44,26 @@ nav ul {
 .nav-element:hover {
     background-color: rgba(75, 91, 151, 1);
     padding: .4rem 3.3rem;
+}
+
+.user-bar {
+    margin-right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-bar button {
+    background-color: #7381B4;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: .3rem .7rem 0.1rem .7rem;
+}
+
+.user-bar button svg {
+    width: 1.2rem;
 }

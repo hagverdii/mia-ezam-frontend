@@ -1,7 +1,12 @@
 import './Header.css'
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import useAuth from "../../hooks/useAuth.js";
+import {LogOutIcon} from '../../assets/heroicons.jsx'
 
 const Header = () => {
+    const {auth, setAuth} = useAuth()
+    const navigate = useNavigate()
+
     return (
         <header>
             <img src='/mia-logo.png' alt='logo'/>
@@ -18,6 +23,13 @@ const Header = () => {
                     <li><NavLink className='nav-element' to='/other-operations'>Digər əməliyyatlar</NavLink></li>
                 </ul>
             </nav>
+            <div className='user-bar'>
+                <p><strong>Istifadəçi:</strong><br/>{auth.user}</p>
+                <button onClick={() => {
+                    setAuth({})
+                    navigate('/login')
+                }}><LogOutIcon /></button>
+            </div>
         </header>
     );
 };
