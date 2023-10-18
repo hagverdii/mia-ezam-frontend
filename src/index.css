@@ -8,17 +8,15 @@
 
 html {
     font-family: 'Nunito', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #fff;
 }
 
 body {
     min-height: 100vh;
-    font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     display: flex;
-    /*background-color: rgb(78, 86, 162);*/
     background-color: white;
 }
 

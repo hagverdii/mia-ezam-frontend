@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://172.16.4.14:8080'
+const BASE_URL = 'http://10.14.33.67:8081'
 
 export const registerUser = (url, credentials) => {
     return axios.post(

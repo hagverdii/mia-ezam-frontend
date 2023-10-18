@@ -1,0 +1,43 @@
+header {
+    width: 100%;
+    padding: .3rem;
+    background-color: rgba(10, 25, 78, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    font-size: .8rem;
+}
+
+header img {
+    width: 2.2rem;
+    margin-left: 10px;
+}
+
+nav {
+    flex-grow: 1;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-element {
+    padding: .4rem 3rem;
+    border: none;
+    background-color: rgba(29, 46, 107, 1);
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.2s;
+}
+
+.nav-element:hover,
+.nav-element:active {
+    background-color: rgba(75, 91, 151, 1);
+    padding: .4rem 3.3rem;
+}

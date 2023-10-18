@@ -10,7 +10,28 @@
 .login-header {
     width: 100%;
     padding: .3rem;
-    background-color: #252E85;
+    /*background-color: rgba(7, 18, 58, 1);*/
+    background-color: rgba(10, 25, 78, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: .8rem;
+}
+
+.login-header img {
+    width: 2.2rem;
+}
+
+.login-footer {
+    width: 100%;
+    padding: .3rem;
+    /*background-color: rgba(7, 18, 58, 1);*/
+    background-color: rgba(10, 25, 78, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .7rem;
 }
 
 .login-page {
@@ -23,26 +44,25 @@
 }
 
 
-.login-header img {
-    width: 3rem;
-}
-
 .login-page section {
-    width: 30%;
+    min-width: 350px;
+    width: 23%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     padding: 1rem;
     border-radius: 8px;
-    background-color: rgb(57, 66, 148);
+    border: none;
+    /*background-color: rgb(57, 66, 148);*/
+    background-color: rgba(29, 46, 107, 1);
 }
 
 .login-page form {
+    border: none;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    flex-grow: 1;
-    padding-bottom: 1rem;
+    padding-bottom: .3rem;
 }
 
 .login-page a,
@@ -85,7 +105,7 @@
     color: firebrick;
     font-weight: bold;
     padding: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .login-page .line {
