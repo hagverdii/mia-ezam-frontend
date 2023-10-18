@@ -3,7 +3,7 @@ import {loginUser} from "../../api/axiosApi.js";
 import './Login.css'
 import {EyeIcon, EyeSlashIcon} from "../../assets/heroicons.jsx";
 import useAuth from "../../hooks/useAuth.js";
-import {Link, useNavigate, useLocation} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 
 const LOGIN_URL = '/api/auth/signin'
 
@@ -12,7 +12,7 @@ const Login = () => {
     const location = useLocation()
     const from = location.state?.from?.pathname || '/'
 
-    const {setAuth} = useAuth()
+    const {auth, setAuth} = useAuth()
     const userRef = useRef()
     const errRef = useRef()
 
@@ -54,6 +54,7 @@ const Login = () => {
     }
 
     return (
+        auth?.user ? navigate('/') :
         <div className='login-container'>
             <header className='login-header'>
                 <img src='/mia-logo.png' alt='logo'/>

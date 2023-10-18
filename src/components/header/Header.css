@@ -55,13 +55,18 @@ nav ul {
 }
 
 .user-bar button {
-    background-color: #7381B4;
+    background-color: rgba(29, 46, 107, 1);
     border: none;
     border-radius: 8px;
     color: white;
     font-weight: bold;
     cursor: pointer;
     padding: .3rem .7rem 0.1rem .7rem;
+    transition: 0.2s;
+}
+
+.user-bar button:hover {
+    background-color: rgba(75, 91, 151, 1);
 }
 
 .user-bar button svg {
