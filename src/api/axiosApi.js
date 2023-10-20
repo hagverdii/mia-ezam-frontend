@@ -1,11 +1,21 @@
 import axios from "axios";
-import useAuth from "../hooks/useAuth.js";
 
-const BASE_URL = 'http://10.14.33.67:8081'
+const BASE_URL = 'http://172.16.4.157:8080'
 
-export const loginUser = (url, credentials) => {
+export const verifyJwt = (jwtToken) => {
     return axios.post(
-        `${BASE_URL}${url}`,
+        `${BASE_URL}/api/auth/verify`,
+        {jwt: jwtToken},
+        {
+            headers: {'Content-Type': 'application/json'},
+            withCredentials: true
+        }
+    )
+}
+
+export const loginUser = (credentials) => {
+    return axios.post(
+        `${BASE_URL}/api/auth/signin`,
         credentials,
         {
             headers: {'Content-Type': 'application/json'},
@@ -14,9 +24,13 @@ export const loginUser = (url, credentials) => {
     )
 }
 
-export const fetchEmployees = (url, jwtToken) => {
+export const getEmployeesPageable = (jwtToken, pageSize, pageNumber, search, sortBy) => {
+    const url = search
+        ? `${BASE_URL}/api/v1/employees/allFields/${encodeURIComponent(search)}?pageSize=${pageSize}&pageNumber=${pageNumber}&sortBy=${sortBy}`
+        : `${BASE_URL}/api/v1/employees?pageSize=${pageSize}&pageNumber=${pageNumber}&sortBy=${sortBy}`
+
     return axios.get(
-        `${BASE_URL}${url}`,
+        url,
         {
             headers: {
                 'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
-const Unauthorized = () => {
+const UnauthorizedPage = () => {
     const navigate = useNavigate()
 
     return (
@@ -8,11 +8,11 @@ const Unauthorized = () => {
             <p style={{color: 'black', fontSize: '2rem', textAlign: 'center', marginTop: '3rem'}}>
                 Bu səhifəyə daxil olmağa səlahiyyətiniz çatmır
             </p>
-            <button style={{marginTop: '1rem', padding: '.7rem', fontWeight: 'bold'}} onClick={() => navigate(-1)}>
+            <button style={{marginTop: '1rem', padding: '.7rem', fontWeight: 'bold'}} onClick={() => navigate('/')}>
                 Geri qayıt
             </button>
         </div>
     );
 };
 
-export default Unauthorized;
+export default UnauthorizedPage;

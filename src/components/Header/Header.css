@@ -1,4 +1,21 @@
-header {
+.login-header {
+    width: 100%;
+    padding: .3rem;
+    /*background-color: rgba(7, 18, 58, 1);*/
+    background-color: rgba(10, 25, 78, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: .8rem;
+}
+
+.login-header img {
+    width: 2.2rem;
+    margin-left: 0;
+}
+
+.main-header {
     width: 100%;
     padding: .3rem;
     background-color: rgba(10, 25, 78, 1);
@@ -9,13 +26,14 @@ header {
     font-size: .8rem;
 }
 
-header img {
+.main-header img {
     width: 2.2rem;
     margin-left: 1rem;
 }
 
 nav {
     flex-grow: 1;
+    font-size: .75rem;
 }
 
 nav ul {
@@ -27,7 +45,7 @@ nav ul {
 }
 
 .nav-element {
-    padding: .4rem 3rem;
+    padding: .4rem 2.4rem;
     border: none;
     background-color: rgba(29, 46, 107, 1);
     border-radius: 8px;
@@ -38,12 +56,12 @@ nav ul {
 
 .nav-element.active {
     background-color: rgba(75, 91, 151, 1);
-    padding: .4rem 3.3rem;
+    padding: .4rem 3rem;
 }
 
 .nav-element:hover {
     background-color: rgba(75, 91, 151, 1);
-    padding: .4rem 3.3rem;
+    padding: .4rem 3rem;
 }
 
 .user-bar {
@@ -52,6 +70,7 @@ nav ul {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    font-size: .75rem;
 }
 
 .user-bar button {

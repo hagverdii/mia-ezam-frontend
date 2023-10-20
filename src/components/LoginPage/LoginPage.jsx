@@ -1,13 +1,12 @@
 import {useRef, useState, useEffect} from "react";
 import {loginUser} from "../../api/axiosApi.js";
-import './Login.css'
+import './LoginPage.css'
 import {EyeIcon, EyeSlashIcon} from "../../assets/heroicons.jsx";
 import useAuth from "../../hooks/useAuth.js";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate, useLocation, Navigate} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
-const LOGIN_URL = '/api/auth/signin'
-
-const Login = () => {
+const LoginPage = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const from = location.state?.from?.pathname || '/'
@@ -32,10 +31,16 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await loginUser(LOGIN_URL, {username: user, password: pwd})
+            const response = await loginUser({username: user, password: pwd})
             const jwtToken = response?.data?.jwt
-            const roles = response?.data?.roles
-            setAuth({user, pwd, roles, jwtToken})
+            const name = response?.data?.name
+            const decoded = jwtToken
+                ? jwt_decode(jwtToken)
+                : undefined
+            const roles = decoded?.authorities || []
+            setAuth({jwtToken, roles, authenticated: true, name})
+            localStorage.setItem('token', JSON.stringify(jwtToken))
+            localStorage.setItem('name', JSON.stringify(name))
             setUser('')
             setPwd('')
             navigate(from, {replace: true})
@@ -47,22 +52,15 @@ const Login = () => {
             } else if (err.response?.status === 401) {
                 setErrMsg('Səhv login və ya parol')
             } else {
-                setErrMsg('Login error')
+                setErrMsg('LoginPage error')
             }
             errRef.current.focus()
         }
     }
 
     return (
-        auth?.user ? navigate('/') :
+        auth?.authenticated ? <Navigate to='/'/> :
         <div className='login-container'>
-            <header className='login-header'>
-                <img src='/mia-logo.png' alt='logo'/>
-                <div>
-                    <p>Daxili Işlər Nazirliyi</p>
-                    <p>Ezamiyyət sistemi</p>
-                </div>
-            </header>
             <div className='login-page'>
                 <section>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -103,4 +101,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

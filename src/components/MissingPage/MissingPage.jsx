@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
-const Missing = () => {
+const MissingPage = () => {
     const navigate = useNavigate()
 
     return (
@@ -15,4 +15,4 @@ const Missing = () => {
     );
 };
 
-export default Missing;
+export default MissingPage
