@@ -71,6 +71,9 @@
 }
 
 .login-page button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     font-weight: bold;
     padding: 0.5rem;
@@ -83,6 +86,11 @@
     background-color: rgba(255, 223, 152, 1);
 }
 
+.login-page button:disabled {
+    cursor: not-allowed;
+    background-color: rgba(189, 189, 189, 0.9);
+}
+
 .login-page .errmsg {
     background-color: lightpink;
     border-radius: 8px;
@@ -90,6 +98,11 @@
     font-weight: bold;
     padding: 0.5rem;
     margin-bottom: 1rem;
+}
+
+.login-page .offscreen {
+    position: absolute;
+    left: -9999px;
 }
 
 .login-page .line {

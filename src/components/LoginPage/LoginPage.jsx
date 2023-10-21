@@ -5,6 +5,7 @@ import {EyeIcon, EyeSlashIcon} from "../../assets/heroicons.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import {useNavigate, useLocation, Navigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import LoadingCircle from "../LoadingCircle/LoadingCircle.jsx";
 
 const LoginPage = () => {
     const navigate = useNavigate()
@@ -20,6 +21,8 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [errMsg, setErrMsg] = useState('')
 
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
         userRef.current.focus()
     }, [])
@@ -31,6 +34,7 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            setIsLoading(true)
             const response = await loginUser({username: user, password: pwd})
             const jwtToken = response?.data?.jwt
             const name = response?.data?.name
@@ -48,13 +52,15 @@ const LoginPage = () => {
             if (!err?.response) {
                 setErrMsg('Server cavab vermir')
             } else if (err.response?.status === 400) {
-                setErrMsg('Ad və ya parol yazılmayıb')
+                setErrMsg('İstifadəşi adı və ya şifrə yazılmayıb')
             } else if (err.response?.status === 401) {
-                setErrMsg('Səhv login və ya parol')
+                setErrMsg('Yanlış ad və ya şifrə')
             } else {
                 setErrMsg('LoginPage error')
             }
             errRef.current.focus()
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -66,7 +72,7 @@ const LoginPage = () => {
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1 style={{textAlign: 'center'}}>Daxil ol</h1>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
+                        <label htmlFor="username">Istifadəçi:</label>
                         <input
                             type='text'
                             id='username'
@@ -76,7 +82,7 @@ const LoginPage = () => {
                             onChange={e => setUser(e.target.value)}
                             required
                         />
-                        <label htmlFor="password">Password:</label>
+                        <label htmlFor="password">Şifrə:</label>
                         <div className="password-container">
                             <input
                                 type={showPassword ? 'text' : 'password'}
@@ -90,7 +96,7 @@ const LoginPage = () => {
                                 {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
                             </span>
                         </div>
-                        <button disabled={!user || !pwd}>Təsdiqlə</button>
+                        <button disabled={!user || !pwd || isLoading}>{isLoading ? <LoadingCircle /> : 'Təsdiqlə'}</button>
                     </form>
                 </section>
             </div>

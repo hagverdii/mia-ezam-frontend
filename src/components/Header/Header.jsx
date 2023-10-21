@@ -25,7 +25,7 @@ const Header = () => {
                 <nav>
                     <ul>
                         {
-                            auth?.roles[0] === 'ROLE_ADMIN'
+                            auth?.roles.includes('ROLE_ADMIN')
                                 ? <>
                                     <li><NavLink className='nav-element' to='/operations'>Əməliyyatlar</NavLink></li>
                                     <li><NavLink className='nav-element' to='/employees'>İşçilər</NavLink></li>
@@ -33,7 +33,7 @@ const Header = () => {
                                     <li><NavLink className='nav-element' to='/reports'>Hesabatlar</NavLink></li>
                                     <li><NavLink className='nav-element' to='/other-operations'>Digər əməliyyatlar</NavLink></li>
                                 </>
-                                : auth?.roles[0] === 'ROLE_EDITOR'
+                                : auth?.roles.includes('ROLE_EDITOR')
                                     ? <li><NavLink className='nav-element' to='/business-trips'>Ezamiyyətlər</NavLink></li>
                                     : null
                         }

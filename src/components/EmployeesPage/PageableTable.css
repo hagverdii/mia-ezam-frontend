@@ -6,74 +6,161 @@
     align-items: flex-start;
     font-size: 1rem;
     font-family: 'Nunito', sans-serif;
-    padding-top: 2rem;
 }
 
 .employees-table {
-    border: 1px solid black;
-    width: 45rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    width: 85%;
+    font-size: .9rem;
 }
 
 .employees-table .top-row {
     background-color: rgba(10, 25, 78, 1);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .6rem 1rem;
+    padding: .7rem 1.5rem;
 }
 
-.employees-table label {
+.employees-table .top-row label {
     font-size: .9rem;
 }
 
-.employees-table select {
-    font-family: 'Nunito', sans-serif;
+.employees-table .top-row select {
     border: none;
     border-radius: 5px;
     font-size: .8rem;
     padding: .15rem;
 }
 
-.employees-table form {
+.employees-table .top-row form {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     position: relative;
 }
 
-.employees-table input {
+.employees-table .top-row input {
     border: none;
     outline-width: 0;
     border-radius: 5px;
     font-size: .9rem;
-    padding: .17rem;
-    width: 10rem;
+    padding: .17rem .6rem;
+    width: 14rem;
     transition: all 0.2s;
 }
 
-.employees-table input:focus {
-    width: 16rem;
+.employees-table .top-row input:focus {
+    width: 23rem;
 }
 
-.employees-table button {
+.employees-table .top-row button {
     background-color: rgba(29, 46, 107, 1);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     position: absolute;
     right: -2px;
     border: none;
-    border-radius: 5px;
     color: white;
     font-weight: bold;
     cursor: pointer;
-    padding: .19rem .6rem;
+    padding: .18rem .6rem;
     transition: 0.2s;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.employees-table button:hover {
+.employees-table .top-row button:hover {
     background-color: rgba(75, 91, 151, 1);
 }
-.employees-table button svg {
+.employees-table .top-row button svg {
     width: 1.2rem;
+}
+
+.employees-table .middle-row {
+    display: flex;
+    overflow-y: scroll;
+    min-height: 430px;
+}
+
+.employees-table .middle-row .loading {
+    flex-grow: 1;
+}
+
+.employees-table .middle-row table {
+    color: black;
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+}
+
+.employees-table .middle-row table thead {
+    background-color: rgba(255, 240, 150, .7);
+}
+
+.employees-table .middle-row table th,
+.employees-table .middle-row table td {
+    border: 1px solid #9a9a9a;
+    padding: 8px;
+    text-align: left;
+}
+
+.employees-table .bottom-row {
+    background-color: rgba(10, 25, 78, 1);
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: .7rem 1.5rem;
+    outline-width: 0;
+}
+
+.employees-table .bottom-row label {
+    font-size: .9rem;
+}
+
+.employees-table .bottom-row select {
+    border: none;
+    border-radius: 5px;
+    font-size: .8rem;
+    padding: .15rem;
+}
+
+.employees-table .bottom-row .page-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.employees-table .bottom-row .page-navigation button {
+    background-color: rgba(29, 46, 107, 1);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: .18rem .6rem;
+    transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.employees-table .bottom-row .page-navigation button:not(:disabled) {
+    background-color: rgba(75, 91, 151, 1);
+}
+
+.employees-table .bottom-row .page-navigation button:disabled {
+    cursor: not-allowed;
+}
+
+.employees-table .bottom-row .page-navigation button svg {
+    width: 1rem;
 }

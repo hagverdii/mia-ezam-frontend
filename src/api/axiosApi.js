@@ -25,9 +25,18 @@ export const loginUser = (credentials) => {
 }
 
 export const getEmployeesPageable = (jwtToken, pageSize, pageNumber, search, sortBy) => {
+    const sort = sortBy
+        ? `&sortBy=${sortBy}`
+        : ''
+    const size = pageSize
+        ? `pageSize=${pageSize}`
+        : 'pageSize=10'
+    const number = pageNumber
+        ? `&pageNumber=${pageNumber}`
+        : '&pageNumber=0'
     const url = search
-        ? `${BASE_URL}/api/v1/employees/allFields/${encodeURIComponent(search)}?pageSize=${pageSize}&pageNumber=${pageNumber}&sortBy=${sortBy}`
-        : `${BASE_URL}/api/v1/employees?pageSize=${pageSize}&pageNumber=${pageNumber}&sortBy=${sortBy}`
+        ? `${BASE_URL}/api/v1/employees/allFields/${encodeURIComponent(search)}?${size}${number}${sort}`
+        : `${BASE_URL}/api/v1/employees?${size}${number}${sort}`
 
     return axios.get(
         url,
