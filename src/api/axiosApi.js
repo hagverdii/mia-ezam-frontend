@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://172.16.4.157:8080'
+const BASE_URL = 'http://10.11.193.29:8080'
 
 export const verifyJwt = (jwtToken) => {
     return axios.post(
@@ -24,7 +24,7 @@ export const loginUser = (credentials) => {
     )
 }
 
-export const getEmployeesPageable = (jwtToken, pageSize, pageNumber, search, sortBy) => {
+export const getAllEmployeesPageable = (jwtToken, pageSize, pageNumber, search, sortBy) => {
     const sort = sortBy
         ? `&sortBy=${sortBy}`
         : ''
@@ -40,6 +40,67 @@ export const getEmployeesPageable = (jwtToken, pageSize, pageNumber, search, sor
 
     return axios.get(
         url,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllRanks = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/ranks`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllDepartments = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/departments`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllPositions = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/positions`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const updateEmployeeById = async (jwtToken, employeeId, firstName, lastName, fatherName, policeCard, rank, position, department) => {
+    return await axios.put(
+        `${BASE_URL}/api/v1/employees/${employeeId}`,
+        {
+            firstName: `${firstName}`,
+            lastName: `${lastName}`,
+            fatherName: `${fatherName}`,
+            policeCard: `${policeCard}`,
+            rank: {id: Number(rank)},
+            position: {id: Number(position)},
+            department: {id: Number(department)},
+        },
         {
             headers: {
                 'Content-Type': 'application/json',

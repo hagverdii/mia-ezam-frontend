@@ -1,11 +1,12 @@
 import {useQuery} from "@tanstack/react-query";
-import {getEmployeesPageable} from "../../api/axiosApi.js";
-import React, {useEffect, useState} from "react";
+import {getAllEmployeesPageable} from "../../api/axiosApi.js";
+import React, {useEffect, useRef, useState} from "react";
 import './PageableTable.css'
 import {useSearchParams} from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
 import {BackIcon, DoubleBackIcon, DoubleForwardIcon, ForwardIcon, SearchIcon} from "../../assets/heroicons.jsx";
+import EditEmployeeModal from "./EditEmployeeModal.jsx";
 
 const PageableTable = () => {
     const [searchParams, setSearchParams] = useSearchParams({
@@ -24,6 +25,18 @@ const PageableTable = () => {
 
     const {auth} = useAuth()
 
+    const dialogRef = useRef()
+    
+    // Values for editing employee
+    const [editId, setEditId] = useState('')
+    const [editFirstName, setEditFirstName] = useState('')
+    const [editLastName, setEditLastName] = useState('')
+    const [editFatherName, setEditFatherName] = useState('')
+    const [editPoliceCard, setEditPoliceCard] = useState('')
+    const [editRank, setEditRank] = useState('')
+    const [editDepartment, setEditDepartment] = useState('')
+    const [editPosition, setEditPosition] = useState('')
+
     const {
         data,
         isLoading,
@@ -31,7 +44,7 @@ const PageableTable = () => {
         error
     } = useQuery({
         queryKey: ['employees', pageSize, pageNumber, search, sortBy],
-        queryFn: () => getEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy)
+        queryFn: () => getAllEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy)
     })
 
     useEffect(() => {
@@ -99,6 +112,27 @@ const PageableTable = () => {
 
     return (
         <div className='employees-container'>
+            {/*modal for editing employees*/}
+            <EditEmployeeModal
+                dialogRef={dialogRef}
+                editId={editId}
+                setEditId={setEditId}
+                editFirstName={editFirstName}
+                setEditFirstName={setEditFirstName}
+                editLastName={editLastName}
+                setEditLastName={setEditLastName}
+                editFatherName={editFatherName}
+                setEditFatherName={setEditFatherName}
+                editPoliceCard={editPoliceCard}
+                setEditPoliceCard={setEditPoliceCard}
+                editRank={editRank}
+                setEditRank={setEditRank}
+                editDepartment={editDepartment}
+                setEditDepartment={setEditDepartment}
+                editPosition={editPosition}
+                setEditPosition={setEditPosition}
+            />
+
             <div className='employees-table'>
                 <div className='top-row'>
                     <div>
@@ -115,7 +149,6 @@ const PageableTable = () => {
                     </div>
                     <div>
                         <form onSubmit={handleSearch}>
-                            <label htmlFor="search"></label>
                             <input
                                 type='text'
                                 id='search'
@@ -126,7 +159,7 @@ const PageableTable = () => {
                                 onBlur={() => setPlaceholderText('Bütün sütunlar üzrə axtar')}
                                 onChange={(e) => setSearchBar(e.target.value)}
                             />
-                            <button type='submit'><SearchIcon /></button>
+                            <button className='default-button' onMouseDown={handleSearch} type='submit'><SearchIcon /></button>
                         </form>
                     </div>
                     <div>
@@ -152,12 +185,13 @@ const PageableTable = () => {
                             <thead>
                                 <tr>
                                     <th style={{width: '6%'}}>&#8470;</th>
-                                    <th style={{width: '25%'}}>Soyad, ad və ata adı</th>
+                                    <th>Soyad, ad və ata adı</th>
+                                    <th>Xidməti vəsiqə</th>
                                     <th>Rütbə</th>
-                                    <th>Şöbə</th>
+                                    <th>İdarə / Şöbə</th>
                                     <th>Vəzifə</th>
-                                    <th>Redaktə</th>
-                                    <th>Sil</th>
+                                    <th style={{width: '8%'}}>Redaktə</th>
+                                    <th style={{width: '6%'}}>Sil</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,13 +199,32 @@ const PageableTable = () => {
                                     ? data?.data?.content.map((employee, index) => {
                                         return (
                                             <tr key={employee.uniqueId}>
-                                                <td>{pageNumber*pageSize+index+1}</td>
+                                                <td>{Number(pageNumber)*Number(pageSize)+index+1}</td>
                                                 <td>{employee?.lastName+' '+employee?.firstName+' '+employee?.fatherName}</td>
+                                                <td>{'AZ-' + employee?.policeCard}</td>
                                                 <td>{employee?.rank?.name}</td>
                                                 <td>{employee?.department?.name}</td>
                                                 <td>{employee?.position?.name}</td>
-                                                <td>Redaktə</td>
-                                                <td>Sil</td>
+                                                <td style={{position: 'relative'}}>
+                                                    <button className='edit-button' onClick={e => {
+                                                        dialogRef.current.showModal()
+                                                        setEditId(employee.id)
+                                                        setEditLastName(employee.lastName)
+                                                        setEditFirstName(employee.firstName)
+                                                        setEditFatherName(employee.fatherName)
+                                                        setEditPoliceCard(employee.policeCard)
+                                                        setEditRank({value: employee.rank.id, label: employee.rank.name})
+                                                        setEditDepartment({value: employee.department.id, label: employee.department.name})
+                                                        setEditPosition({value: employee.position.id, label: employee.position.name})
+                                                    }}>
+                                                        Redaktə
+                                                    </button>
+                                                </td>
+                                                <td style={{position: 'relative'}}>
+                                                    <button className='delete-button'>
+                                                        Sil
+                                                    </button>
+                                                </td>
                                             </tr>
                                         )})
                                     : <tr>
@@ -185,11 +238,13 @@ const PageableTable = () => {
 
                 <div className='bottom-row'>
                     <div className='page-navigation'>
-                        <button>
+                        <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onClick={e => setSearchParams(prev => {
+                            prev.set('pageNumber', '0')
+                        })}>
                             <DoubleBackIcon />
                         </button>
-                        <button disabled={(!isLoading ? data?.data?.first : true)} onClick={e => setSearchParams(prev => {
-                            prev.set('pageNumber', Number(pageNumber)-1)
+                        <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onClick={e => setSearchParams(prev => {
+                            prev.set('pageNumber', `${Number(pageNumber)-1}`)
                             return prev
                         })}>
                             <BackIcon />
@@ -208,10 +263,16 @@ const PageableTable = () => {
                                 ))}
                             </select>
                         </div>
-                        <button>
+                        <button className='default-button' disabled={(!isLoading ? data?.data?.last : true)} onClick={e => setSearchParams(prev => {
+                            prev.set('pageNumber', `${Number(pageNumber)+1}`)
+                            return prev
+                        })}>
                             <ForwardIcon />
                         </button>
-                        <button>
+                        <button className='default-button' disabled={(!isLoading ? data?.data?.last : true)} onClick={e => setSearchParams(prev => {
+                            prev.set('pageNumber', `${data?.data?.totalPages - 1}`)
+                            return prev
+                        })}>
                             <DoubleForwardIcon />
                         </button>
                     </div>

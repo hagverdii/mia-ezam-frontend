@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -26,5 +26,63 @@ body {
     flex-direction: column;
 }
 
+/*Edit button styles*/
+.edit-button {
+    background-color: rgba(14, 130, 22, 1);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: .18rem .6rem;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.edit-button:hover {
+    background-color: rgba(29, 163, 38, 1);
+}
+
+/*Delete button styles*/
+.delete-button {
+    background-color: rgba(165, 18, 18, 1);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: .18rem .6rem;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-button:hover {
+    background-color: rgba(207, 36, 36, 1);
+}
+
+/*Default button styles*/
+.default-button {
+    background-color: rgba(29, 46, 107, 1);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: .18rem .6rem;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.default-button:hover:not(:disabled) {
+    background-color: rgba(75, 91, 151, 1);
+}
+
+.default-button:disabled {
+    background-color: rgba(114, 128, 179, 1);
+    cursor: not-allowed;
+}
 
