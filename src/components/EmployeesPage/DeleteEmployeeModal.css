@@ -7,6 +7,14 @@
     border-radius: 10px;
     height: fit-content;
     padding: 1rem;
+    transition: all 1s;
+    opacity: 0;
+    scale: 0;
+}
+
+#employee-delete-dialog[open] {
+    opacity: 1;
+    scale: 1;
 }
 
 #employee-delete-dialog::backdrop {
