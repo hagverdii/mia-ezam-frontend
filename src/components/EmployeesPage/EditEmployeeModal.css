@@ -6,6 +6,7 @@
     border: none;
     border-radius: 10px;
     height: fit-content;
+    padding: 1rem;
 }
 
 #employee-edit-dialog::backdrop {
@@ -27,46 +28,54 @@
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-#employee-edit-dialog form {
+.employee-edit-dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 10px;
+}
+
+.employee-edit-dialog-container .close {
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .4rem;
+    font-weight: bold;
+}
+
+.employee-edit-dialog-container .close svg {
+    width: 1.1rem;
+}
+
+.employee-edit-dialog-container form {
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    padding: 1rem;
     width: 35rem;
     font-size: 1rem;
+    gap: .8rem;
 }
 
-#employee-edit-dialog .title {
+.employee-edit-dialog-container form .title {
     text-align: center;
     font-size: 1.3rem;
     font-weight: bold;
-    margin-bottom: 1rem;
 }
 
-#employee-edit-dialog div {
-    margin-bottom: 1rem;
-}
-
-#employee-edit-dialog div:last-child {
-    margin-bottom: 0;
-}
-
-#employee-edit-dialog div input {
+.employee-edit-dialog-container form div>input {
     width: 100%;
-    padding: .3rem;
+    padding: .3rem .3rem .3rem .5rem;
     font-size: 1rem;
     border: 1px solid grey;
 }
 
-#employee-edit-dialog .buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#employee-edit-dialog .buttons button {
+.employee-edit-dialog-container form .submit {
     padding: .55rem 1rem;
     font-weight: bold;
+    align-self: center;
 }
 
 .department-position {

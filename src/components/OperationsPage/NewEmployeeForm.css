@@ -1,0 +1,59 @@
+.new-employee-container {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: rgba(28, 45, 107, 1);
+    border-radius: 10px;
+}
+
+.new-employee-container .title {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.new-employee-container form {
+    width: 35rem;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+
+.new-employee-container .new-employee-input {
+    padding: .3rem;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.new-employee-container .new-full-name {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.new-employee-container .new-card-and-rank {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-employee-container .new-department-and-position {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-employee-container form button {
+    margin-top: 1rem;
+    padding: .6rem 1.2rem;
+    align-self: center;
+    font-size: .9rem;
+}

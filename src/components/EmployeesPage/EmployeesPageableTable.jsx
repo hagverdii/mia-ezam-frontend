@@ -1,14 +1,16 @@
 import {useQuery} from "@tanstack/react-query";
 import {getAllEmployeesPageable} from "../../api/axiosApi.js";
 import React, {useEffect, useRef, useState} from "react";
-import './PageableTable.css'
+import './EmployeesPageableTable.css'
 import {useSearchParams} from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
 import {BackIcon, DoubleBackIcon, DoubleForwardIcon, ForwardIcon, SearchIcon} from "../../assets/heroicons.jsx";
 import EditEmployeeModal from "./EditEmployeeModal.jsx";
+import DeleteEmployeeModal from "./DeleteEmployeeModal.jsx";
+import {nanoid} from "nanoid";
 
-const PageableTable = () => {
+const EmployeesPageableTable = () => {
     const [searchParams, setSearchParams] = useSearchParams({
         pageSize: '10',
         pageNumber: '0',
@@ -25,17 +27,10 @@ const PageableTable = () => {
 
     const {auth} = useAuth()
 
-    const dialogRef = useRef()
-    
-    // Values for editing employee
-    const [editId, setEditId] = useState('')
-    const [editFirstName, setEditFirstName] = useState('')
-    const [editLastName, setEditLastName] = useState('')
-    const [editFatherName, setEditFatherName] = useState('')
-    const [editPoliceCard, setEditPoliceCard] = useState('')
-    const [editRank, setEditRank] = useState('')
-    const [editDepartment, setEditDepartment] = useState('')
-    const [editPosition, setEditPosition] = useState('')
+    const editDialogRef = useRef()
+    const deleteDialogRef = useRef()
+
+    const [selectedEmployee, setSelectedEmployee] = useState({})
 
     const {
         data,
@@ -44,7 +39,7 @@ const PageableTable = () => {
         error
     } = useQuery({
         queryKey: ['employees', pageSize, pageNumber, search, sortBy],
-        queryFn: () => getAllEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy)
+        queryFn: () => getAllEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy),
     })
 
     useEffect(() => {
@@ -112,25 +107,16 @@ const PageableTable = () => {
 
     return (
         <div className='employees-container'>
-            {/*modal for editing employees*/}
             <EditEmployeeModal
-                dialogRef={dialogRef}
-                editId={editId}
-                setEditId={setEditId}
-                editFirstName={editFirstName}
-                setEditFirstName={setEditFirstName}
-                editLastName={editLastName}
-                setEditLastName={setEditLastName}
-                editFatherName={editFatherName}
-                setEditFatherName={setEditFatherName}
-                editPoliceCard={editPoliceCard}
-                setEditPoliceCard={setEditPoliceCard}
-                editRank={editRank}
-                setEditRank={setEditRank}
-                editDepartment={editDepartment}
-                setEditDepartment={setEditDepartment}
-                editPosition={editPosition}
-                setEditPosition={setEditPosition}
+                selectedEmployee={selectedEmployee}
+                setSelectedEmployee={setSelectedEmployee}
+                editDialogRef={editDialogRef}
+            />
+
+            <DeleteEmployeeModal
+                selectedEmployee={selectedEmployee}
+                setSelectedEmployee={setSelectedEmployee}
+                deleteDialogRef={deleteDialogRef}
             />
 
             <div className='employees-table'>
@@ -169,7 +155,7 @@ const PageableTable = () => {
                             onChange={handleSort}
                             value={sortBy}
                         >
-                            <option value={''}></option>
+                            <option value={''}>Soyad, ad, ata adı</option>
                             <option value={'firstName'}>Ad</option>
                             <option value={'lastName'}>Soyad</option>
                             <option value={'fatherName'}>Ata adı</option>
@@ -198,7 +184,7 @@ const PageableTable = () => {
                                 {data?.data?.content.length
                                     ? data?.data?.content.map((employee, index) => {
                                         return (
-                                            <tr key={employee.uniqueId}>
+                                            <tr key={nanoid()}>
                                                 <td>{Number(pageNumber)*Number(pageSize)+index+1}</td>
                                                 <td>{employee?.lastName+' '+employee?.firstName+' '+employee?.fatherName}</td>
                                                 <td>{'AZ-' + employee?.policeCard}</td>
@@ -207,21 +193,17 @@ const PageableTable = () => {
                                                 <td>{employee?.position?.name}</td>
                                                 <td style={{position: 'relative'}}>
                                                     <button className='edit-button' onClick={e => {
-                                                        dialogRef.current.showModal()
-                                                        setEditId(employee.id)
-                                                        setEditLastName(employee.lastName)
-                                                        setEditFirstName(employee.firstName)
-                                                        setEditFatherName(employee.fatherName)
-                                                        setEditPoliceCard(employee.policeCard)
-                                                        setEditRank({value: employee.rank.id, label: employee.rank.name})
-                                                        setEditDepartment({value: employee.department.id, label: employee.department.name})
-                                                        setEditPosition({value: employee.position.id, label: employee.position.name})
+                                                        editDialogRef.current.showModal()
+                                                        setSelectedEmployee(employee)
                                                     }}>
                                                         Redaktə
                                                     </button>
                                                 </td>
-                                                <td style={{position: 'relative'}}>
-                                                    <button className='delete-button'>
+                                                <td style={{position: 'relative'}} >
+                                                    <button className='delete-button' onClick={e => {
+                                                        deleteDialogRef.current.showModal()
+                                                        setSelectedEmployee(employee)
+                                                    }}>
                                                         Sil
                                                     </button>
                                                 </td>
@@ -238,12 +220,12 @@ const PageableTable = () => {
 
                 <div className='bottom-row'>
                     <div className='page-navigation'>
-                        <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onClick={e => setSearchParams(prev => {
+                        <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onMouseDown={e => setSearchParams(prev => {
                             prev.set('pageNumber', '0')
                         })}>
                             <DoubleBackIcon />
                         </button>
-                        <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onClick={e => setSearchParams(prev => {
+                        <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onMouseDown={e => setSearchParams(prev => {
                             prev.set('pageNumber', `${Number(pageNumber)-1}`)
                             return prev
                         })}>
@@ -282,4 +264,4 @@ const PageableTable = () => {
     );
 };
 
-export default PageableTable;
+export default EmployeesPageableTable;

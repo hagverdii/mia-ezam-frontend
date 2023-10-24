@@ -1,8 +1,8 @@
-import PageableTable from "./PageableTable.jsx";
+import EmployeesPageableTable from "./EmployeesPageableTable.jsx";
 
 const EmployeesPage = () => {
     return (
-        <PageableTable />
+        <EmployeesPageableTable />
     );
 };
 

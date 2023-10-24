@@ -10,10 +10,12 @@ import BusinessTripsPage from "./components/BusinessTripsPage/BusinessTripsPage.
 import ReportsPage from "./components/ReportsPage/ReportsPage.jsx"
 import OtherOperationsPage from "./components/OtherOperationsPage/OtherOperationsPage.jsx"
 import Header from "./components/Header/Header.jsx"
+import {Toaster} from "react-hot-toast";
 
 const App = () => {
     return (
         <>
+            <Toaster duration='3000' position="bottom-right" reverseOrder={false} />
             <Header />
             <Routes>
                 <Route path='/login' element={<LoginPage />} />

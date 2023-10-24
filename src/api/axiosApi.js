@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://10.11.193.29:8080'
+const BASE_URL = 'http://10.14.33.67:8080'
 
 export const verifyJwt = (jwtToken) => {
     return axios.post(
@@ -89,18 +89,37 @@ export const getAllPositions = (jwtToken) => {
     )
 }
 
-export const updateEmployeeById = async (jwtToken, employeeId, firstName, lastName, fatherName, policeCard, rank, position, department) => {
-    return await axios.put(
+export const updateEmployeeById = (jwtToken, employeeId, updatedEmployee) => {
+    return axios.put(
+        `${BASE_URL}/api/v1/employees/${employeeId}`,
+        updatedEmployee,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteEmployeeById = (jwtToken, employeeId) => {
+    return axios.delete(
         `${BASE_URL}/api/v1/employees/${employeeId}`,
         {
-            firstName: `${firstName}`,
-            lastName: `${lastName}`,
-            fatherName: `${fatherName}`,
-            policeCard: `${policeCard}`,
-            rank: {id: Number(rank)},
-            position: {id: Number(position)},
-            department: {id: Number(department)},
-        },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const addNewEmployee = (jwtToken, newEmployee) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/employees`,
+        newEmployee,
         {
             headers: {
                 'Content-Type': 'application/json',

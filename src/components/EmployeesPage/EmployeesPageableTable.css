@@ -109,7 +109,13 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    padding: .2rem 1rem;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+}
+
+.employees-table .middle-row table td button.delete-button {
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .employees-table .bottom-row {
