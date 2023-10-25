@@ -40,8 +40,13 @@ body {
     align-items: center;
 }
 
-.edit-button:hover {
+.edit-button:hover:not(:disabled) {
     background-color: rgba(29, 163, 38, 1);
+}
+
+.edit-button:disabled {
+    cursor: not-allowed;
+    opacity: .8;
 }
 
 /*Delete button styles*/
@@ -58,8 +63,13 @@ body {
     align-items: center;
 }
 
-.delete-button:hover {
+.delete-button:hover:not(:disabled) {
     background-color: rgba(207, 36, 36, 1);
+}
+
+.delete-button:disabled {
+    opacity: .8;
+    cursor: not-allowed;
 }
 
 /*Default button styles*/

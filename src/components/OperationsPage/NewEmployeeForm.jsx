@@ -22,6 +22,8 @@ const NewEmployeeForm = () => {
     const [position, setPosition] = useState(null)
     const [department, setDepartment] = useState(null)
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const allRanksQuery = useQuery({
         queryKey: ['ranks'],
         queryFn: () => getAllRanks(auth.jwtToken)
@@ -39,6 +41,7 @@ const NewEmployeeForm = () => {
 
     const addNewEmployeeMutation = useMutation({
         mutationFn: ({newEmployee}) => addNewEmployee(auth.jwtToken, newEmployee),
+        onMutate: () => setIsLoading(true),
         onSuccess: data => {
             queryClient.invalidateQueries(['employees'])
             notifySuccess()
@@ -46,7 +49,8 @@ const NewEmployeeForm = () => {
         onError: error => {
             notifyError()
             console.log(error)
-        }
+        },
+        onSettled: () => setIsLoading(false)
     })
 
     if (allRanksQuery.isLoading || allDepartmentsQuery.isLoading || allPositionsQuery.isLoading) {
@@ -70,45 +74,22 @@ const NewEmployeeForm = () => {
     const customStyles = {
         control: (provided) => ({
             ...provided,
-            borderRadius: 0,
             fontSize: '1rem',
-            padding: '0 !important',
-            margin: '0 !important',
-            height: '0 !important',
-            border: '1px solid grey'
-        }),
-        valueContainer: (provided) => ({
-            ...provided,
-            padding: '0 0 0 .5rem !important',
-            margin: '0 !important'
-        }),
-        input: (provided) => ({
-            ...provided,
-            padding: '0 !important',
-            margin: '0 !important'
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            padding: '0 !important',
-            margin: '0 !important',
-            color: 'black'
+            border: '1px solid grey',
         }),
         menu: (provided) => ({
             ...provided,
-            padding: '0 !important',
-            margin: '0 !important',
+            maxHeight: '200px',
         }),
         menuList: (provided) => ({
             ...provided,
-            padding: '0 !important',
-            margin: '0 !important',
             maxHeight: '200px',
             overflowY: 'auto',
         }),
-        option: (provided) => ({
+        option: (provided, ) => ({
             ...provided,
-            padding: '0 0 0 .5rem !important',
-            margin: '0 !important',
+            paddingTop: '.2rem',
+            paddingBottom: '.2rem',
             color: 'black'
         }),
     }
@@ -116,10 +97,10 @@ const NewEmployeeForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const newEmployee = {
-            firstName: `${firstName.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
-            lastName: `${lastName.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
-            fatherName: `${fatherName.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
-            policeCard: `${policeCard.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
+            firstName: `${firstName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+            lastName: `${lastName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+            fatherName: `${fatherName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+            policeCard: `${policeCard.trim().replace(/\s+/g, '').replace(/[^0-9]/g, '')}`,
             rank: {id: Number(rank.value)},
             position: {id: Number(position.value)},
             department: {id: Number(department.value)},
@@ -242,7 +223,7 @@ const NewEmployeeForm = () => {
                         />
                     </div>
                 </div>
-                <button className='edit-button submit' type='submit'>
+                <button disabled={isLoading} className='edit-button submit' type='submit'>
                     Yeni işçi əlavə et
                 </button>
             </form>

@@ -32,6 +32,8 @@ const EmployeesPageableTable = () => {
 
     const [selectedEmployee, setSelectedEmployee] = useState({})
 
+    const [hasTypedOnce, setHasTypedOnce] = useState(false)
+
     const {
         data,
         isLoading,
@@ -53,17 +55,17 @@ const EmployeesPageableTable = () => {
 
     useEffect(() => {
         if (search) {
-            const cleanSearch = search.trim().replace(/[\s/,.!*?]+/g, ' ')
+            const cleanSearch = search.trim().replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9əüşçğöı\s]+/g, '')
             setSearchParams(prev => {
                 prev.set('search', cleanSearch)
                 return prev
             })
-            setSearchBar(search)
+            setSearchBar(cleanSearch)
         }
     }, [search, setSearchParams]);
 
     useEffect(() => {
-        if (search && !searchBar) {
+        if (search && !searchBar && !hasTypedOnce) {
             setSearchParams(prev => {
                 prev.set('search', '')
                 return prev
@@ -82,7 +84,7 @@ const EmployeesPageableTable = () => {
     const handleSearch = (event) => {
         event.preventDefault()
         setSearchParams(prev => {
-            prev.set('search', searchBar.trim().replace(/[\s/,.!*?]+/g, ' '))
+            prev.set('search', searchBar.trim().replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9əüşçğöı\s]+/g, ''))
             prev.set('pageNumber', '0')
             return prev
         })
@@ -117,6 +119,11 @@ const EmployeesPageableTable = () => {
                 selectedEmployee={selectedEmployee}
                 setSelectedEmployee={setSelectedEmployee}
                 deleteDialogRef={deleteDialogRef}
+                setSearchParams={setSearchParams}
+                pageSize={pageSize}
+                pageNumber={pageNumber}
+                search={search}
+                sortBy={sortBy}
             />
 
             <div className='employees-table'>
@@ -143,7 +150,10 @@ const EmployeesPageableTable = () => {
                                 value={searchBar}
                                 onFocus={() => setPlaceholderText('Soyad, ad, ata adı, rütbə, şöbə, vəzifə daxil edin')}
                                 onBlur={() => setPlaceholderText('Bütün sütunlar üzrə axtar')}
-                                onChange={(e) => setSearchBar(e.target.value)}
+                                onChange={(e) => {
+                                    setSearchBar(e.target.value)
+                                    setHasTypedOnce(true)
+                                }}
                             />
                             <button className='default-button' onMouseDown={handleSearch} type='submit'><SearchIcon /></button>
                         </form>
@@ -192,7 +202,7 @@ const EmployeesPageableTable = () => {
                                                 <td>{employee?.department?.name}</td>
                                                 <td>{employee?.position?.name}</td>
                                                 <td style={{position: 'relative'}}>
-                                                    <button className='edit-button' onClick={e => {
+                                                    <button className='edit-button' onMouseDown={e => {
                                                         editDialogRef.current.showModal()
                                                         setSelectedEmployee(employee)
                                                     }}>
@@ -200,7 +210,7 @@ const EmployeesPageableTable = () => {
                                                     </button>
                                                 </td>
                                                 <td style={{position: 'relative'}} >
-                                                    <button className='delete-button' onClick={e => {
+                                                    <button className='delete-button' onMouseDown={e => {
                                                         deleteDialogRef.current.showModal()
                                                         setSelectedEmployee(employee)
                                                     }}>

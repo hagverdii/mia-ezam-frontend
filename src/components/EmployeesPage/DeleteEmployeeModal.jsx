@@ -1,13 +1,27 @@
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {deleteEmployeeById} from "../../api/axiosApi.js";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {deleteEmployeeById, getAllEmployeesPageable} from "../../api/axiosApi.js";
 import React, {useEffect, useState} from "react";
 import './DeleteEmployeeModal.css'
 import useAuth from "../../hooks/useAuth.js";
 import {CloseIcon} from "../../assets/heroicons.jsx";
+import toast from "react-hot-toast";
 
-const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialogRef}) => {
+const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialogRef, pageSize, pageNumber, search, sortBy, setSearchParams}) => {
     const queryClient = useQueryClient()
     const {auth} = useAuth()
+
+    const notifySuccess = () => toast.success('İşçi uğurla silindi')
+    const notifyError = () => toast.error('İşçi silinmədi')
+
+    const {
+        data,
+        isLoading,
+        isError,
+        error
+    } = useQuery({
+        queryKey: ['employees', pageSize, pageNumber, search, sortBy],
+        queryFn: () => getAllEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy),
+    })
 
     const [deleteEmployeeId, setDeleteEmployeeId] = useState('')
 
@@ -16,13 +30,25 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
         onSuccess: data => {
             setSelectedEmployee({})
             queryClient.invalidateQueries(['employees'])
+            notifySuccess()
         },
-        onError: error => console.log(error.message)
+        onError: error => {
+            console.log(error.message)
+            notifyError()
+        }
     })
     const handleSubmit = (e) => {
         e.preventDefault()
         try {
-            deleteEmployeeByIdMutation.mutate({deleteEmployeeId})
+            if (data?.data?.content?.length===1 && pageNumber>0) {
+                deleteEmployeeByIdMutation.mutate({deleteEmployeeId})
+                setSearchParams(prev => {
+                    prev.set('pageNumber', Number(pageNumber)-1)
+                    return prev
+                })
+            } else {
+                deleteEmployeeByIdMutation.mutate({deleteEmployeeId})
+            }
         } catch (err) {
             console.log(err.message)
         } finally {

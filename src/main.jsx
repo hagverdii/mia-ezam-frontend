@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const Root = () => {
-    const {auth, setAuth} = useAuth()
+    const {setAuth} = useAuth()
     const navigate = useNavigate()
     const logout = useLogout()
     const [isLoading, setIsLoading] = useState(true)

@@ -6,10 +6,14 @@ import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
 import Select from "react-select";
 import {CloseIcon} from "../../assets/heroicons.jsx";
+import toast from "react-hot-toast";
 
 const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef}) => {
     const {auth} = useAuth()
     const queryClient = useQueryClient()
+
+    const notifySuccess = () => toast.success('İşçi uğurla redaktə olundu')
+    const notifyError = () => toast.error('İşçi redaktə olunmadı')
 
     const allRanksQuery = useQuery({
         queryKey: ['ranks'],
@@ -46,6 +50,8 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
     const [editDepartment, setEditDepartment] = useState('')
     const [editPosition, setEditPosition] = useState('')
 
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
         if (selectedEmployee?.id) {
             setEditLastName(selectedEmployee.lastName)
@@ -68,55 +74,38 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
 
     const updateEmployeeByIdMutation = useMutation({
         mutationFn: ({employeeId, updatedEmployee}) => updateEmployeeById(auth.jwtToken, employeeId, updatedEmployee),
+        onMutate: () => setIsLoading(true),
         onSuccess: data => {
             setSelectedEmployee({})
             queryClient.invalidateQueries(['employees'])
+            notifySuccess()
         },
-        onError: error => console.log(error.message)
+        onError: error => {
+            notifyError()
+            console.log(error.message)
+        },
+        onSettled: () => setIsLoading(false)
     })
 
     const customStyles = {
         control: (provided) => ({
             ...provided,
-            borderRadius: 0,
             fontSize: '1rem',
-            padding: '0 !important',
-            margin: '0 !important',
-            height: '10px !important',
-            border: '1px solid grey'
-        }),
-        valueContainer: (provided) => ({
-            ...provided,
-            padding: '0 0 0 .5rem !important',
-            margin: '0 !important'
-        }),
-        input: (provided) => ({
-            ...provided,
-            padding: '0 !important',
-            margin: '0 !important'
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            padding: '0 !important',
-            margin: '0 !important',
-            color: 'black'
+            border: '1px solid grey',
+            maxHeight: '140px',
         }),
         menu: (provided) => ({
             ...provided,
-            padding: '0 !important',
-            margin: '0 !important',
+            maxHeight: '140px',
         }),
         menuList: (provided) => ({
             ...provided,
-            padding: '0 !important',
-            margin: '0 !important',
-            maxHeight: '150px',
-            overflowY: 'auto',
+            maxHeight: '140px',
         }),
-        option: (provided) => ({
+        option: (provided, ) => ({
             ...provided,
-            padding: '0 0 0 .5rem !important',
-            margin: '0 !important',
+            paddingTop: '.1rem',
+            paddingBottom: '.1rem',
         }),
     }
 
@@ -128,14 +117,16 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
         )
     }
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
         try {
             const updatedEmployee = {
-                firstName: `${editFirstName.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
-                lastName: `${editLastName.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
-                fatherName: `${editFatherName.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
-                policeCard: `${editPoliceCard.trim().replace(/[\s/,.!*?]+/g, ' ')}`,
+                firstName: `${editFirstName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+                lastName: `${editLastName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+                fatherName: `${editFatherName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+                policeCard: `${editPoliceCard.trim().replace(/\s+/g, '').replace(/[^0-9]/g, '')}`,
                 rank: {id: Number(editRank.value)},
                 position: {id: Number(editPosition.value)},
                 department: {id: Number(editDepartment.value)},
@@ -235,7 +226,7 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
                             />
                         </div>
                     </div>
-                    <button className='edit-button submit' type='submit'>
+                    <button disabled={isLoading} className='edit-button submit' type='submit'>
                         Redaktəni təsdiq et
                     </button>
                 </form>
