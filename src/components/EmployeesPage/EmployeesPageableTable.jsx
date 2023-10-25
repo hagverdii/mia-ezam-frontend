@@ -65,7 +65,7 @@ const EmployeesPageableTable = () => {
     }, [search, setSearchParams]);
 
     useEffect(() => {
-        if (search && !searchBar && !hasTypedOnce) {
+        if (search && !searchBar && hasTypedOnce) {
             setSearchParams(prev => {
                 prev.set('search', '')
                 return prev
@@ -152,7 +152,7 @@ const EmployeesPageableTable = () => {
                                 onBlur={() => setPlaceholderText('Bütün sütunlar üzrə axtar')}
                                 onChange={(e) => {
                                     setSearchBar(e.target.value)
-                                    setHasTypedOnce(true)
+                                    if (!hasTypedOnce) setHasTypedOnce(true)
                                 }}
                             />
                             <button className='default-button' onMouseDown={handleSearch} type='submit'><SearchIcon /></button>

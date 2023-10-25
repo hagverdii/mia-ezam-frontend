@@ -1,6 +1,7 @@
 import './OperationsPage.css'
 import {useState} from "react";
 import NewEmployeeForm from "./NewEmployeeForm.jsx";
+import NewBusinessTripForm from "./NewBusinessTripForm.jsx";
 
 const OperationsPage = () => {
     const [menu1IsActive, setMenu1IsActive] = useState(true)
@@ -32,7 +33,8 @@ const OperationsPage = () => {
                     İşçi əlavə et
                 </button>
             </div>
-            {menu1IsActive && <NewEmployeeForm />}
+            {menu1IsActive && <NewBusinessTripForm />}
+            {menu2IsActive && <NewEmployeeForm />}
         </div>
     );
 };

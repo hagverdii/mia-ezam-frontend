@@ -89,6 +89,19 @@ export const getAllPositions = (jwtToken) => {
     )
 }
 
+export const getAllEmployees = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/allEmployees`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const updateEmployeeById = (jwtToken, employeeId, updatedEmployee) => {
     return axios.put(
         `${BASE_URL}/api/v1/employees/${employeeId}`,
@@ -129,3 +142,4 @@ export const addNewEmployee = (jwtToken, newEmployee) => {
         }
     )
 }
+
