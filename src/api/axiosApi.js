@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://10.14.33.67:8080'
+const BASE_URL = 'http://172.16.4.116:8080'
 
 export const verifyJwt = (jwtToken) => {
     return axios.post(
@@ -92,6 +92,71 @@ export const getAllPositions = (jwtToken) => {
 export const getAllEmployees = (jwtToken) => {
     return axios.get(
         `${BASE_URL}/api/v1/allEmployees`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllPurposes = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/purposes`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllReasons = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/reasons`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllPosResults = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/posResults`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllResulConclusions = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/resultConclusions`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const getAllHelps = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/helps`,
         {
             headers: {
                 'Content-Type': 'application/json',

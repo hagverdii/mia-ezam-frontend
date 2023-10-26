@@ -42,6 +42,7 @@ const EmployeesPageableTable = () => {
     } = useQuery({
         queryKey: ['employees', pageSize, pageNumber, search, sortBy],
         queryFn: () => getAllEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy),
+        staleTime: 1000 * 60 * 5
     })
 
     useEffect(() => {
@@ -55,7 +56,7 @@ const EmployeesPageableTable = () => {
 
     useEffect(() => {
         if (search) {
-            const cleanSearch = search.trim().replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9əüşçğöı\s]+/g, '')
+            const cleanSearch = search.trim().replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9İiəƏüÜşŞçÇğĞöÖıI\s]+/g, '')
             setSearchParams(prev => {
                 prev.set('search', cleanSearch)
                 return prev

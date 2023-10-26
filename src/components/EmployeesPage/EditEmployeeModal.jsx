@@ -78,6 +78,7 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
         onSuccess: data => {
             setSelectedEmployee({})
             queryClient.invalidateQueries(['employees'])
+            queryClient.invalidateQueries(['allEmployees'])
             notifySuccess()
         },
         onError: error => {
@@ -123,9 +124,9 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
         e.preventDefault()
         try {
             const updatedEmployee = {
-                firstName: `${editFirstName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
-                lastName: `${editLastName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
-                fatherName: `${editFatherName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+                firstName: `${editFirstName.trim().replace(/[^a-zA-ZİiəƏüÜşŞçÇğĞöÖıI]/g, '')}`,
+                lastName: `${editLastName.trim().replace(/[^a-zA-ZİiəƏüÜşŞçÇğĞöÖıI]/g, '')}`,
+                fatherName: `${editFatherName.trim().replace(/[^a-zA-ZİiəƏüÜşŞçÇğĞöÖıI]/g, '')}`,
                 policeCard: `${editPoliceCard.trim().replace(/\s+/g, '').replace(/[^0-9]/g, '')}`,
                 rank: {id: Number(editRank.value)},
                 position: {id: Number(editPosition.value)},

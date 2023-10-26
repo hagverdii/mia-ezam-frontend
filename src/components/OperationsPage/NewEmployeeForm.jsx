@@ -44,6 +44,7 @@ const NewEmployeeForm = () => {
         onMutate: () => setIsLoading(true),
         onSuccess: data => {
             queryClient.invalidateQueries(['employees'])
+            queryClient.invalidateQueries(['allEmployees'])
             notifySuccess()
         },
         onError: error => {
@@ -97,9 +98,9 @@ const NewEmployeeForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const newEmployee = {
-            firstName: `${firstName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
-            lastName: `${lastName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
-            fatherName: `${fatherName.trim().replace(/[^a-zA-Zəüşçğöı]/g, '')}`,
+            firstName: `${firstName.trim().replace(/[^a-zA-ZİiəƏüÜşŞçÇğĞöÖıI]/g, '')}`,
+            lastName: `${lastName.trim().replace(/[^a-zA-ZİiəƏüÜşŞçÇğĞöÖıI]/g, '')}`,
+            fatherName: `${fatherName.trim().replace(/[^a-zA-ZİiəƏüÜşŞçÇğĞöÖıI]/g, '')}`,
             policeCard: `${policeCard.trim().replace(/\s+/g, '').replace(/[^0-9]/g, '')}`,
             rank: {id: Number(rank.value)},
             position: {id: Number(position.value)},

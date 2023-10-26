@@ -30,6 +30,7 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
         onSuccess: data => {
             setSelectedEmployee({})
             queryClient.invalidateQueries(['employees'])
+            queryClient.invalidateQueries(['allEmployees'])
             notifySuccess()
         },
         onError: error => {

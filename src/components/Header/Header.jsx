@@ -41,7 +41,7 @@ const Header = () => {
                 </nav>
                 <div className='user-bar'>
                     <p><strong>Istifadəçi:</strong><br/>{auth.name}</p>
-                    <button onClick={signOut}><LogOutIcon /></button>
+                    <button onMouseDown={signOut}><LogOutIcon /></button>
                 </div>
             </header>
             :
