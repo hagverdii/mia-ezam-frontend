@@ -21,6 +21,7 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
     } = useQuery({
         queryKey: ['employees', pageSize, pageNumber, search, sortBy],
         queryFn: () => getAllEmployeesPageable(auth.jwtToken, pageSize, pageNumber, search, sortBy),
+        staleTime: 1000 * 60 * 5
     })
 
     const [deleteEmployeeId, setDeleteEmployeeId] = useState('')

@@ -232,7 +232,7 @@ const EmployeesPageableTable = () => {
                 <div className='bottom-row'>
                     <div className='page-navigation'>
                         <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onMouseDown={e => setSearchParams(prev => {
-                            prev.set('pageNumber', '0')
+                            prev.set('pageNumber', 0)
                         })}>
                             <DoubleBackIcon />
                         </button>
@@ -250,7 +250,7 @@ const EmployeesPageableTable = () => {
                                 value={pageNumber}
                             >
                                 {!isLoading && Array.from({ length: data.data.totalPages }, (_, index) => (
-                                    <option key={index + 1} value={`${index}`}>
+                                    <option key={index + 1} value={index}>
                                         {index + 1}
                                     </option>
                                 ))}
