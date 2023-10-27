@@ -221,3 +221,17 @@ export const addNewEmployee = (jwtToken, newEmployee) => {
     )
 }
 
+export const addNewBusinessTrip = (jwtToken, newBusinessTrip) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/businessTrips`,
+        newBusinessTrip,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+

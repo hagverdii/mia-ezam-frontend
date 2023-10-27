@@ -1,10 +1,11 @@
 import './NewBusinessTripForm.css'
 import React, {useEffect, useState} from "react";
 import Select, {components} from "react-select";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
 import {
+    addNewBusinessTrip,
     getAllEmployees,
     getAllHelps,
     getAllPosResults,
@@ -12,15 +13,20 @@ import {
     getAllReasons, getAllRegions,
     getAllResulConclusions
 } from "../../api/axiosApi.js";
-import {format} from "date-fns";
+import {format, startOfMonth} from "date-fns";
 import DatePicker from "./DatePicker.jsx";
 import {nanoid} from "nanoid";
 import {PlusIcon, TrashIcon} from "../../assets/heroicons.jsx";
 import RegionDayInputField from "./RegionDayInputField.jsx";
+import toast from "react-hot-toast";
 
 
 const NewBusinessTripForm = () => {
     const {auth} = useAuth()
+    const queryClient = useQueryClient()
+
+    const notifySuccess = () => toast.success('Ezamiyyət uğurla əlavə olundu')
+    const notifyError = () => toast.error('Ezamiyyət əlavə olunmadı')
 
     const [employeesList, setEmployeesList] = useState([])
     const [purposeList, setPurposeList] = useState([])
@@ -28,15 +34,19 @@ const NewBusinessTripForm = () => {
     const [helpList, setHelpList] = useState([])
     const [posResultList, setPosResultList] = useState([])
     const [resultConclusionList, setResultConclusionList] = useState([])
-    const [regionsList, setRegionsList] = useState([])
 
     const [startDate, setStartDate] = useState(new Date())
+    const [displayedMonth, setDisplayedMonth] = useState(startOfMonth(new Date()))
+
+
     const [isLate, setIsLate] = useState(false)
 
     const [regionCount, setRegionCount] = useState(0);
     const [regionValues, setRegionValues] = useState([])
     const [regionDayValues, setRegionDayValues] = useState([])
     const [focusedRegionDayInput, setFocusedRegionDayInput] = useState(null)
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleAddRegion = () => {
         setRegionCount(prev => prev + 1);
@@ -68,7 +78,7 @@ const NewBusinessTripForm = () => {
 
     useEffect(() => {
         if (regionCount===0) handleAddRegion()
-    }, []);
+    }, [handleAddRegion, regionCount]);
 
     const handleRegionDayInputFocus = (index) => {
         setFocusedRegionDayInput(index);
@@ -182,6 +192,17 @@ const NewBusinessTripForm = () => {
         staleTime: 1000 * 60 * 10
     })
 
+    const addBusinessTripMutation = useMutation({
+        mutationFn: ({newBusinessTrip}) => addNewBusinessTrip(auth.jwtToken, newBusinessTrip),
+        onMutate: () => setIsLoading(true),
+        onSuccess: data => notifySuccess(),
+        onError: error => notifyError(),
+        onSettled: () => {
+            queryClient.invalidateQueries(['businessTrips'])
+            setIsLoading(false)
+        }
+    })
+
     if (
         getAllEmployeesQuery.isLoading &&
         getAllPurposesQuery.isLoading &&
@@ -223,6 +244,56 @@ const NewBusinessTripForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        const newBusinessTrip = {
+            businessTripDetails: regionValues.map((region, index) => {
+                return {
+                    dayCount: regionDayValues[index],
+                    region: {id: region.value}
+                }
+            }),
+            startingDate: format(startDate, 'yyyy-MM-dd'),
+            reasons: reasonList.map(reason => {
+                return {id: reason.value}
+            }),
+            purposes: purposeList.map(purpose => {
+                return {id: purpose.value}
+            }),
+            helps: helpList.map(help => {
+                return {id: help.value}
+            }),
+            posResults: posResultList.map(result => {
+                return {id: result.value}
+            }),
+            conclusions: resultConclusionList.map(conclusion => {
+                return {id: conclusion.value}
+            }),
+            late: isLate,
+            employeeMoneyDetails: employeesList.map(employee => {
+                return {
+                    employee: {id: employee.value},
+                    amount: 0
+                }
+            })
+        }
+        try {
+            addBusinessTripMutation.mutate({newBusinessTrip})
+        } catch (err) {
+            console.log(err.message)
+        } finally {
+            setEmployeesList([])
+            setPurposeList([])
+            setReasonList([])
+            setHelpList([])
+            setPosResultList([])
+            setResultConclusionList([])
+            setStartDate(new Date())
+            setDisplayedMonth(startOfMonth(new Date()))
+            setIsLate(false)
+            setRegionCount(prev => 0)
+            setRegionValues(prev => [])
+            setRegionDayValues(prev => [])
+            setFocusedRegionDayInput(null)
+        }
     }
 
     return (
@@ -339,7 +410,7 @@ const NewBusinessTripForm = () => {
                     <div>
                         <label htmlFor="trip-startDate">Ezamiyyətə getmə tarixi:</label>
                         <br/>
-                        <DatePicker startDate={startDate} setStartDate={setStartDate}/>
+                        <DatePicker displayedMonth={displayedMonth} setDisplayedMonth={setDisplayedMonth} startDate={startDate} setStartDate={setStartDate}/>
                     </div>
                     <div className='dates-container'>
                         <div style={{display: 'flex', gap: '.3rem', alignItems: 'center'}}>
@@ -401,7 +472,7 @@ const NewBusinessTripForm = () => {
                     </div>
                 </div>
                 <div className='fifth-row'>
-                    <button type='submit' className='edit-button'>Ezamiyyəti əlavə et</button>
+                    <button disabled={isLoading} type='submit' className='edit-button'>Ezamiyyəti əlavə et</button>
                 </div>
             </form>
         </div>

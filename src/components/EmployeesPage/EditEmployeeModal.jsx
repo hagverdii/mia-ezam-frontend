@@ -105,9 +105,24 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
             border: '1px solid grey',
             maxHeight: '140px',
         }),
-        menu: (provided) => ({
+        menuList: (provided) => ({
             ...provided,
             maxHeight: '140px',
+        }),
+        option: (provided, ) => ({
+            ...provided,
+            paddingTop: '.1rem',
+            paddingBottom: '.1rem',
+        }),
+    }
+
+    const customStyles2 = {
+        control: (provided) => ({
+            ...provided,
+            fontSize: '1rem',
+            border: '1px solid grey',
+            maxHeight: '140px',
+            width: '299px'
         }),
         menuList: (provided) => ({
             ...provided,
@@ -220,7 +235,8 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
                                 onChange={setEditDepartment}
                                 options={departmentOptions}
                                 isSearchable={true}
-                                styles={customStyles}
+                                styles={customStyles2}
+                                menuPlacement='top'
                             />
                         </div>
                         <div style={{flexGrow: 1}}>
@@ -231,7 +247,8 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
                                 onChange={setEditPosition}
                                 options={positionOptions}
                                 isSearchable={true}
-                                styles={customStyles}
+                                styles={customStyles2}
+                                menuPlacement='top'
                             />
                         </div>
                     </div>

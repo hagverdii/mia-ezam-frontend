@@ -43,15 +43,14 @@ const NewEmployeeForm = () => {
         mutationFn: ({newEmployee}) => addNewEmployee(auth.jwtToken, newEmployee),
         onMutate: () => setIsLoading(true),
         onSuccess: data => {
-            queryClient.invalidateQueries(['employees'])
-            queryClient.invalidateQueries(['allEmployees'])
             notifySuccess()
         },
-        onError: error => {
-            notifyError()
-            console.log(error)
-        },
-        onSettled: () => setIsLoading(false)
+        onError: error => notifyError(),
+        onSettled: () => {
+            setIsLoading(false)
+            queryClient.invalidateQueries(['employees'])
+            queryClient.invalidateQueries(['allEmployees'])
+        }
     })
 
     if (allRanksQuery.isLoading || allDepartmentsQuery.isLoading || allPositionsQuery.isLoading) {
@@ -77,6 +76,7 @@ const NewEmployeeForm = () => {
             ...provided,
             fontSize: '1rem',
             border: '1px solid grey',
+            width: '298px'
         }),
         menu: (provided) => ({
             ...provided,
@@ -181,7 +181,7 @@ const NewEmployeeForm = () => {
                             onChange={(e) => setPoliceCard(e.target.value)}
                         />
                     </div>
-                    <div style={{flexGrow: 1}}>
+                    <div>
                         <label htmlFor="rank">Rütbəsi:</label>
                         <br/>
                         <Select

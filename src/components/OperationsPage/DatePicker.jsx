@@ -2,11 +2,13 @@ import {DayPicker} from "react-day-picker"
 import './DatePicker.css'
 import {az} from 'date-fns/locale'
 
-const DatePicker = ({startDate, setStartDate}) => {
+const DatePicker = ({startDate, setStartDate, displayedMonth, setDisplayedMonth}) => {
     return (
         <DayPicker
             mode="single"
             required
+            month={displayedMonth}
+            onMonthChange={setDisplayedMonth}
             selected={startDate}
             onSelect={setStartDate}
             captionLayout="dropdown"
