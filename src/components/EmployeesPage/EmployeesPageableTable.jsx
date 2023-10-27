@@ -106,7 +106,7 @@ const EmployeesPageableTable = () => {
         })
     }
 
-    if (isError) return <h1>error.message</h1>
+    if (isError && error) return <h1>Səhifəni bir daha yeniləyin</h1>
 
     return (
         <div className='employees-container'>
