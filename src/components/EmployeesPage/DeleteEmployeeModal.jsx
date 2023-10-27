@@ -12,6 +12,7 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
 
     const notifySuccess = () => toast.success('İşçi uğurla silindi')
     const notifyError = () => toast.error('İşçi silinmədi')
+    const notifyErrorNotFound = () => toast.error('Işçi digər şəxs tərəfindən silinib')
 
     const {
         data,
@@ -25,20 +26,30 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
     })
 
     const [deleteEmployeeId, setDeleteEmployeeId] = useState('')
+    const [deleteIsLoading, setDeleteIsLoading] = useState(false)
 
     const deleteEmployeeByIdMutation = useMutation({
         mutationFn: ({deleteEmployeeId}) => deleteEmployeeById(auth.jwtToken, deleteEmployeeId),
+        onMutate: () => setDeleteIsLoading(true),
         onSuccess: data => {
             setSelectedEmployee({})
-            queryClient.invalidateQueries(['employees'])
-            queryClient.invalidateQueries(['allEmployees'])
             notifySuccess()
         },
         onError: error => {
             console.log(error.message)
-            notifyError()
+            if (error.response?.status === 404) {
+                notifyErrorNotFound()
+            } else {
+                notifyError()
+            }
+        },
+        onSettled: () => {
+            setDeleteIsLoading(false)
+            queryClient.invalidateQueries(['employees'])
+            queryClient.invalidateQueries(['allEmployees'])
         }
     })
+
     const handleSubmit = (e) => {
         e.preventDefault()
         try {
@@ -74,7 +85,7 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
                 </button>
                 <div className='title'><strong>{selectedEmployee.firstName}</strong> adlı işçini siyahıdan silmək üçün əməliyyatı təsdiq edin</div>
                 <form onSubmit={handleSubmit}>
-                    <button disabled={deleteEmployeeByIdMutation.isLoading} className='delete-button submit' type='submit'>
+                    <button disabled={deleteIsLoading} className='delete-button submit' type='submit'>
                         Silməni təsdiq et
                     </button>
                 </form>

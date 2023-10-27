@@ -154,6 +154,19 @@ export const getAllResulConclusions = (jwtToken) => {
     )
 }
 
+export const getAllRegions = (jwtToken) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/regions`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const getAllHelps = (jwtToken) => {
     return axios.get(
         `${BASE_URL}/api/v1/helps`,

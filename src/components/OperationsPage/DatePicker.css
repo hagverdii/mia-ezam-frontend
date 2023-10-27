@@ -1,5 +1,4 @@
 .rdp {
-    z-index: -1;
     --rdp-cell-size: 30px; /* Size of the day cells. */
     --rdp-caption-font-size: .9rem; /* Font size for the caption labels. */
     --rdp-accent-color: #0A194E; /* Accent color for the background of selected days. */
@@ -128,7 +127,6 @@
 
 .rdp-caption_label {
     position: relative;
-    z-index: 1;
     display: inline-flex;
     align-items: center;
     margin: 0;
@@ -184,7 +182,6 @@
 .rdp-dropdown {
     appearance: none;
     position: absolute;
-    z-index: 2;
     top: 0;
     bottom: 0;
     left: 0;
@@ -198,6 +195,7 @@
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
+    z-index: 1;
 }
 
 .rdp-dropdown[disabled] {

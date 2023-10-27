@@ -233,6 +233,7 @@ const EmployeesPageableTable = () => {
                     <div className='page-navigation'>
                         <button className='default-button' disabled={(!isLoading ? data?.data?.first : true)} onMouseDown={e => setSearchParams(prev => {
                             prev.set('pageNumber', 0)
+                            return prev
                         })}>
                             <DoubleBackIcon />
                         </button>

@@ -14,6 +14,7 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
 
     const notifySuccess = () => toast.success('İşçi uğurla redaktə olundu')
     const notifyError = () => toast.error('İşçi redaktə olunmadı')
+    const notifyErrorNotFound = () => toast.error('Işçi digər şəxs tərəfindən silinib')
 
     const allRanksQuery = useQuery({
         queryKey: ['ranks'],
@@ -80,15 +81,21 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
         onMutate: () => setIsLoading(true),
         onSuccess: data => {
             setSelectedEmployee({})
-            queryClient.invalidateQueries(['employees'])
-            queryClient.invalidateQueries(['allEmployees'])
             notifySuccess()
         },
         onError: error => {
-            notifyError()
+            if (error.response?.status === 404) {
+                notifyErrorNotFound()
+            } else {
+                notifyError()
+            }
             console.log(error.message)
         },
-        onSettled: () => setIsLoading(false)
+        onSettled: () => {
+            setIsLoading(false)
+            queryClient.invalidateQueries(['employees'])
+            queryClient.invalidateQueries(['allEmployees'])
+        }
     })
 
     const customStyles = {
@@ -120,8 +127,6 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
             </dialog>
         )
     }
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault()

@@ -1,5 +1,5 @@
 import './NewBusinessTripForm.css'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Select, {components} from "react-select";
 import {useQuery} from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth.js";
@@ -9,11 +9,14 @@ import {
     getAllHelps,
     getAllPosResults,
     getAllPurposes,
-    getAllReasons,
+    getAllReasons, getAllRegions,
     getAllResulConclusions
 } from "../../api/axiosApi.js";
 import {format} from "date-fns";
 import DatePicker from "./DatePicker.jsx";
+import {nanoid} from "nanoid";
+import {PlusIcon, TrashIcon} from "../../assets/heroicons.jsx";
+import RegionDayInputField from "./RegionDayInputField.jsx";
 
 
 const NewBusinessTripForm = () => {
@@ -25,27 +28,105 @@ const NewBusinessTripForm = () => {
     const [helpList, setHelpList] = useState([])
     const [posResultList, setPosResultList] = useState([])
     const [resultConclusionList, setResultConclusionList] = useState([])
+    const [regionsList, setRegionsList] = useState([])
 
     const [startDate, setStartDate] = useState(new Date())
     const [isLate, setIsLate] = useState(false)
 
+    const [regionCount, setRegionCount] = useState(0);
+    const [regionValues, setRegionValues] = useState([])
+    const [regionDayValues, setRegionDayValues] = useState([])
+    const [focusedRegionDayInput, setFocusedRegionDayInput] = useState(null)
+
+    const handleAddRegion = () => {
+        setRegionCount(prev => prev + 1);
+        setRegionValues([...regionValues, null]);
+        setRegionDayValues([...regionDayValues, ''])
+    }
+
+    const handleSelectChange = (index, selectedOption) => {
+        const newRegionValues = [...regionValues]
+        newRegionValues[index] = selectedOption
+        setRegionValues(newRegionValues)
+    }
+
+    const handleRegionDayChange = (index, value) => {
+        const newRegionDayValues = [...regionDayValues]
+        newRegionDayValues[index] = Number(value.replace(/\s+|[^0-9]/g, ''))
+        setRegionDayValues(newRegionDayValues)
+    }
+
+    const handleDeleteRegion = (index) => {
+        const newRegionValues = [...regionValues]
+        newRegionValues.splice(index, 1)
+        setRegionValues(newRegionValues)
+        const newRegionDayValues = [...regionDayValues]
+        newRegionDayValues.splice(index, 1)
+        setRegionDayValues(newRegionDayValues)
+        setRegionCount(prev => prev - 1);
+    }
+
+    useEffect(() => {
+        if (regionCount===0) handleAddRegion()
+    }, []);
+
+    const handleRegionDayInputFocus = (index) => {
+        setFocusedRegionDayInput(index);
+    }
+
+
     const customStyles = {
         control: (provided) => ({
             ...provided,
-            fontSize: '1rem',
+            fontSize: '.9rem',
             border: '1px solid grey',
             width: '630px',
+            minHeight: 0,
         }),
         menuList: (provided) => ({
             ...provided,
             maxHeight: '200px',
             overflowY: 'auto',
         }),
+        menu: (provided) => ({
+            ...provided,
+            zIndex: 2,
+        }),
         option: (provided) => ({
             ...provided,
             paddingTop: '.1rem',
             paddingBottom: '.1rem',
-            color: 'black'
+            color: 'black',
+        }),
+        multiValue: (provided) => ({
+            ...provided,
+            fontSize: '.9rem',
+            color: 'black',
+        }),
+    }
+
+    const customStylesRegion = {
+        control: (provided) => ({
+            ...provided,
+            fontSize: '.9rem',
+            border: '1px solid grey',
+            width: '246px',
+            minHeight: 0,
+        }),
+        menuList: (provided) => ({
+            ...provided,
+            maxHeight: '200px',
+            overflowY: 'auto',
+        }),
+        menu: (provided) => ({
+            ...provided,
+            zIndex: 2,
+        }),
+        option: (provided) => ({
+            ...provided,
+            paddingTop: '.1rem',
+            paddingBottom: '.1rem',
+            color: 'black',
         }),
         multiValue: (provided) => ({
             ...provided,
@@ -95,6 +176,12 @@ const NewBusinessTripForm = () => {
         staleTime: 1000 * 60 * 10
     })
 
+    const getAllRegionsQuery = useQuery({
+        queryKey: ['allRegions'],
+        queryFn: () => getAllRegions(auth.jwtToken),
+        staleTime: 1000 * 60 * 10
+    })
+
     if (
         getAllEmployeesQuery.isLoading &&
         getAllPurposesQuery.isLoading &&
@@ -128,6 +215,10 @@ const NewBusinessTripForm = () => {
 
     const resultConclusionOptions = !getAllPosResultConclusionsQuery.isLoading ? getAllPosResultConclusionsQuery.data.data.map(resultConclusion => {
         return {value: Number(resultConclusion.id), label: resultConclusion.name}
+    }) : null
+
+    const regionOptions = !getAllRegionsQuery.isLoading ? getAllRegionsQuery.data.data.map(region => {
+        return {value: Number(region.id), label: region.name}
     }) : null
 
     const handleSubmit = (e) => {
@@ -224,7 +315,6 @@ const NewBusinessTripForm = () => {
                             required
                             styles={customStyles}
                             closeMenuOnSelect={false}
-                            menuPlacement='top'
                         />
                     </div>
                     <div>
@@ -252,7 +342,48 @@ const NewBusinessTripForm = () => {
                         <DatePicker startDate={startDate} setStartDate={setStartDate}/>
                     </div>
                     <div className='dates-container'>
-                        <div>
+                        <div style={{display: 'flex', gap: '.3rem', alignItems: 'center'}}>
+                            <label htmlFor="trip-regions">Regionlar: </label>
+                            <button
+                                onClick={handleAddRegion}
+                                id='trip-regions'
+                                className='edit-button'
+                                type='button'>
+                                <PlusIcon />
+                            </button>
+                        </div>
+
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '.3rem'}}>
+                            {Array.from({ length: regionCount }).map((_, index) => (
+                                <div style={{display: 'flex', alignItems: 'center', gap: '.3rem'}} key={nanoid()}>
+                                    <Select
+                                        placeholder='Region seçin'
+                                        value={regionValues[index]}
+                                        onChange={(selectedOption) => handleSelectChange(index, selectedOption)}
+                                        options={regionOptions}
+                                        isSearchable
+                                        required
+                                        styles={customStylesRegion}
+                                    />
+                                    <RegionDayInputField
+                                        index={index}
+                                        onChange={handleRegionDayChange}
+                                        value={regionDayValues[index]}
+                                        setFocusedRegionDayInput={setFocusedRegionDayInput}
+                                        focusedRegionDayInput={focusedRegionDayInput}
+                                    />
+                                    <button
+                                        className='delete-button'
+                                        onClick={() => handleDeleteRegion(index)}
+                                        style={{padding: '.43rem .7rem', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
+                                        <TrashIcon style={{width: '1.3rem'}} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div style={{display: "flex", flexDirection: 'column', gap: '.4rem'}}>
+                        <div style={{display: "flex", alignItems: "center", gap: '.4rem'}}>
                             <label htmlFor="trip-totalDays">Gecikmə: </label>
                             <input
                                 type='checkbox'
@@ -261,10 +392,16 @@ const NewBusinessTripForm = () => {
                                 onChange={() => setIsLate(prev => !prev)}
                             />
                         </div>
-                        <div>
-
-                        </div>
+                        <div style={{marginTop: '1rem'}}><strong>Nəticə:</strong></div>
+                        <div>Ezamiyyətin ümumi gün sayı - {regionDayValues.reduce((acc, curr) => {
+                            return acc + Number(curr);
+                        }, 0)}.</div>
+                        <div>Ezamiyyətin ümumi region sayı - {regionCount}.</div>
+                        <div>Ezamiyyətdən qayıdarkən gecikmə {isLate ? 'olmuşdur' : 'olmamışdır'}.</div>
                     </div>
+                </div>
+                <div className='fifth-row'>
+                    <button type='submit' className='edit-button'>Ezamiyyəti əlavə et</button>
                 </div>
             </form>
         </div>

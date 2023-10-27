@@ -19,8 +19,8 @@ const Header = () => {
             <header className='main-header'>
                 <img src='/mia-logo.png' alt='logo'/>
                 <div>
-                    <p>Daxili Işlər Nazirliyi</p>
-                    <p>Ezamiyyət sistemi</p>
+                    <p>Daxili İşlər Nazirliyi</p>
+                    <p>Ezamiyyət Sistemi</p>
                 </div>
                 <nav>
                     <ul>
@@ -48,8 +48,8 @@ const Header = () => {
             <header className='login-header'>
                 <img src='/mia-logo.png' alt='logo'/>
                 <div>
-                    <p>Daxili Işlər Nazirliyi</p>
-                    <p>Ezamiyyət sistemi</p>
+                    <p>Daxili İşlər Nazirliyi</p>
+                    <p>Ezamiyyət Sistemi</p>
                 </div>
             </header>
     );

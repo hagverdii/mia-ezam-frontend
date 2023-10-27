@@ -59,7 +59,7 @@ const Root = () => {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-<React.StrictMode>
+// <React.StrictMode>
     <QueryClientProvider client={queryClient}>
         <BrowserRouter>
             <AuthProvider>
@@ -67,5 +67,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </AuthProvider>
         </BrowserRouter>
     </QueryClientProvider>
-</React.StrictMode>,
+// </React.StrictMode>,
 )
