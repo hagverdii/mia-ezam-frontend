@@ -6,7 +6,7 @@
     border: none;
     border-radius: 10px;
     height: fit-content;
-    padding: 1rem;
+    padding: 1.3rem;
 }
 
 #employee-edit-dialog[open] {

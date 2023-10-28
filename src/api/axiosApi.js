@@ -235,3 +235,28 @@ export const addNewBusinessTrip = (jwtToken, newBusinessTrip) => {
     )
 }
 
+export const getBusinessTripsPageable = (jwtToken, pageSize, pageNumber, startingDate, fullName) => {
+    const size = pageSize
+        ? `pageSize=${pageSize}`
+        : 'pageSize=10'
+    const number = pageNumber
+        ? `&pageNumber=${pageNumber}`
+        : '&pageNumber=0'
+    const url = !startingDate && !fullName
+        ? `${BASE_URL}/api/v1/businessTrips?${size}${number}`
+        : !startingDate && fullName
+            ? `${BASE_URL}/api/v1/businessTrips/byEmployeeName/${encodeURIComponent(fullName)}?${size}${number}`
+            : startingDate && !fullName
+                ? `${BASE_URL}/api/v1/businessTrips/byDate?startingDate=${startingDate}&${size}${number}`
+                : `${BASE_URL}/api/v1/businessTrips/byNameAndDate/${encodeURIComponent(fullName)}?startingDate=${startingDate}&${size}${number}`
+    return axios.get(
+        url,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}

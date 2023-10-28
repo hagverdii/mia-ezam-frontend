@@ -1,6 +1,8 @@
+import BusinessTripsPageableTable from "./BusinessTripsPageableTable.jsx";
+
 const BusinessTripsPage = () => {
     return (
-        <div>BusinessTripsPage</div>
+        <BusinessTripsPageableTable />
     );
 };
 

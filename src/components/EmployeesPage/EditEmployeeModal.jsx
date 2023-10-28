@@ -107,7 +107,7 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
         }),
         menuList: (provided) => ({
             ...provided,
-            maxHeight: '140px',
+            maxHeight: '130px',
         }),
         option: (provided, ) => ({
             ...provided,
