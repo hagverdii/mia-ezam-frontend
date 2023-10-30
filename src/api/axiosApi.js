@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://172.16.4.116:8080'
+const BASE_URL = 'http://10.14.33.67:8080'
 
 export const verifyJwt = (jwtToken) => {
     return axios.post(
@@ -225,6 +225,32 @@ export const addNewBusinessTrip = (jwtToken, newBusinessTrip) => {
     return axios.post(
         `${BASE_URL}/api/v1/businessTrips`,
         newBusinessTrip,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const findBusinessTripById = (jwtToken, tripId) => {
+    return axios.get(
+        `${BASE_URL}/api/v1/businessTrips/${tripId}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteBusinessTripById = (jwtToken, tripId) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/businessTrips/${tripId}`,
         {
             headers: {
                 'Content-Type': 'application/json',

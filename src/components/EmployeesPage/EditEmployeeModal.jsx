@@ -14,7 +14,7 @@ const EditEmployeeModal = ({selectedEmployee, setSelectedEmployee, editDialogRef
 
     const notifySuccess = () => toast.success('İşçi uğurla redaktə olundu')
     const notifyError = () => toast.error('İşçi redaktə olunmadı')
-    const notifyErrorNotFound = () => toast.error('Işçi digər şəxs tərəfindən silinib')
+    const notifyErrorNotFound = () => toast.error('Işçi bazada tapılmadı')
 
     const allRanksQuery = useQuery({
         queryKey: ['ranks'],

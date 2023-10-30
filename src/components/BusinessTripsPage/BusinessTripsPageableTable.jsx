@@ -2,22 +2,22 @@ import {useQuery} from "@tanstack/react-query";
 import {getBusinessTripsPageable} from "../../api/axiosApi.js";
 import React, {useEffect, useRef, useState} from "react";
 import './BusinessTripsPageableTable.css'
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
 import {
     BackIcon,
-    BackSpaceIcon, CloseIcon,
+    BackSpaceIcon,
     DoubleBackIcon,
     DoubleForwardIcon,
     ForwardIcon,
     SearchIcon
 } from "../../assets/heroicons.jsx";
-// import EditEmployeeModal from "./EditEmployeeModal.jsx";
-// import DeleteEmployeeModal from "./DeleteEmployeeModal.jsx";
 import {nanoid} from "nanoid";
+import DeleteBusinessTripModal from "./DeleteBusinessTripModal.jsx";
 
 const BusinessTripsPageableTable = () => {
+    const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams({
         pageSize: '10',
         pageNumber: '0',
@@ -85,6 +85,7 @@ const BusinessTripsPageableTable = () => {
         if (searchDay && searchMonth && searchYear) {
             setSearchParams(prev => {
                 prev.set('startingDate', `${searchYear}-${searchMonth}-${searchDay}`)
+                prev.set('pageNumber', 0)
                 return prev
             })
         } else {
@@ -119,6 +120,10 @@ const BusinessTripsPageableTable = () => {
         })
     }
 
+    const handleDeleteTrip = () => {
+
+    }
+
     if (getBusinessTripsQuery.isError || getBusinessTripsQuery.error) return <h1>Səhifəni bir daha yeniləyin</h1>
 
     return (
@@ -129,16 +134,16 @@ const BusinessTripsPageableTable = () => {
             {/*    editDialogRef={editDialogRef}*/}
             {/*/>*/}
 
-            {/*<DeleteEmployeeModal*/}
-            {/*    selectedEmployee={selectedTrip}*/}
-            {/*    setSelectedEmployee={setSelectedTrip}*/}
-            {/*    deleteDialogRef={deleteDialogRef}*/}
-            {/*    setSearchParams={setSearchParams}*/}
-            {/*    pageSize={pageSize}*/}
-            {/*    pageNumber={pageNumber}*/}
-            {/*    search={search}*/}
-            {/*    sortBy={sortBy}*/}
-            {/*/>*/}
+            <DeleteBusinessTripModal
+                selectedTrip={selectedTrip}
+                setSelectedTrip={setSelectedTrip}
+                deleteDialogRef={deleteDialogRef}
+                setSearchParams={setSearchParams}
+                pageSize={pageSize}
+                pageNumber={pageNumber}
+                fullName={fullName}
+                startingDate={startingDate}
+            />
 
             <div className='businessTrips-search-container'>
                 <form onSubmit={handleSearch}>
@@ -257,18 +262,16 @@ const BusinessTripsPageableTable = () => {
                                                 })}</td>
                                                 <td style={{position: 'relative'}}>
                                                     <button className='edit-button'
-                                                        //     onMouseDown={e => {
-                                                        // editDialogRef.current.showModal()
-                                                        // setSelectedTrip(employee)}}
+                                                            onMouseDown={e => {navigate(`/business-trips/${trip.id}`)}}
                                                     >
                                                         Ətraflı
                                                     </button>
                                                 </td>
                                                 <td style={{position: 'relative'}} >
                                                     <button className='delete-button'
-                                                        //     onMouseDown={e => {
-                                                        // deleteDialogRef.current.showModal()
-                                                        // setSelectedTrip(employee)}}
+                                                            onMouseDown={e => {
+                                                                deleteDialogRef.current.showModal()
+                                                                setSelectedTrip(trip)}}
                                                     >
                                                         Sil
                                                     </button>

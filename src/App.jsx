@@ -11,6 +11,7 @@ import ReportsPage from "./components/ReportsPage/ReportsPage.jsx"
 import OtherOperationsPage from "./components/OtherOperationsPage/OtherOperationsPage.jsx"
 import Header from "./components/Header/Header.jsx"
 import {Toaster} from "react-hot-toast";
+import TripDetailsPage from "./components/BusinessTripsPage/TripDetailsPage.jsx";
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                     <Route element={<RequireAuth allowedRoles={['ROLE_ADMIN', 'ROLE_EDITOR']} />}>
                         <Route path='/' element={<Navigate to='/business-trips' replace />} />
                         <Route path='business-trips' element={<BusinessTripsPage />} />
+                        <Route path='business-trips/:id' element={<TripDetailsPage />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={['ROLE_ADMIN']} />}>
                         <Route path='operations' element={<OperationsPage />} />

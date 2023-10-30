@@ -1,32 +1,39 @@
-import './NewBusinessTripForm.css'
-import React, {useLayoutEffect, useState} from "react";
-import Select, {components} from "react-select";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth.js";
-import Loading from "../Loading/Loading.jsx";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import React, {useEffect, useLayoutEffect, useState} from "react";
+import {format, parse, startOfMonth} from "date-fns";
+import Select, {components} from "react-select";
 import {
-    addNewBusinessTrip,
+    findBusinessTripById,
     getAllEmployees,
     getAllHelps,
     getAllPosResults,
     getAllPurposes,
-    getAllReasons, getAllRegions,
+    getAllReasons,
+    getAllRegions,
     getAllResulConclusions
 } from "../../api/axiosApi.js";
-import {format, startOfMonth} from "date-fns";
-import DatePicker from "./DatePicker.jsx";
-import {nanoid} from "nanoid";
+import Loading from "../Loading/Loading.jsx";
+import DatePicker from "../OperationsPage/DatePicker.jsx";
 import {PlusIcon, TrashIcon} from "../../assets/heroicons.jsx";
-import RegionDayInputField from "./RegionDayInputField.jsx";
-import toast from "react-hot-toast";
+import {nanoid} from "nanoid";
+import RegionDayInputField from "../OperationsPage/RegionDayInputField.jsx";
+import './TripDetailsPage.css'
+import {useParams} from "react-router-dom";
+import MissingPage from "../MissingPage/MissingPage.jsx";
 
-
-const NewBusinessTripForm = () => {
+const TripDetailsPage = () => {
     const {auth} = useAuth()
     const queryClient = useQueryClient()
+    const {id} = useParams()
+    const [rendered, setRendered] = useState(false)
 
-    const notifySuccess = () => toast.success('Ezamiyyət uğurla əlavə olundu')
-    const notifyError = () => toast.error('Ezamiyyət əlavə olunmadı')
+    const findTripByIdQuery = useQuery({
+        queryKey: ['businessTrip', id],
+        queryFn: () => findBusinessTripById(auth.jwtToken, id),
+        staleTime: 1000 * 60 * 10,
+        retry: 1
+    })
 
     const [employeesList, setEmployeesList] = useState([])
     const [purposeList, setPurposeList] = useState([])
@@ -46,12 +53,12 @@ const NewBusinessTripForm = () => {
     const [regionDayValues, setRegionDayValues] = useState([])
     const [focusedRegionDayInput, setFocusedRegionDayInput] = useState(null)
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
 
     const handleAddRegion = () => {
         setRegionCount(prev => prev + 1);
-        setRegionValues([...regionValues, null]);
-        setRegionDayValues([...regionDayValues, ''])
+        setRegionValues(prev => [...regionValues, null]);
+        setRegionDayValues(prev => [...regionDayValues, ''])
     }
 
     const handleSelectChange = (index, selectedOption) => {
@@ -77,8 +84,38 @@ const NewBusinessTripForm = () => {
     }
 
     useLayoutEffect(() => {
-        if (regionCount===0) handleAddRegion()
-    }, [handleAddRegion, regionCount]);
+        if (!rendered && !findTripByIdQuery.isLoading && (!findTripByIdQuery.isError || !findTripByIdQuery.error)) {
+            setEmployeesList(findTripByIdQuery.data?.data?.employeeMoneyDetails?.map(detail => {
+                return {value: Number(detail?.employee.id), label: detail?.employee.lastName + ' ' + detail?.employee.firstName + ' ' + detail?.employee.fatherName + ' - [' + detail?.employee.rank.name + ', ' + detail?.employee.department.name +']'}
+            }))
+            setPurposeList(findTripByIdQuery.data?.data?.purposes.map(purpose => {
+                return {value: Number(purpose.id), label: purpose.name}
+            }))
+            setReasonList(findTripByIdQuery.data?.data?.reasons.map(reason => {
+                return {value: Number(reason.id), label: reason.name}
+            }))
+            setHelpList(findTripByIdQuery.data?.data?.helps.map(help => {
+                return {value: Number(help.id), label: help.name}
+            }))
+            setPosResultList(findTripByIdQuery.data?.data?.posResults.map(posRes => {
+                return {value: Number(posRes.id), label: posRes.name}
+            }))
+            setResultConclusionList(findTripByIdQuery.data?.data?.conclusions.map(result => {
+                return {value: Number(result.id), label: result.name}
+            }))
+            const date = findTripByIdQuery.data?.data?.startingDate ? parse(findTripByIdQuery.data?.data?.startingDate, 'yyyy-MM-dd', new Date()) : startDate
+            setStartDate(date)
+            setDisplayedMonth(date)
+            findTripByIdQuery.data?.data?.businessTripDetails.map((trip, index) => {
+                setRegionCount(prev => prev + 1);
+                setRegionValues(prev => [...prev, {value: Number(trip.region.id), label: trip.region.name}]);
+                setRegionDayValues(prev => [...prev, Number(trip.dayCount)])
+                return trip
+            })
+            setIsLate(findTripByIdQuery.data?.data?.late)
+            setRendered(true)
+        }
+    }, [rendered, findTripByIdQuery.error, findTripByIdQuery.isError, findTripByIdQuery.isLoading, id]);
 
     const customStyles = {
         control: (provided) => ({
@@ -187,18 +224,10 @@ const NewBusinessTripForm = () => {
         staleTime: 1000 * 60 * 10
     })
 
-    const addBusinessTripMutation = useMutation({
-        mutationFn: ({newBusinessTrip}) => addNewBusinessTrip(auth.jwtToken, newBusinessTrip),
-        onMutate: () => setIsLoading(true),
-        onSuccess: data => notifySuccess(),
-        onError: error => notifyError(),
-        onSettled: () => {
-            queryClient.invalidateQueries(['businessTrips'])
-            setIsLoading(false)
-        }
-    })
+    if (findTripByIdQuery.isError) return <MissingPage />
 
     if (
+        findTripByIdQuery.isLoading ||
         getAllEmployeesQuery.isLoading ||
         getAllPurposesQuery.isLoading ||
         getAllReasonsQuery.isLoading ||
@@ -270,36 +299,36 @@ const NewBusinessTripForm = () => {
                 }
             })
         }
+
         try {
             addBusinessTripMutation.mutate({newBusinessTrip})
         } catch (err) {
             console.log(err.message)
         } finally {
-            setEmployeesList([])
-            setPurposeList([])
-            setReasonList([])
-            setHelpList([])
-            setPosResultList([])
-            setResultConclusionList([])
-            setStartDate(new Date())
-            setDisplayedMonth(startOfMonth(new Date()))
-            setIsLate(false)
-            setRegionCount(prev => 0)
-            setRegionValues(prev => [])
-            setRegionDayValues(prev => [])
             setFocusedRegionDayInput(null)
         }
     }
 
+
     return (
-        <div className='new-business-trip-container'>
-            <div className='title'>Yeni ezamiyyət</div>
-            <form onSubmit={handleSubmit}>
-                <div className='first-row'>
+        <div className='container'>
+            <div className='trip-container'>
+                <div className='title'>
+                    <div>Ezamiyyət haqqında ətraflı məlumat</div>
+                    <button
+                        disabled={!auth.roles.find(role => role === 'ROLE_ADMIN')}
+                        className={`edit-button ${isEdit ? 'active-button' : ''}`}
+                        onMouseDown={e => {
+                            setIsEdit(prev => !prev)
+                        }}
+                    >Redaktə rejimini {!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}</button>
+                </div>
+                <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="trip-employees">Ezamiyyətə gedən işçilər:</label>
                         <br/>
                         <Select
+                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-employees'}
                             value={employeesList}
                             onChange={setEmployeesList}
@@ -317,6 +346,7 @@ const NewBusinessTripForm = () => {
                         <label htmlFor="trip-purpose">Ezamiyyətin məqsədi:</label>
                         <br/>
                         <Select
+                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-purpose'}
                             value={purposeList}
                             onChange={setPurposeList}
@@ -329,13 +359,11 @@ const NewBusinessTripForm = () => {
                             styles={customStyles}
                         />
                     </div>
-                </div>
-
-                <div className='second-row'>
                     <div>
                         <label htmlFor="trip-reason">Ezamiyyətin əsaslılığı:</label>
                         <br/>
                         <Select
+                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-reason'}
                             value={reasonList}
                             onChange={setReasonList}
@@ -352,6 +380,7 @@ const NewBusinessTripForm = () => {
                         <label htmlFor="trip-help">Ezamiyyət dövründə köməklik göstərilmişdir:</label>
                         <br/>
                         <Select
+                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-help'}
                             value={helpList}
                             onChange={setHelpList}
@@ -364,13 +393,11 @@ const NewBusinessTripForm = () => {
                             closeMenuOnSelect={false}
                         />
                     </div>
-                </div>
-
-                <div className='third-row'>
                     <div>
                         <label htmlFor="trip-posResult">Ezamiyyət dövründə müsbət təcrübə aşkarlanmışdır:</label>
                         <br/>
                         <Select
+                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-posResult'}
                             value={posResultList}
                             onChange={setPosResultList}
@@ -384,9 +411,10 @@ const NewBusinessTripForm = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="trip-resultConclusion">Ezamiyyət yekunlarının reallaşdırılması:</label>
+                        <label htmlFor="trip-resultConclusion">Ezamiyyət yekunlarının reallaşdırılması::</label>
                         <br/>
                         <Select
+                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-resultConclusion'}
                             value={resultConclusionList}
                             onChange={setResultConclusionList}
@@ -399,59 +427,63 @@ const NewBusinessTripForm = () => {
                             closeMenuOnSelect={false}
                         />
                     </div>
-                </div>
-
-                <div className='fourth-row'>
-                    <div>
-                        <label htmlFor="trip-startDate">Ezamiyyətə getmə tarixi:</label>
-                        <br/>
-                        <DatePicker displayedMonth={displayedMonth} setDisplayedMonth={setDisplayedMonth} startDate={startDate} setStartDate={setStartDate}/>
-                    </div>
-                    <div className='dates-container'>
-                        <div style={{display: 'flex', gap: '.3rem', alignItems: 'center'}}>
-                            <label htmlFor="trip-regions">Regionlar: </label>
-                            <button
-                                onClick={handleAddRegion}
-                                id='trip-regions'
-                                className='edit-button'
-                                type='button'>
-                                <PlusIcon />
-                            </button>
+                    <div style={{display: 'flex', justifyContent: 'space-between', gap: '1rem'}}>
+                        <div>
+                            <label htmlFor="trip-startDate">Ezamiyyətə getmə tarixi:</label>
+                            <br/>
+                            {isEdit && auth.roles.find(role => role === 'ROLE_ADMIN')
+                                ? <DatePicker displayedMonth={displayedMonth} setDisplayedMonth={setDisplayedMonth} startDate={startDate} setStartDate={setStartDate}/>
+                                : <div style={{marginRight: '6.7rem'}}>{format(startDate, 'yyyy-MM-dd')}</div>}
                         </div>
+                        <div className='dates-container'>
+                            <div style={{display: 'flex', gap: '.3rem', alignItems: 'center'}}>
+                                <label htmlFor="trip-regions">Regionlar: </label>
+                                <button
+                                    disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
+                                    onClick={handleAddRegion}
+                                    id='trip-regions'
+                                    className='edit-button'
+                                    type='button'>
+                                    <PlusIcon />
+                                </button>
+                            </div>
 
-                        <div style={{display: 'flex', flexDirection: 'column', gap: '.3rem'}}>
-                            {Array.from({ length: regionCount }).map((_, index) => (
-                                <div style={{display: 'flex', alignItems: 'center', gap: '.3rem'}} key={nanoid()}>
-                                    <Select
-                                        placeholder='Region seçin'
-                                        value={regionValues[index]}
-                                        onChange={(selectedOption) => handleSelectChange(index, selectedOption)}
-                                        options={regionOptions}
-                                        isSearchable
-                                        required
-                                        styles={customStylesRegion}
-                                    />
-                                    <RegionDayInputField
-                                        index={index}
-                                        onChange={handleRegionDayChange}
-                                        value={regionDayValues[index]}
-                                        setFocusedRegionDayInput={setFocusedRegionDayInput}
-                                        focusedRegionDayInput={focusedRegionDayInput}
-                                    />
-                                    <button
-                                        className='delete-button'
-                                        onClick={() => handleDeleteRegion(index)}
-                                        style={{padding: '.43rem .7rem', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
-                                        <TrashIcon style={{width: '1.3rem'}} />
-                                    </button>
-                                </div>
-                            ))}
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '.3rem'}}>
+                                {Array.from({ length: regionCount }).map((_, index) => (
+                                    <div style={{display: 'flex', alignItems: 'center', gap: '.3rem'}} key={nanoid()}>
+                                        <Select
+                                            placeholder='Region seçin'
+                                            value={regionValues[index]}
+                                            onChange={(selectedOption) => handleSelectChange(index, selectedOption)}
+                                            options={regionOptions}
+                                            isSearchable
+                                            required
+                                            styles={customStylesRegion}
+                                        />
+                                        <RegionDayInputField
+                                            index={index}
+                                            onChange={handleRegionDayChange}
+                                            value={regionDayValues[index]}
+                                            setFocusedRegionDayInput={setFocusedRegionDayInput}
+                                            focusedRegionDayInput={focusedRegionDayInput}
+                                        />
+                                        <button
+                                            disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
+                                            className='delete-button'
+                                            onClick={() => handleDeleteRegion(index)}
+                                            style={{padding: '.43rem .7rem', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
+                                            <TrashIcon style={{width: '1.3rem'}} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                    <div style={{display: "flex", flexDirection: 'column', gap: '.4rem'}}>
+                    <div style={{display: "flex", flexDirection: 'column', alignSelf: 'flex-start', gap: '.4rem'}}>
                         <div style={{display: "flex", alignItems: "center", gap: '.4rem'}}>
                             <label htmlFor="trip-totalDays">Gecikmə: </label>
                             <input
+                                disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                                 type='checkbox'
                                 id="trip-totalDays"
                                 checked={isLate}
@@ -465,13 +497,14 @@ const NewBusinessTripForm = () => {
                         <div>Ezamiyyətin ümumi region sayı - {regionCount}.</div>
                         <div>Ezamiyyətdən qayıdarkən gecikmə {isLate ? 'olmuşdur' : 'olmamışdır'}.</div>
                     </div>
-                </div>
-                <div className='fifth-row'>
-                    <button disabled={isLoading} type='submit' className='edit-button'>Ezamiyyəti əlavə et</button>
-                </div>
-            </form>
+                    <div className='buttons'>
+                        <button className='default-button back'>Geriya qayıt</button>
+                        {isEdit && <button disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')} type='submit' className='edit-button submit'>Redaktəni təsdiq et</button>}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
 
-export default NewBusinessTripForm;
+export default TripDetailsPage;

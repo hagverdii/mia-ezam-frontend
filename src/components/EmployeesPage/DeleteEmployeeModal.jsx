@@ -12,7 +12,7 @@ const DeleteEmployeeModal = ({selectedEmployee, setSelectedEmployee, deleteDialo
 
     const notifySuccess = () => toast.success('İşçi uğurla silindi')
     const notifyError = () => toast.error('İşçi silinmədi')
-    const notifyErrorNotFound = () => toast.error('Işçi digər şəxs tərəfindən silinib')
+    const notifyErrorNotFound = () => toast.error('Işçi bazada tapılmadı')
 
     const {
         data,

@@ -41,7 +41,7 @@ body {
 }
 
 .edit-button:hover:not(:disabled) {
-    background-color: rgba(29, 163, 38, 1);
+    opacity: .8;
 }
 
 .edit-button:disabled {
