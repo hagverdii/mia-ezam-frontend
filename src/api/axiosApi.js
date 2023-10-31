@@ -261,6 +261,20 @@ export const deleteBusinessTripById = (jwtToken, tripId) => {
     )
 }
 
+export const updateBusinessTrip = (jwtToken, tripId, newBusinessTrip) => {
+    return axios.put(
+        `${BASE_URL}/api/v1/businessTrips/${tripId}`,
+        newBusinessTrip,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const getBusinessTripsPageable = (jwtToken, pageSize, pageNumber, startingDate, fullName) => {
     const size = pageSize
         ? `pageSize=${pageSize}`

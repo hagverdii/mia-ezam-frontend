@@ -432,6 +432,7 @@ const NewBusinessTripForm = () => {
                                         styles={customStylesRegion}
                                     />
                                     <RegionDayInputField
+                                        disabled={false}
                                         index={index}
                                         onChange={handleRegionDayChange}
                                         value={regionDayValues[index]}

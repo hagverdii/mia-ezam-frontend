@@ -11,7 +11,7 @@ import ReportsPage from "./components/ReportsPage/ReportsPage.jsx"
 import OtherOperationsPage from "./components/OtherOperationsPage/OtherOperationsPage.jsx"
 import Header from "./components/Header/Header.jsx"
 import {Toaster} from "react-hot-toast";
-import TripDetailsPage from "./components/BusinessTripsPage/TripDetailsPage.jsx";
+import TripDetailsPage from "./components/TripDetailsPage/TripDetailsPage.jsx";
 
 const App = () => {
     return (

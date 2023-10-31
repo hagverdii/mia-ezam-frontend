@@ -11,7 +11,7 @@ import {
     getAllPurposes,
     getAllReasons,
     getAllRegions,
-    getAllResulConclusions
+    getAllResulConclusions, updateBusinessTrip
 } from "../../api/axiosApi.js";
 import Loading from "../Loading/Loading.jsx";
 import DatePicker from "../OperationsPage/DatePicker.jsx";
@@ -19,14 +19,17 @@ import {PlusIcon, TrashIcon} from "../../assets/heroicons.jsx";
 import {nanoid} from "nanoid";
 import RegionDayInputField from "../OperationsPage/RegionDayInputField.jsx";
 import './TripDetailsPage.css'
-import {useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import MissingPage from "../MissingPage/MissingPage.jsx";
+import toast from "react-hot-toast";
 
 const TripDetailsPage = () => {
     const {auth} = useAuth()
     const queryClient = useQueryClient()
     const {id} = useParams()
     const [rendered, setRendered] = useState(false)
+    const navigate = useNavigate()
+    const currentLocation = useLocation()
 
     const findTripByIdQuery = useQuery({
         queryKey: ['businessTrip', id],
@@ -34,6 +37,18 @@ const TripDetailsPage = () => {
         staleTime: 1000 * 60 * 10,
         retry: 1
     })
+
+    const notifySuccess = () => toast.success('Ezamiyyət uğurla redaktə olundu')
+    const notifyError = () => toast.error('Ezamiyyət redaktə olunmadı')
+    const notifyErrorNotFound = () => toast.error('Ezamiyyət bazada tapılmadı')
+
+    const [employeeOptions, setEmployeeOptions] = useState([])
+    const [purposeOptions, setPurposeOptions] = useState([])
+    const [reasonOptions, setReasonOptions] = useState([])
+    const [helpOptions, setHelpOptions] = useState([])
+    const [posResultOptions, setPosResultOptions] = useState([])
+    const [resultConclusionOptions, setResultConclusionOptions] = useState([])
+    const [regionOptions, setRegionOptions] = useState([])
 
     const [employeesList, setEmployeesList] = useState([])
     const [purposeList, setPurposeList] = useState([])
@@ -84,25 +99,38 @@ const TripDetailsPage = () => {
     }
 
     useLayoutEffect(() => {
-        if (!rendered && !findTripByIdQuery.isLoading && (!findTripByIdQuery.isError || !findTripByIdQuery.error)) {
-            setEmployeesList(findTripByIdQuery.data?.data?.employeeMoneyDetails?.map(detail => {
-                return {value: Number(detail?.employee.id), label: detail?.employee.lastName + ' ' + detail?.employee.firstName + ' ' + detail?.employee.fatherName + ' - [' + detail?.employee.rank.name + ', ' + detail?.employee.department.name +']'}
-            }))
-            setPurposeList(findTripByIdQuery.data?.data?.purposes.map(purpose => {
-                return {value: Number(purpose.id), label: purpose.name}
-            }))
-            setReasonList(findTripByIdQuery.data?.data?.reasons.map(reason => {
-                return {value: Number(reason.id), label: reason.name}
-            }))
-            setHelpList(findTripByIdQuery.data?.data?.helps.map(help => {
-                return {value: Number(help.id), label: help.name}
-            }))
-            setPosResultList(findTripByIdQuery.data?.data?.posResults.map(posRes => {
-                return {value: Number(posRes.id), label: posRes.name}
-            }))
-            setResultConclusionList(findTripByIdQuery.data?.data?.conclusions.map(result => {
-                return {value: Number(result.id), label: result.name}
-            }))
+        if (!rendered &&
+            !findTripByIdQuery.isLoading &&
+            employeeOptions.length > 0 &&
+            purposeOptions.length > 0 &&
+            helpOptions.length > 0 &&
+            reasonOptions.length > 0 &&
+            posResultOptions.length > 0 &&
+            resultConclusionOptions.length > 0) {
+            const employeesIds = findTripByIdQuery.data?.data?.employeeMoneyDetails?.map(detail => Number(detail?.employee.id))
+            setEmployeesList(prev => (employeeOptions.filter(option => {
+                return employeesIds.find(id => Number(id) === Number(option.value))
+            })))
+            const purposeIds = findTripByIdQuery.data?.data?.purposes.map(purpose => Number(purpose.id))
+            setPurposeList(prev => (purposeOptions.filter(option => {
+                return purposeIds.find(id => Number(id) === Number(option.value))
+            })))
+            const reasonIds = findTripByIdQuery.data?.data?.reasons.map(reason => Number(reason.id))
+            setReasonList(prev => (reasonOptions.filter(option => {
+                return reasonIds.find(id => Number(id) === Number(option.value))
+            })))
+            const helpIds = findTripByIdQuery.data?.data?.helps.map(help => Number(help.id))
+            setHelpList(prev => (helpOptions.filter(option => {
+                return helpIds.find(id => Number(id) === Number(option.value))
+            })))
+            const posResIds = findTripByIdQuery.data?.data?.posResults.map(posRes => Number(posRes.id))
+            setPosResultList(prev => (posResultOptions.filter(option => {
+                return posResIds.find(id => Number(id) === Number(option.value))
+            })))
+            const conclusionIds = findTripByIdQuery.data?.data?.conclusions.map(conclusion => Number(conclusion.id))
+            setResultConclusionList(prev => (resultConclusionOptions.filter(option => {
+                return conclusionIds.find(id => Number(id) === Number(option.value))
+            })))
             const date = findTripByIdQuery.data?.data?.startingDate ? parse(findTripByIdQuery.data?.data?.startingDate, 'yyyy-MM-dd', new Date()) : startDate
             setStartDate(date)
             setDisplayedMonth(date)
@@ -115,7 +143,7 @@ const TripDetailsPage = () => {
             setIsLate(findTripByIdQuery.data?.data?.late)
             setRendered(true)
         }
-    }, [rendered, findTripByIdQuery.error, findTripByIdQuery.isError, findTripByIdQuery.isLoading, id]);
+    }, [rendered, findTripByIdQuery.isLoading, id, employeeOptions, purposeOptions, reasonOptions, helpOptions, posResultOptions, resultConclusionOptions, ]);
 
     const customStyles = {
         control: (provided) => ({
@@ -177,6 +205,10 @@ const TripDetailsPage = () => {
         }),
     }
 
+    const updateBusinessTripMutation = useMutation({
+        mutationFn: ({tripId, newBusinessTrip}) => updateBusinessTrip(auth.jwtToken, tripId, newBusinessTrip)
+    })
+
     const customMultiValueLabel  = ({children, ...props}) => {
         const parts = children.split(' ');
         return <components.MultiValueLabel {...props}>{parts[0] + ' ' + parts[1] + ' ' + parts[2]}</components.MultiValueLabel>;
@@ -212,7 +244,7 @@ const TripDetailsPage = () => {
         staleTime: 1000 * 60 * 10
     })
 
-    const getAllPosResultConclusionsQuery = useQuery({
+    const getAllResultConclusionsQuery = useQuery({
         queryKey: ['allResultConclusions'],
         queryFn: () => getAllResulConclusions(auth.jwtToken),
         staleTime: 1000 * 60 * 10
@@ -223,6 +255,83 @@ const TripDetailsPage = () => {
         queryFn: () => getAllRegions(auth.jwtToken),
         staleTime: 1000 * 60 * 10
     })
+
+    useEffect(() => {
+        if (!getAllEmployeesQuery.isLoading) {
+            setEmployeeOptions(getAllEmployeesQuery.data.data.map(employee => {
+                return {
+                    value: Number(employee.id),
+                    label: employee.lastName + ' ' + employee.firstName + ' ' + employee.fatherName + ' - [' + employee.rank.name + ', ' + employee.department.name + ']'
+                }
+            }))
+        }
+    }, [getAllEmployeesQuery.isLoading]);
+
+    useEffect(() => {
+        if (!getAllPurposesQuery.isLoading) {
+            setPurposeOptions(getAllPurposesQuery.data.data.map(purpose => {
+                return {
+                    value: Number(purpose.id),
+                    label: purpose.name
+                }
+            }))
+        }
+    }, [getAllPurposesQuery.isLoading]);
+
+    useEffect(() => {
+        if (!getAllReasonsQuery.isLoading) {
+            setReasonOptions(getAllReasonsQuery.data.data.map(reason => {
+                return {
+                    value: Number(reason.id),
+                    label: reason.name
+                }
+            }))
+        }
+    }, [getAllReasonsQuery.isLoading]);
+
+    useEffect(() => {
+        if (!getAllHelpsQuery.isLoading) {
+            setHelpOptions(getAllHelpsQuery.data.data.map(help => {
+                return {
+                    value: Number(help.id),
+                    label: help.name
+                }
+            }))
+        }
+    }, [getAllHelpsQuery.isLoading]);
+
+    useEffect(() => {
+        if (!getAllPosResultsQuery.isLoading) {
+            setPosResultOptions(getAllPosResultsQuery.data.data.map(result => {
+                return {
+                    value: Number(result.id),
+                    label: result.name
+                }
+            }))
+        }
+    }, [getAllPosResultsQuery.isLoading]);
+
+    useEffect(() => {
+        if (!getAllResultConclusionsQuery.isLoading) {
+            setResultConclusionOptions(getAllResultConclusionsQuery.data.data.map(conclusion => {
+                return {
+                    value: Number(conclusion.id),
+                    label: conclusion.name
+                }
+            }))
+        }
+    }, [getAllResultConclusionsQuery.isLoading]);
+
+    useEffect(() => {
+        if (!getAllRegionsQuery.isLoading) {
+            setRegionOptions(getAllRegionsQuery.data.data.map(region => {
+                return {
+                    value: Number(region.id),
+                    label: region.name
+                }
+            }))
+        }
+    }, [getAllRegionsQuery.isLoading]);
 
     if (findTripByIdQuery.isError) return <MissingPage />
 
@@ -237,34 +346,6 @@ const TripDetailsPage = () => {
             <Loading />
         )
     }
-
-    const employeeOptions = !getAllEmployeesQuery.isLoading ? getAllEmployeesQuery.data.data.map(employee => {
-        return {value: Number(employee.id), label: employee.lastName + ' ' + employee.firstName + ' ' + employee.fatherName + ' - [' + employee.rank.name + ', ' + employee.department.name +']'}
-    }) : null
-
-    const purposeOptions = !getAllPurposesQuery.isLoading ? getAllPurposesQuery.data.data.map(purpose => {
-        return {value: Number(purpose.id), label: purpose.name}
-    }) : null
-
-    const reasonOptions = !getAllReasonsQuery.isLoading ? getAllReasonsQuery.data.data.map(reason => {
-        return {value: Number(reason.id), label: reason.name}
-    }) : null
-
-    const helpOptions = !getAllHelpsQuery.isLoading ? getAllHelpsQuery.data.data.map(help => {
-        return {value: Number(help.id), label: help.name}
-    }) : null
-
-    const posResultOptions = !getAllPosResultsQuery.isLoading ? getAllPosResultsQuery.data.data.map(posResult => {
-        return {value: Number(posResult.id), label: posResult.name}
-    }) : null
-
-    const resultConclusionOptions = !getAllPosResultConclusionsQuery.isLoading ? getAllPosResultConclusionsQuery.data.data.map(resultConclusion => {
-        return {value: Number(resultConclusion.id), label: resultConclusion.name}
-    }) : null
-
-    const regionOptions = !getAllRegionsQuery.isLoading ? getAllRegionsQuery.data.data.map(region => {
-        return {value: Number(region.id), label: region.name}
-    }) : null
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -292,16 +373,34 @@ const TripDetailsPage = () => {
                 return {id: conclusion.value}
             }),
             late: isLate,
-            employeeMoneyDetails: employeesList.map(employee => {
+            employeeMoneyDetails: employeesList.map((employee, index) => {
                 return {
                     employee: {id: employee.value},
-                    amount: 0
+                    amount: 0 // should take value from amount
                 }
             })
         }
-
         try {
-            addBusinessTripMutation.mutate({newBusinessTrip})
+            console.log(id)
+            console.log(newBusinessTrip)
+            updateBusinessTripMutation.mutate({tripId: id, newBusinessTrip}, {
+                onSuccess: data => {
+                    notifySuccess()
+                    queryClient.invalidateQueries(['businessTrip', id], newBusinessTrip)
+                },
+                onError: error => {
+                    if (error.response?.status === 404) {
+                        notifyErrorNotFound()
+                    } else {
+                        notifyError()
+                    }
+                    console.log(error.message)
+                },
+                onSettled: data => {
+                    queryClient.invalidateQueries(['businessTrips'])
+                    navigate(-1)
+                }
+            })
         } catch (err) {
             console.log(err.message)
         } finally {
@@ -309,19 +408,20 @@ const TripDetailsPage = () => {
         }
     }
 
-
     return (
         <div className='container'>
             <div className='trip-container'>
                 <div className='title'>
                     <div>Ezamiyyət haqqında ətraflı məlumat</div>
-                    <button
-                        disabled={!auth.roles.find(role => role === 'ROLE_ADMIN')}
-                        className={`edit-button ${isEdit ? 'active-button' : ''}`}
-                        onMouseDown={e => {
-                            setIsEdit(prev => !prev)
-                        }}
-                    >Redaktə rejimini {!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}</button>
+                    {auth.roles.find(role => role === 'ROLE_ADMIN') &&
+                        <button
+                            disabled={!auth.roles.find(role => role === 'ROLE_ADMIN')}
+                            className={`edit-button ${isEdit ? 'active-button' : ''}`}
+                            onMouseDown={e => {
+                                setIsEdit(prev => !prev)
+                            }}
+                        >Redaktə rejimini {!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}
+                        </button>}
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -438,20 +538,22 @@ const TripDetailsPage = () => {
                         <div className='dates-container'>
                             <div style={{display: 'flex', gap: '.3rem', alignItems: 'center'}}>
                                 <label htmlFor="trip-regions">Regionlar: </label>
-                                <button
-                                    disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
-                                    onClick={handleAddRegion}
-                                    id='trip-regions'
-                                    className='edit-button'
-                                    type='button'>
-                                    <PlusIcon />
-                                </button>
+                                {auth.roles.find(role => role === 'ROLE_ADMIN') &&
+                                    <button
+                                        disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
+                                        onClick={handleAddRegion}
+                                        id='trip-regions'
+                                        className='edit-button'
+                                        type='button'>
+                                        <PlusIcon />
+                                    </button>}
                             </div>
 
                             <div style={{display: 'flex', flexDirection: 'column', gap: '.3rem'}}>
                                 {Array.from({ length: regionCount }).map((_, index) => (
                                     <div style={{display: 'flex', alignItems: 'center', gap: '.3rem'}} key={nanoid()}>
                                         <Select
+                                            isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                                             placeholder='Region seçin'
                                             value={regionValues[index]}
                                             onChange={(selectedOption) => handleSelectChange(index, selectedOption)}
@@ -462,22 +564,27 @@ const TripDetailsPage = () => {
                                         />
                                         <RegionDayInputField
                                             index={index}
+                                            disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                                             onChange={handleRegionDayChange}
                                             value={regionDayValues[index]}
                                             setFocusedRegionDayInput={setFocusedRegionDayInput}
                                             focusedRegionDayInput={focusedRegionDayInput}
                                         />
-                                        <button
-                                            disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
-                                            className='delete-button'
-                                            onClick={() => handleDeleteRegion(index)}
-                                            style={{padding: '.43rem .7rem', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
-                                            <TrashIcon style={{width: '1.3rem'}} />
-                                        </button>
+                                        {auth.roles.find(role => role === 'ROLE_ADMIN') &&
+                                            <button
+                                                disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
+                                                className='delete-button'
+                                                onClick={() => handleDeleteRegion(index)}
+                                                style={{padding: '.43rem .7rem', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
+                                                <TrashIcon style={{width: '1.3rem'}} />
+                                            </button>}
                                     </div>
                                 ))}
                             </div>
                         </div>
+                    </div>
+                    <div style={{marginTop: '.8rem', display: 'flex', flexDirection: 'column', alignSelf:"flex-start", gap: '.5rem'}}>
+                        <div><strong>Ezamiyyət  pulları:</strong></div>
                     </div>
                     <div style={{display: "flex", flexDirection: 'column', alignSelf: 'flex-start', gap: '.4rem'}}>
                         <div style={{display: "flex", alignItems: "center", gap: '.4rem'}}>
@@ -498,7 +605,15 @@ const TripDetailsPage = () => {
                         <div>Ezamiyyətdən qayıdarkən gecikmə {isLate ? 'olmuşdur' : 'olmamışdır'}.</div>
                     </div>
                     <div className='buttons'>
-                        <button className='default-button back'>Geriya qayıt</button>
+                        <button className='default-button back' onClick={
+                            () => {
+                                if (currentLocation.key !== "default") {
+                                    navigate(-1);
+                                } else {
+                                    navigate('/')
+                                }
+                            }
+                        }>Geriya qayıt</button>
                         {isEdit && <button disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')} type='submit' className='edit-button submit'>Redaktəni təsdiq et</button>}
                     </div>
                 </form>

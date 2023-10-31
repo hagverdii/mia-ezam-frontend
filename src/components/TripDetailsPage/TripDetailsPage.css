@@ -19,7 +19,7 @@
     background-color: rgba(28, 45, 107, 1);
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-    width: 80%;
+    width: 45rem;
 
     .title {
         font-weight: bold;
@@ -87,6 +87,12 @@
         .submit {
             padding: .5rem 3rem;
             font-size: .9rem;
+        }
+
+        .moneyInput {
+            padding: .1rem .5rem;
+            font-size: .9rem;
+            outline: none;
         }
     }
 }
