@@ -98,6 +98,10 @@ const TripDetailsPage = () => {
         setRegionCount(prev => prev - 1);
     }
 
+    const [inputs, setInputs] = useState([])
+    const [focusedMoneyInput, setFocusedMoneyInput] = useState(null)
+
+
     useLayoutEffect(() => {
         if (!rendered &&
             !findTripByIdQuery.isLoading &&
@@ -111,6 +115,14 @@ const TripDetailsPage = () => {
             setEmployeesList(prev => (employeeOptions.filter(option => {
                 return employeesIds.find(id => Number(id) === Number(option.value))
             })))
+            const newInputs = employeeOptions.filter(option => {
+                return employeesIds.find(id => Number(id) === Number(option.value))
+            }).map(option => {
+                const existingInput = inputs.find(input => input.id === option.value)
+                if (existingInput) return existingInput
+                return { id: option.value, value: findTripByIdQuery.data?.data?.employeeMoneyDetails?.find(moneyDetail => moneyDetail.employee.id === option.value).amount }
+            });
+            setInputs(newInputs)
             const purposeIds = findTripByIdQuery.data?.data?.purposes.map(purpose => Number(purpose.id))
             setPurposeList(prev => (purposeOptions.filter(option => {
                 return purposeIds.find(id => Number(id) === Number(option.value))
@@ -376,13 +388,11 @@ const TripDetailsPage = () => {
             employeeMoneyDetails: employeesList.map((employee, index) => {
                 return {
                     employee: {id: employee.value},
-                    amount: 0 // should take value from amount
+                    amount: inputs.find(input => input.id === employee.value).value
                 }
             })
         }
         try {
-            console.log(id)
-            console.log(newBusinessTrip)
             updateBusinessTripMutation.mutate({tripId: id, newBusinessTrip}, {
                 onSuccess: data => {
                     notifySuccess()
@@ -419,6 +429,8 @@ const TripDetailsPage = () => {
                             className={`edit-button ${isEdit ? 'active-button' : ''}`}
                             onMouseDown={e => {
                                 setIsEdit(prev => !prev)
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
                             }}
                         >Redaktə rejimini {!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}
                         </button>}
@@ -431,12 +443,24 @@ const TripDetailsPage = () => {
                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-employees'}
                             value={employeesList}
-                            onChange={setEmployeesList}
+                            onChange={selectedOptions => {
+                                setEmployeesList(selectedOptions)
+                                const newInputs = selectedOptions.map(option => {
+                                    const existingInput = inputs.find(input => input.id === option.value)
+                                    if (existingInput) return existingInput
+                                    return { id: option.value, value: '' }
+                                });
+                                setInputs(newInputs)
+                            }}
                             options={employeeOptions}
                             isSearchable
                             isMulti
                             isClearable
                             required
+                            onFocus={() => {
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
+                            }}
                             styles={customStyles}
                             closeMenuOnSelect={false}
                             components={{ MultiValueLabel: customMultiValueLabel }}
@@ -446,6 +470,10 @@ const TripDetailsPage = () => {
                         <label htmlFor="trip-purpose">Ezamiyyətin məqsədi:</label>
                         <br/>
                         <Select
+                            onFocus={() => {
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
+                            }}
                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-purpose'}
                             value={purposeList}
@@ -463,6 +491,10 @@ const TripDetailsPage = () => {
                         <label htmlFor="trip-reason">Ezamiyyətin əsaslılığı:</label>
                         <br/>
                         <Select
+                            onFocus={() => {
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
+                            }}
                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-reason'}
                             value={reasonList}
@@ -480,6 +512,10 @@ const TripDetailsPage = () => {
                         <label htmlFor="trip-help">Ezamiyyət dövründə köməklik göstərilmişdir:</label>
                         <br/>
                         <Select
+                            onFocus={() => {
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
+                            }}
                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-help'}
                             value={helpList}
@@ -497,6 +533,10 @@ const TripDetailsPage = () => {
                         <label htmlFor="trip-posResult">Ezamiyyət dövründə müsbət təcrübə aşkarlanmışdır:</label>
                         <br/>
                         <Select
+                            onFocus={() => {
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
+                            }}
                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-posResult'}
                             value={posResultList}
@@ -514,6 +554,10 @@ const TripDetailsPage = () => {
                         <label htmlFor="trip-resultConclusion">Ezamiyyət yekunlarının reallaşdırılması::</label>
                         <br/>
                         <Select
+                            onFocus={() => {
+                                setFocusedRegionDayInput(9999)
+                                setFocusedMoneyInput(9999)
+                            }}
                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                             id={'trip-resultConclusion'}
                             value={resultConclusionList}
@@ -553,6 +597,10 @@ const TripDetailsPage = () => {
                                 {Array.from({ length: regionCount }).map((_, index) => (
                                     <div style={{display: 'flex', alignItems: 'center', gap: '.3rem'}} key={nanoid()}>
                                         <Select
+                                            onFocus={() => {
+                                                setFocusedRegionDayInput(9999)
+                                                setFocusedMoneyInput(9999)
+                                            }}
                                             isDisabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')}
                                             placeholder='Region seçin'
                                             value={regionValues[index]}
@@ -569,6 +617,7 @@ const TripDetailsPage = () => {
                                             value={regionDayValues[index]}
                                             setFocusedRegionDayInput={setFocusedRegionDayInput}
                                             focusedRegionDayInput={focusedRegionDayInput}
+                                            setFocusedMoneyInput={setFocusedMoneyInput}
                                         />
                                         {auth.roles.find(role => role === 'ROLE_ADMIN') &&
                                             <button
@@ -584,7 +633,28 @@ const TripDetailsPage = () => {
                         </div>
                     </div>
                     <div style={{marginTop: '.8rem', display: 'flex', flexDirection: 'column', alignSelf:"flex-start", gap: '.5rem'}}>
-                        <div><strong>Ezamiyyət  pulları:</strong></div>
+                        <div><strong>Ezamiyyət  pulları: (ümumi - {inputs.reduce((acc, curr) => {
+                            return Number(acc) + Number(curr.value)
+                        }, 0)} manat)</strong></div>
+                        {inputs.map((input, index) => (
+                            <div key={nanoid()}>
+                                <label>{employeesList.find(employee => employee.value === input.id).label.split(' ').slice(0, 3).join(' ')} </label>
+                                <input
+                                    disabled={!isEdit}
+                                    className='moneyInput'
+                                    autoFocus={focusedMoneyInput === index}
+                                    onFocus={() => {
+                                        setFocusedRegionDayInput(9999)
+                                        setFocusedMoneyInput(index)
+                                    }}
+                                    value={input.value}
+                                    onChange={e => {
+                                        const value = (e.target.value).replace(/\s+|[^0-9]/g, '');
+                                        setInputs(inputs.map(i => i.id === input.id ? { ...i, value } : i));
+                                    }}
+                                />
+                            </div>
+                        ))}
                     </div>
                     <div style={{display: "flex", flexDirection: 'column', alignSelf: 'flex-start', gap: '.4rem'}}>
                         <div style={{display: "flex", alignItems: "center", gap: '.4rem'}}>
@@ -605,7 +675,7 @@ const TripDetailsPage = () => {
                         <div>Ezamiyyətdən qayıdarkən gecikmə {isLate ? 'olmuşdur' : 'olmamışdır'}.</div>
                     </div>
                     <div className='buttons'>
-                        <button className='default-button back' onClick={
+                        <button type='button' className='default-button back' onClick={
                             () => {
                                 if (currentLocation.key !== "default") {
                                     navigate(-1);
