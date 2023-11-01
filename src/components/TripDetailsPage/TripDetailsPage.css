@@ -21,6 +21,17 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     width: 45rem;
 
+    .back {
+        background-color: rgba(73, 90, 151, 1);
+        font-weight: bold;
+        font-size: .9rem;
+        padding: .5rem 1.2rem;
+
+        & svg {
+            width: 1.1rem;
+        }
+    }
+
     .title {
         font-weight: bold;
         font-size: 1.3rem;
@@ -33,6 +44,15 @@
         & button {
             margin-top: .5rem;
             padding: 0.4rem .8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: .3rem;
+            width: 13.2rem;
+
+            & svg {
+                width: 1.1rem;
+            }
         }
 
         .active-button {
@@ -71,17 +91,6 @@
         .buttons {
             display: flex;
             gap: 2rem;
-        }
-
-        .back {
-            background-color: rgba(73, 90, 151, 1);
-            font-weight: normal;
-            font-size: .9rem;
-            padding: .5rem 3rem;
-        }
-
-        .back:hover {
-            background-color: rgba(114, 128, 179, 1);
         }
 
         .submit {

@@ -7,11 +7,11 @@ import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
 import {
     BackIcon,
-    BackSpaceIcon,
+    BackSpaceIcon, DetailsIcon,
     DoubleBackIcon,
     DoubleForwardIcon,
     ForwardIcon,
-    SearchIcon
+    SearchIcon, TrashIcon
 } from "../../assets/heroicons.jsx";
 import {nanoid} from "nanoid";
 import DeleteBusinessTripModal from "./DeleteBusinessTripModal.jsx";
@@ -264,17 +264,18 @@ const BusinessTripsPageableTable = () => {
                                                     <button className='edit-button'
                                                             onMouseDown={e => {navigate(`/business-trips/${trip.id}`)}}
                                                     >
-                                                        Ətraflı
+                                                        <DetailsIcon />Ətraflı
                                                     </button>
                                                 </td>
                                                 <td style={{position: 'relative'}} >
-                                                    <button className='delete-button'
-                                                            onMouseDown={e => {
-                                                                deleteDialogRef.current.showModal()
-                                                                setSelectedTrip(trip)}}
-                                                    >
-                                                        Sil
-                                                    </button>
+                                                    {auth.roles.find(role => role === 'ROLE_ADMIN') &&
+                                                        <button className='delete-button'
+                                                                onMouseDown={e => {
+                                                                    deleteDialogRef.current.showModal()
+                                                                    setSelectedTrip(trip)}}
+                                                        >
+                                                            <TrashIcon />Sil
+                                                        </button>}
                                                 </td>
                                             </tr>
                                         )})

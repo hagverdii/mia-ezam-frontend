@@ -148,6 +148,14 @@
                     top: 50%;
                     transform: translate(-50%, -50%);
                     padding: .3rem 1rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: .1rem;
+
+                    & svg {
+                        width: 1rem;
+                    }
                 }
 
                 .employee-details {

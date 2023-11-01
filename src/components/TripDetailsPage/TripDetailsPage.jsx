@@ -15,7 +15,7 @@ import {
 } from "../../api/axiosApi.js";
 import Loading from "../Loading/Loading.jsx";
 import DatePicker from "../OperationsPage/DatePicker.jsx";
-import {PlusIcon, TrashIcon} from "../../assets/heroicons.jsx";
+import {BackIcon, EditIcon, PlusIcon, TrashIcon} from "../../assets/heroicons.jsx";
 import {nanoid} from "nanoid";
 import RegionDayInputField from "../OperationsPage/RegionDayInputField.jsx";
 import './TripDetailsPage.css'
@@ -101,6 +101,9 @@ const TripDetailsPage = () => {
     const [inputs, setInputs] = useState([])
     const [focusedMoneyInput, setFocusedMoneyInput] = useState(null)
 
+    useLayoutEffect(() => {
+        if (rendered && regionCount <= 0) handleAddRegion()
+    }, [handleAddRegion, regionCount]);
 
     useLayoutEffect(() => {
         if (!rendered &&
@@ -359,7 +362,7 @@ const TripDetailsPage = () => {
         )
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmitAdmin = (e) => {
         e.preventDefault()
         const newBusinessTrip = {
             businessTripDetails: regionValues.map((region, index) => {
@@ -388,7 +391,66 @@ const TripDetailsPage = () => {
             employeeMoneyDetails: employeesList.map((employee, index) => {
                 return {
                     employee: {id: employee.value},
-                    amount: inputs.find(input => input.id === employee.value).value
+                    amount: inputs.find(input => input.id === employee.value).value || 0
+                }
+            })
+        }
+        try {
+            updateBusinessTripMutation.mutate({tripId: id, newBusinessTrip}, {
+                onSuccess: data => {
+                    notifySuccess()
+                    queryClient.invalidateQueries(['businessTrip', id], newBusinessTrip)
+                },
+                onError: error => {
+                    if (error.response?.status === 404) {
+                        notifyErrorNotFound()
+                    } else {
+                        notifyError()
+                    }
+                    console.log(error.message)
+                },
+                onSettled: data => {
+                    queryClient.invalidateQueries(['businessTrips'])
+                    navigate(-1)
+                }
+            })
+        } catch (err) {
+            console.log(err.message)
+        } finally {
+            setFocusedRegionDayInput(null)
+        }
+    }
+
+    const handleSubmitEditor = (e) => {
+        e.preventDefault()
+        const newBusinessTrip = {
+            businessTripDetails: regionValues.map((region, index) => {
+                return {
+                    dayCount: regionDayValues[index],
+                    region: {id: region.value}
+                }
+            }),
+            startingDate: format(startDate, 'yyyy-MM-dd'),
+            reasons: reasonList.map(reason => {
+                return {id: reason.value}
+            }),
+            purposes: purposeList.map(purpose => {
+                return {id: purpose.value}
+            }),
+            helps: helpList.map(help => {
+                return {id: help.value}
+            }),
+            posResults: posResultList.map(result => {
+                return {id: result.value}
+            }),
+            conclusions: resultConclusionList.map(conclusion => {
+                return {id: conclusion.value}
+            }),
+            late: isLate,
+            employeeMoneyDetails: employeesList.map((employee, index) => {
+                return {
+                    employee: {id: employee.value},
+                    amount: inputs.find(input => input.id === employee.value).value || 0
                 }
             })
         }
@@ -421,21 +483,28 @@ const TripDetailsPage = () => {
     return (
         <div className='container'>
             <div className='trip-container'>
+                <button style={{alignSelf: 'flex-start'}} type='button' className='default-button back' onClick={
+                    () => {
+                        if (currentLocation.key !== "default") {
+                            navigate(-1);
+                        } else {
+                            navigate('/')
+                        }
+                    }
+                }><BackIcon /></button>
                 <div className='title'>
                     <div>Ezamiyyət haqqında ətraflı məlumat</div>
-                    {auth.roles.find(role => role === 'ROLE_ADMIN') &&
-                        <button
-                            disabled={!auth.roles.find(role => role === 'ROLE_ADMIN')}
-                            className={`edit-button ${isEdit ? 'active-button' : ''}`}
-                            onMouseDown={e => {
-                                setIsEdit(prev => !prev)
-                                setFocusedRegionDayInput(9999)
-                                setFocusedMoneyInput(9999)
-                            }}
-                        >Redaktə rejimini {!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}
-                        </button>}
+                    <button
+                        className={`edit-button ${isEdit ? 'active-button' : ''}`}
+                        onMouseDown={e => {
+                            setIsEdit(prev => !prev)
+                            setFocusedRegionDayInput(9999)
+                            setFocusedMoneyInput(9999)
+                        }}
+                    ><EditIcon /> Redaktə rejimini {!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}
+                    </button>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={auth.roles.find(role => role === 'ROLE_ADMIN') ? handleSubmitAdmin : handleSubmitEditor}>
                     <div>
                         <label htmlFor="trip-employees">Ezamiyyətə gedən işçilər:</label>
                         <br/>
@@ -448,7 +517,7 @@ const TripDetailsPage = () => {
                                 const newInputs = selectedOptions.map(option => {
                                     const existingInput = inputs.find(input => input.id === option.value)
                                     if (existingInput) return existingInput
-                                    return { id: option.value, value: '' }
+                                    return { id: option.value, value: 0 }
                                 });
                                 setInputs(newInputs)
                             }}
@@ -675,16 +744,7 @@ const TripDetailsPage = () => {
                         <div>Ezamiyyətdən qayıdarkən gecikmə {isLate ? 'olmuşdur' : 'olmamışdır'}.</div>
                     </div>
                     <div className='buttons'>
-                        <button type='button' className='default-button back' onClick={
-                            () => {
-                                if (currentLocation.key !== "default") {
-                                    navigate(-1);
-                                } else {
-                                    navigate('/')
-                                }
-                            }
-                        }>Geriya qayıt</button>
-                        {isEdit && <button disabled={!isEdit || !auth.roles.find(role => role === 'ROLE_ADMIN')} type='submit' className='edit-button submit'>Redaktəni təsdiq et</button>}
+                        {isEdit && <button disabled={updateBusinessTripMutation.isPending} type='submit' className='edit-button submit'>Redaktəni təsdiq et</button>}
                     </div>
                 </form>
             </div>

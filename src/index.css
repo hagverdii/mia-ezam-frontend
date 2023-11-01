@@ -41,12 +41,12 @@ body {
 }
 
 .edit-button:hover:not(:disabled) {
-    opacity: .8;
+    filter: brightness(115%);
 }
 
 .edit-button:disabled {
     cursor: not-allowed;
-    opacity: .8;
+    opacity: .4;
 }
 
 /*Delete button styles*/
@@ -64,11 +64,11 @@ body {
 }
 
 .delete-button:hover:not(:disabled) {
-    background-color: rgba(207, 36, 36, 1);
+    filter: brightness(115%);
 }
 
 .delete-button:disabled {
-    opacity: .8;
+    opacity: .4;
     cursor: not-allowed;
 }
 
@@ -88,11 +88,11 @@ body {
 }
 
 .default-button:hover:not(:disabled) {
-    background-color: rgba(75, 91, 151, 1);
+    filter: brightness(120%);
 }
 
 .default-button:disabled {
-    background-color: rgba(114, 128, 179, 1);
+    opacity: .4;
     cursor: not-allowed;
 }
 
