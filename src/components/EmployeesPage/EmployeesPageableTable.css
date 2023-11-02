@@ -114,8 +114,8 @@
 }
 
 .employees-table .middle-row table td button.delete-button {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
 }
 
 .employees-table .bottom-row {

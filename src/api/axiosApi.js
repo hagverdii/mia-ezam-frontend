@@ -288,9 +288,37 @@ export const deleteRank = (jwtToken, id) => {
     )
 }
 
+export const addRank = (jwtToken, rank) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/ranks`,
+        rank,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const deletePosition = (jwtToken, id) => {
     return axios.delete(
         `${BASE_URL}/api/v1/positions/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const addPosition = (jwtToken, position) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/positions`,
+        position,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -314,9 +342,37 @@ export const deleteDepartment = (jwtToken, id) => {
     )
 }
 
+export const addDepartment = (jwtToken, department) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/departments`,
+        department,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const deletePurpose = (jwtToken, id) => {
     return axios.delete(
         `${BASE_URL}/api/v1/purposes/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const addPurpose = (jwtToken, purpose) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/purposes`,
+        purpose,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -340,9 +396,37 @@ export const deleteHelp = (jwtToken, id) => {
     )
 }
 
+export const addHelp = (jwtToken, help) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/helps`,
+        help,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const deleteReason = (jwtToken, id) => {
     return axios.delete(
         `${BASE_URL}/api/v1/reasons/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const addReason = (jwtToken, reason) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/reasons`,
+        reason,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -366,6 +450,20 @@ export const deletePosResult = (jwtToken, id) => {
     )
 }
 
+export const addPosResult = (jwtToken, posResult) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/posResults`,
+        posResult,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const deleteConclusion = (jwtToken, id) => {
     return axios.delete(
         `${BASE_URL}/api/v1/resultConclusions/${id}`,
@@ -379,9 +477,37 @@ export const deleteConclusion = (jwtToken, id) => {
     )
 }
 
+export const addConclusion = (jwtToken, conclusion) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/resultConclusions`,
+        conclusion,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
 export const deleteRegion = (jwtToken, id) => {
     return axios.delete(
         `${BASE_URL}/api/v1/regions/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const addRegion = (jwtToken, region) => {
+    return axios.post(
+        `${BASE_URL}/api/v1/regions`,
+        region,
         {
             headers: {
                 'Content-Type': 'application/json',

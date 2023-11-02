@@ -1,6 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import Select from "react-select";
 import {
+    addConclusion,
+    addDepartment, addHelp,
+    addPosition, addPosResult, addPurpose,
+    addRank, addReason, addRegion,
     deleteConclusion,
     deleteDepartment, deleteHelp,
     deletePosition, deletePosResult, deletePurpose,
@@ -30,6 +34,7 @@ const OtherOperationsPage = () => {
     const dialogRef = useRef()
     const [newValue, setNewValue] = useState('')
     const [addType, setAddType] = useState('')
+    const [addInProgress, setAddInProgress] = useState(false)
 
     // Options for Select components
     const [rankOptions, setRankOptions] = useState([])
@@ -116,7 +121,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [allRanksQuery.isLoading])
+    }, [allRanksQuery.isLoading, allRanksQuery])
 
     useEffect(() => {
         if (!allDepartmentsQuery.isLoading) {
@@ -127,7 +132,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [allDepartmentsQuery.isLoading])
+    }, [allDepartmentsQuery.isLoading, allDepartmentsQuery])
 
     useEffect(() => {
         if (!allPositionsQuery.isLoading) {
@@ -138,7 +143,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [allPositionsQuery.isLoading])
+    }, [allPositionsQuery.isLoading, allPositionsQuery])
 
     useEffect(() => {
         if (!getAllPurposesQuery.isLoading) {
@@ -149,7 +154,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [getAllPurposesQuery.isLoading])
+    }, [getAllPurposesQuery.isLoading, getAllPurposesQuery])
 
     useEffect(() => {
         if (!getAllReasonsQuery.isLoading) {
@@ -160,7 +165,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [getAllReasonsQuery.isLoading])
+    }, [getAllReasonsQuery.isLoading, getAllReasonsQuery])
 
     useEffect(() => {
         if (!getAllHelpsQuery.isLoading) {
@@ -171,7 +176,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [getAllHelpsQuery.isLoading])
+    }, [getAllHelpsQuery.isLoading, getAllHelpsQuery])
 
     useEffect(() => {
         if (!getAllPosResultsQuery.isLoading) {
@@ -182,7 +187,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [getAllPosResultsQuery.isLoading])
+    }, [getAllPosResultsQuery.isLoading, getAllPosResultsQuery])
 
     useEffect(() => {
         if (!getAllConclusionsQuery.isLoading) {
@@ -193,7 +198,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [getAllConclusionsQuery.isLoading])
+    }, [getAllConclusionsQuery.isLoading, getAllConclusionsQuery])
 
     useEffect(() => {
         if (!getAllRegionsQuery.isLoading) {
@@ -204,7 +209,7 @@ const OtherOperationsPage = () => {
                 }
             }))
         }
-    }, [getAllRegionsQuery.isLoading])
+    }, [getAllRegionsQuery.isLoading, getAllRegionsQuery])
 
     const deleteRankMutation = useMutation({
         mutationFn: ({id}) => deleteRank(auth.jwtToken, id),
@@ -214,6 +219,18 @@ const OtherOperationsPage = () => {
             notifySuccess()
         },
         onError: error => notifyError()
+    })
+
+    const addRankMutation = useMutation({
+        mutationFn: ({name}) => addRank(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['ranks'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
     })
 
     const deletePositionMutation = useMutation({
@@ -226,6 +243,18 @@ const OtherOperationsPage = () => {
         onError: error => notifyError()
     })
 
+    const addPositionMutation = useMutation({
+        mutationFn: ({name}) => addPosition(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['positions'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
+    })
+
     const deleteDepartmentMutation = useMutation({
         mutationFn: ({id}) => deleteDepartment(auth.jwtToken, id),
         onSuccess: () => {
@@ -234,6 +263,18 @@ const OtherOperationsPage = () => {
             notifySuccess()
         },
         onError: error => notifyError()
+    })
+
+    const addDepartmentMutation = useMutation({
+        mutationFn: ({name}) => addDepartment(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['departments'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
     })
 
     const deletePurposeMutation = useMutation({
@@ -246,6 +287,18 @@ const OtherOperationsPage = () => {
         onError: error => notifyError()
     })
 
+    const addPurposeMutation = useMutation({
+        mutationFn: ({name}) => addPurpose(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['allPurposes'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
+    })
+
     const deleteHelpMutation = useMutation({
         mutationFn: ({id}) => deleteHelp(auth.jwtToken, id),
         onSuccess: () => {
@@ -254,6 +307,18 @@ const OtherOperationsPage = () => {
             notifySuccess()
         },
         onError: error => notifyError()
+    })
+
+    const addHelpMutation = useMutation({
+        mutationFn: ({name}) => addHelp(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['allHelps'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
     })
 
     const deleteReasonMutation = useMutation({
@@ -266,6 +331,18 @@ const OtherOperationsPage = () => {
         onError: error => notifyError()
     })
 
+    const addReasonMutation = useMutation({
+        mutationFn: ({name}) => addReason(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['allReasons'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
+    })
+
     const deletePosResultMutation = useMutation({
         mutationFn: ({id}) => deletePosResult(auth.jwtToken, id),
         onSuccess: () => {
@@ -274,6 +351,18 @@ const OtherOperationsPage = () => {
             notifySuccess()
         },
         onError: error => notifyError()
+    })
+
+    const addPosResultMutation = useMutation({
+        mutationFn: ({name}) => addPosResult(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['allPosResults'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
     })
 
     const deleteConclusionMutation = useMutation({
@@ -286,6 +375,18 @@ const OtherOperationsPage = () => {
         onError: error => notifyError()
     })
 
+    const addConclusionMutation = useMutation({
+        mutationFn: ({name}) => addConclusion(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['allResultConclusions'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
+    })
+
     const deleteRegionMutation = useMutation({
         mutationFn: ({id}) => deleteRegion(auth.jwtToken, id),
         onSuccess: () => {
@@ -294,6 +395,18 @@ const OtherOperationsPage = () => {
             notifySuccess()
         },
         onError: error => notifyError()
+    })
+
+    const addRegionMutation = useMutation({
+        mutationFn: ({name}) => addRegion(auth.jwtToken, {name}),
+        onSuccess: () => {
+            setSelectedRank(null)
+            queryClient.invalidateQueries(['allRegions'])
+            notifySuccess()
+        },
+        onError: error => notifyError(),
+        onMutate: () => setAddInProgress(true),
+        onSettled: () => setAddInProgress(false)
     })
 
     const customStyles = {
@@ -332,18 +445,31 @@ const OtherOperationsPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // add mutations for adding options and write code here
-        // bir cergede 2 menyu elave ele
+        if (addInProgress || !newValue) return
+
+        setNewValue(prev => prev.trim().replace(/\s+/g, ' ').replace(/[!_./\\,?^:;'@#$*]/g, ''))
+        dialogRef.current.close()
+
         if (addType === 'rank') {
+            addRankMutation.mutate({name: newValue})
         } else if (addType === 'position') {
+            addPositionMutation.mutate({name: newValue})
         } else if (addType === 'department') {
+            addDepartmentMutation.mutate({name: newValue})
         } else if (addType === 'help') {
+            addHelpMutation.mutate({name: newValue})
         } else if (addType === 'purpose') {
+            addPurposeMutation.mutate({name: newValue})
         } else if (addType === 'reason') {
+            addReasonMutation.mutate({name: newValue})
         } else if (addType === 'posResult') {
+            addPosResultMutation.mutate({name: newValue})
         } else if (addType === 'conclusion') {
+            addConclusionMutation.mutate({name: newValue})
         } else if (addType === 'region') {
+            addRegionMutation.mutate({name: newValue})
         }
+
         setNewValue('')
     }
     
@@ -364,6 +490,7 @@ const OtherOperationsPage = () => {
                         <button
                             className='edit-button submit'
                             type='submit'
+                            disabled={addInProgress}
                         >
                             Təsdiqlə
                         </button>
@@ -372,247 +499,270 @@ const OtherOperationsPage = () => {
             </dialog>
             <div className='other-operations-container'>
                 <div className='container'>
-                    <div>
-                        <label>Regionlar:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deleteRegionMutation.isPending}
-                                value={selectedRegion}
-                                onChange={setSelectedRegion}
-                                options={regionOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deleteRegionMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('region')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedRegion || deleteRegionMutation.isPending}
-                                onClick={() => {
-                                    deleteRegionMutation.mutate({id: selectedRegion.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
+                    <div className='row'>
+                        <div>
+                            <label>Regionlar:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deleteRegionMutation.isPending}
+                                    value={selectedRegion}
+                                    onChange={setSelectedRegion}
+                                    options={regionOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deleteRegionMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('region')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedRegion || deleteRegionMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deleteRegionMutation.mutate({id: selectedRegion.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Rütbələr:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deleteRankMutation.isPending}
+                                    value={selectedRank}
+                                    onChange={setSelectedRank}
+                                    options={rankOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deleteRankMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('rank')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedRank || deleteRankMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deleteRankMutation.mutate({id: selectedRank.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label>Rütbələr:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deleteRankMutation.isPending}
-                                value={selectedRank}
-                                onChange={setSelectedRank}
-                                options={rankOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deleteRankMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('rank')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedRank || deleteRankMutation.isPending}
-                                onClick={() => {
-                                    deleteRankMutation.mutate({id: selectedRank.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
+
+                    <div className='row'>
+                        <div>
+                            <label>Vəzifələr:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deletePositionMutation.isPending}
+                                    value={selectedPosition}
+                                    onChange={setSelectedPosition}
+                                    options={positionOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deletePositionMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('position')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedPosition || deletePositionMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deletePositionMutation.mutate({id: selectedPosition.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label>İdarə/şöbələr:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deleteDepartmentMutation.isPending}
+                                    value={selectedDepartment}
+                                    onChange={setSelectedDepartment}
+                                    options={departmentOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deleteDepartmentMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('department')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedDepartment || deleteDepartmentMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deleteDepartmentMutation.mutate({id: selectedDepartment.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label>Vəzifələr:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deletePositionMutation.isPending}
-                                value={selectedPosition}
-                                onChange={setSelectedPosition}
-                                options={positionOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deletePositionMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('position')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedPosition || deletePositionMutation.isPending}
-                                onClick={() => {
-                                    deletePositionMutation.mutate({id: selectedPosition.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
+
+                    <div className='row'>
+                        <div>
+                            <label>Ezamiyyət məqsədləri:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deletePurposeMutation.isPending}
+                                    value={selectedPurpose}
+                                    onChange={setSelectedPurpose}
+                                    options={purposeOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deletePurposeMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('purpose')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedPurpose || deletePurposeMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deletePurposeMutation.mutate({id: selectedPurpose.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Ezamiyyət əsaslılıqları:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deleteReasonMutation.isPending}
+                                    value={selectedReason}
+                                    onChange={setSelectedReason}
+                                    options={reasonOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deleteReasonMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('reason')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedReason || deleteReasonMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deleteReasonMutation.mutate({id: selectedReason.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label>İdarə/şöbələr:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deleteDepartmentMutation.isPending}
-                                value={selectedDepartment}
-                                onChange={setSelectedDepartment}
-                                options={departmentOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deleteDepartmentMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('department')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedDepartment || deleteDepartmentMutation.isPending}
-                                onClick={() => {
-                                    deleteDepartmentMutation.mutate({id: selectedDepartment.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
+
+                    <div className='row'>
+                        <div>
+                            <label>Ezamiyyət dövründə köməklik göstərilənlər:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deleteHelpMutation.isPending}
+                                    value={selectedHelp}
+                                    onChange={setSelectedHelp}
+                                    options={helpOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deleteHelpMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('help')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedHelp || deleteHelpMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deleteHelpMutation.mutate({id: selectedHelp.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Ezamiyyət dövründə müsbət təcrübələr:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deletePosResultMutation.isPending}
+                                    value={selectedPosResult}
+                                    onChange={setSelectedPosResult}
+                                    options={posResultOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deletePosResultMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('posResult')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedPosResult || deletePosResultMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deletePosResultMutation.mutate({id: selectedPosResult.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label>Ezamiyyət məqsədləri:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deletePurposeMutation.isPending}
-                                value={selectedPurpose}
-                                onChange={setSelectedPurpose}
-                                options={purposeOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deletePurposeMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('purpose')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedPurpose || deletePurposeMutation.isPending}
-                                onClick={() => {
-                                    deletePurposeMutation.mutate({id: selectedPurpose.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Ezamiyyət əsaslılıqları:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deleteReasonMutation.isPending}
-                                value={selectedReason}
-                                onChange={setSelectedReason}
-                                options={reasonOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deleteReasonMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('reason')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedReason || deleteReasonMutation.isPending}
-                                onClick={() => {
-                                    deleteReasonMutation.mutate({id: selectedReason.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Ezamiyyət dövründə köməklik göstərilənlər:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deleteHelpMutation.isPending}
-                                value={selectedHelp}
-                                onChange={setSelectedHelp}
-                                options={helpOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deleteHelpMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('help')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedHelp || deleteHelpMutation.isPending}
-                                onClick={() => {
-                                    deleteHelpMutation.mutate({id: selectedHelp.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Ezamiyyət dövründə müsbət təcrübələr:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deletePosResultMutation.isPending}
-                                value={selectedPosResult}
-                                onChange={setSelectedPosResult}
-                                options={posResultOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deletePosResultMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('posResult')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedPosResult || deletePosResultMutation.isPending}
-                                onClick={() => {
-                                    deletePosResultMutation.mutate({id: selectedPosResult.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Ezamiyyət yekunları:</label>
-                        <br/>
-                        <div style={{display: "flex", gap: '.5rem'}}>
-                            <Select
-                                isDisabled={deleteConclusionMutation.isPending}
-                                value={selectedConclusion}
-                                onChange={setSelectedConclusion}
-                                options={conclusionOptions}
-                                isSearchable={true}
-                                styles={customStyles}
-                            />
-                            <button
-                                disabled={deleteConclusionMutation.isPending}
-                                onClick={e => {
-                                    dialogRef.current.showModal()
-                                    setAddType('conclusion')
-                                }}
-                                className='edit-button'><PlusIcon />Əlavə et</button>
-                            <button
-                                disabled={!selectedConclusion || deleteConclusionMutation.isPending}
-                                onClick={() => {
-                                    deleteConclusionMutation.mutate({id: selectedConclusion.value})
-                                }}
-                                className='delete-button'><TrashIcon />Sil</button>
+
+                    <div className='row'>
+                        <div>
+                            <label>Ezamiyyət yekunları:</label>
+                            <br/>
+                            <div style={{display: "flex", gap: '.5rem'}}>
+                                <Select
+                                    isDisabled={deleteConclusionMutation.isPending}
+                                    value={selectedConclusion}
+                                    onChange={setSelectedConclusion}
+                                    options={conclusionOptions}
+                                    isSearchable={true}
+                                    styles={customStyles}
+                                />
+                                <button
+                                    disabled={deleteConclusionMutation.isPending || addInProgress}
+                                    onClick={e => {
+                                        dialogRef.current.showModal()
+                                        setAddType('conclusion')
+                                        setNewValue('')
+                                    }}
+                                    className='edit-button'><PlusIcon />Əlavə et</button>
+                                <button
+                                    disabled={!selectedConclusion || deleteConclusionMutation.isPending || addInProgress}
+                                    onClick={() => {
+                                        deleteConclusionMutation.mutate({id: selectedConclusion.value})
+                                    }}
+                                    className='delete-button'><TrashIcon />Sil</button>
+                            </div>
                         </div>
                     </div>
                 </div>

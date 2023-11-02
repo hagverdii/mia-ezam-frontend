@@ -100,11 +100,18 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: .7rem;
         background-color: rgba(10, 25, 78, 1);
         width: fit-content;
         padding: 1.5rem;
         border-radius: 10px;
+
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
     }
 
     .edit-button {

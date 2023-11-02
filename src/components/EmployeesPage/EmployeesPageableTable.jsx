@@ -5,7 +5,14 @@ import './EmployeesPageableTable.css'
 import {useSearchParams} from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import Loading from "../Loading/Loading.jsx";
-import {BackIcon, DoubleBackIcon, DoubleForwardIcon, ForwardIcon, SearchIcon} from "../../assets/heroicons.jsx";
+import {
+    BackIcon,
+    DoubleBackIcon,
+    DoubleForwardIcon, EditIcon,
+    ForwardIcon,
+    SearchIcon,
+    TrashIcon
+} from "../../assets/heroicons.jsx";
 import EditEmployeeModal from "./EditEmployeeModal.jsx";
 import DeleteEmployeeModal from "./DeleteEmployeeModal.jsx";
 import {nanoid} from "nanoid";
@@ -187,8 +194,8 @@ const EmployeesPageableTable = () => {
                                     <th>Rütbə</th>
                                     <th>İdarə / Şöbə</th>
                                     <th>Vəzifə</th>
-                                    <th style={{width: '8%'}}>Redaktə</th>
-                                    <th style={{width: '6%'}}>Sil</th>
+                                    <th style={{width: '10%'}}>Redaktə</th>
+                                    <th style={{width: '8%'}}>Sil</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -207,7 +214,7 @@ const EmployeesPageableTable = () => {
                                                         editDialogRef.current.showModal()
                                                         setSelectedEmployee(employee)
                                                     }}>
-                                                        Redaktə
+                                                        <EditIcon />Redaktə
                                                     </button>
                                                 </td>
                                                 <td style={{position: 'relative'}} >
@@ -215,7 +222,7 @@ const EmployeesPageableTable = () => {
                                                         deleteDialogRef.current.showModal()
                                                         setSelectedEmployee(employee)
                                                     }}>
-                                                        Sil
+                                                        <TrashIcon />Sil
                                                     </button>
                                                 </td>
                                             </tr>
