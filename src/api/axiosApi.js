@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://10.14.33.67:8080'
+const BASE_URL = 'http://172.16.7.222:8080'
 
 export const verifyJwt = (jwtToken) => {
     return axios.post(
@@ -265,6 +265,123 @@ export const updateBusinessTrip = (jwtToken, tripId, newBusinessTrip) => {
     return axios.put(
         `${BASE_URL}/api/v1/businessTrips/${tripId}`,
         newBusinessTrip,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteRank = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/ranks/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deletePosition = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/positions/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteDepartment = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/departments/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deletePurpose = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/purposes/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteHelp = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/helps/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteReason = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/reasons/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deletePosResult = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/posResults/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteConclusion = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/resultConclusions/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            withCredentials: true
+        }
+    )
+}
+
+export const deleteRegion = (jwtToken, id) => {
+    return axios.delete(
+        `${BASE_URL}/api/v1/regions/${id}`,
         {
             headers: {
                 'Content-Type': 'application/json',

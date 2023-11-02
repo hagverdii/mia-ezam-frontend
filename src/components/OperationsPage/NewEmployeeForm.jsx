@@ -26,17 +26,20 @@ const NewEmployeeForm = () => {
 
     const allRanksQuery = useQuery({
         queryKey: ['ranks'],
-        queryFn: () => getAllRanks(auth.jwtToken)
+        queryFn: () => getAllRanks(auth.jwtToken),
+        staleTime: 1000 * 60 * 10
     })
 
     const allDepartmentsQuery = useQuery({
         queryKey: ['departments'],
-        queryFn: () => getAllDepartments(auth.jwtToken)
+        queryFn: () => getAllDepartments(auth.jwtToken),
+        staleTime: 1000 * 60 * 10
     })
 
     const allPositionsQuery = useQuery({
         queryKey: ['positions'],
-        queryFn: () => getAllPositions(auth.jwtToken)
+        queryFn: () => getAllPositions(auth.jwtToken),
+        staleTime: 1000 * 60 * 10
     })
 
     const addNewEmployeeMutation = useMutation({
