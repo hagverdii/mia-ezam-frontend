@@ -404,13 +404,17 @@ export const addRegion = (jwtToken, region) => {
 }
 
 export const addMoneyAsEditor = (jwtToken, tripId, moneyDetails) => {
-	return axios.post(`${BASE_URL}/api/v1/employeeMoneyDetail/${tripId}`, {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${jwtToken}`,
-		},
-		withCredentials: true,
-	})
+	return axios.put(
+		`${BASE_URL}/api/v1/employeeMoneyDetail/${tripId}`,
+		moneyDetails,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwtToken}`,
+			},
+			withCredentials: true,
+		}
+	)
 }
 
 export const getBusinessTripsPageable = (

@@ -41,6 +41,7 @@ const TripDetailsPageEditor = () => {
 	const [isLate, setIsLate] = useState(false)
 
 	const [inputs, setInputs] = useState([])
+	const [focusedInput, setFocusedInput] = useState(null)
 
 	const [isEdit, setIsEdit] = useState(false)
 
@@ -60,9 +61,21 @@ const TripDetailsPageEditor = () => {
 				})
 			)
 			setInputs(
-				employeesList.map((employee) => {
-					return { name: employee.label, value: '', id: employee.value }
-				})
+				findTripByIdQuery?.data?.data?.employeeMoneyDetails
+					?.map((option) => {
+						return {
+							value: option.employee.id,
+							label:
+								option.employee.lastName +
+								' ' +
+								option.employee.firstName +
+								' ' +
+								option.employee.fatherName,
+						}
+					})
+					.map((employee) => {
+						return { name: employee.label, value: 0, id: employee.value }
+					})
 			)
 			setPurposeList((prev) =>
 				findTripByIdQuery?.data?.data?.purposes?.map((option) => {
@@ -188,18 +201,13 @@ const TripDetailsPageEditor = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		const moneyDetails = [
-			findTripByIdQuery?.data?.data?.employeeMoneyDetails.map(
-				(detail, index) => {
-					return {
-						id: detail.id,
-						amount: employeesList.map((employee) => {
-							return (
-								inputs.find((input) => input.id === employee.value).value || 0
-							)
-						}),
-					}
+			findTripByIdQuery?.data?.data?.employeeMoneyDetails.map((detail) => {
+				return {
+					id: detail.id,
+					amount:
+						inputs.find((input) => input.id === detail.employee.id).value || 0,
 				}
-			),
+			}),
 		]
 		try {
 			addMoneyAsEditorMutation.mutate(
@@ -230,6 +238,12 @@ const TripDetailsPageEditor = () => {
 	return (
 		<div className='container'>
 			<div className='trip-container'>
+				<button
+					type='button'
+					onClick={() => console.log(inputs)}
+				>
+					Test
+				</button>
 				<button
 					style={{ alignSelf: 'flex-start' }}
 					type='button'
@@ -393,9 +407,11 @@ const TripDetailsPageEditor = () => {
 						{inputs.map((input) => {
 							return (
 								<div key={nanoid()}>
-									<label>{input.name}</label>
+									<label>{input.name} - </label>
 									<input
 										disabled={!isEdit}
+										onFocus={() => setFocusedInput(input.id)}
+										autoFocus={input.id === focusedInput}
 										className='moneyInput'
 										value={input.value}
 										onChange={(e) => {
