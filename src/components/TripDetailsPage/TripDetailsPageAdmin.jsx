@@ -30,7 +30,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MissingPage from '../MissingPage/MissingPage.jsx'
 import toast from 'react-hot-toast'
 
-const TripDetailsPage = () => {
+const TripDetailsPageAdmin = () => {
 	const { auth } = useAuth()
 	const queryClient = useQueryClient()
 	const { id } = useParams()
@@ -977,4 +977,4 @@ const TripDetailsPage = () => {
 	)
 }
 
-export default TripDetailsPage
+export default TripDetailsPageAdmin
