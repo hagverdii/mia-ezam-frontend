@@ -238,11 +238,13 @@ const EmployeesPageableTable = () => {
 													{Number(pageNumber) * Number(pageSize) + index + 1}
 												</td>
 												<td>
-													{employee?.lastName +
+													{(
+														employee?.lastName +
 														' ' +
 														employee?.firstName +
 														' ' +
-														employee?.fatherName}
+														employee?.fatherName
+													).slice(0, 35)}
 												</td>
 												<td>{'AZ-' + employee?.policeCard}</td>
 												<td>{employee?.rank?.name}</td>
