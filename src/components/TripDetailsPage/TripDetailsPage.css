@@ -1,107 +1,107 @@
 .container {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    font-size: 1rem;
-    font-family: 'Nunito', sans-serif;
-    padding: 1.5rem 0 4rem 0;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	font-size: 1rem;
+	font-family: 'Nunito', sans-serif;
+	padding: 1.5rem 0 4rem 0;
 }
 
 .trip-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    font-size: 1rem;
-    background-color: rgba(28, 45, 107, 1);
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-    width: 45rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	font-size: 1rem;
+	background-color: rgba(28, 45, 107, 1);
+	border-radius: 10px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	width: 45rem;
 
-    .back {
-        background-color: rgba(73, 90, 151, 1);
-        font-weight: bold;
-        font-size: .9rem;
-        padding: .5rem 1.2rem;
+	.back {
+		background-color: rgba(73, 90, 151, 1);
+		font-weight: bold;
+		font-size: 0.9rem;
+		padding: 0.5rem 1.2rem;
 
-        & svg {
-            width: 1.1rem;
-        }
-    }
+		& svg {
+			width: 1.1rem;
+		}
+	}
 
-    .title {
-        font-weight: bold;
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+	.title {
+		font-weight: bold;
+		font-size: 1.3rem;
+		margin-bottom: 1rem;
+		color: white;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 
-        & button {
-            margin-top: .5rem;
-            padding: 0.4rem .8rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: .3rem;
-            width: 13.2rem;
+		& button {
+			margin-top: 0.5rem;
+			padding: 0.4rem 0.8rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 0.3rem;
+			width: 13.2rem;
 
-            & svg {
-                width: 1.1rem;
-            }
-        }
+			& svg {
+				width: 1.1rem;
+			}
+		}
 
-        .active-button {
-            background-color: rgba(165, 18, 18, 1);
-        }
-    }
+		.active-button {
+			background-color: rgba(165, 18, 18, 1);
+		}
+	}
 
-    & form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: .8rem;
+	& form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.8rem;
 
-        .dates-container {
-            display: flex;
-            flex-direction: column;
-            gap: .4rem;
+		.dates-container {
+			display: flex;
+			flex-direction: column;
+			gap: 0.4rem;
 
-            #trip-regions {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: .05rem .7rem;
+			#trip-regions {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0.05rem 0.7rem;
 
-                & svg {
-                    width: 1.3rem;
-                }
-            }
-        }
+				& svg {
+					width: 1.3rem;
+				}
+			}
+		}
 
-        & input[type="checkbox"] {
-            width: 1rem;
-            height: 1rem;
-        }
+		& input[type='checkbox'] {
+			width: 1rem;
+			height: 1rem;
+		}
 
-        .buttons {
-            display: flex;
-            gap: 2rem;
-        }
+		.buttons {
+			display: flex;
+			gap: 2rem;
+		}
 
-        .submit {
-            padding: .5rem 3rem;
-            font-size: .9rem;
-        }
+		.submit {
+			padding: 0.5rem 3rem;
+			font-size: 0.9rem;
+		}
 
-        .moneyInput {
-            padding: .1rem .5rem;
-            font-size: .9rem;
-            outline: none;
-        }
-    }
+		.moneyInput {
+			padding: 0.1rem 0.5rem;
+			font-size: 0.9rem;
+			outline: none;
+		}
+	}
 }

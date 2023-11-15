@@ -1,9 +1,7 @@
-import BusinessTripsPageableTable from "./BusinessTripsPageableTable.jsx";
+import BusinessTripsPageableTable from './BusinessTripsPageableTable.jsx'
 
 const BusinessTripsPage = () => {
-    return (
-        <BusinessTripsPageableTable />
-    );
-};
+	return <BusinessTripsPageableTable />
+}
 
-export default BusinessTripsPage;
+export default BusinessTripsPage

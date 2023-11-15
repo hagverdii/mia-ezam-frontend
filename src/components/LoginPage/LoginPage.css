@@ -1,129 +1,128 @@
-.login-container  {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+.login-container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 .login-footer {
-    width: 100%;
-    padding: .3rem;
-    /*background-color: rgba(7, 18, 58, 1);*/
-    background-color: rgba(10, 25, 78, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .7rem;
+	width: 100%;
+	padding: 0.3rem;
+	/*background-color: rgba(7, 18, 58, 1);*/
+	background-color: rgba(10, 25, 78, 1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.7rem;
 }
 
 .login-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
 }
 
-
 .login-page section {
-    min-width: 350px;
-    width: 23%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 1rem;
-    border-radius: 8px;
-    border: none;
-    /*background-color: rgb(57, 66, 148);*/
-    background-color: rgba(29, 46, 107, 1);
+	min-width: 350px;
+	width: 23%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 1rem;
+	border-radius: 8px;
+	border: none;
+	/*background-color: rgb(57, 66, 148);*/
+	background-color: rgba(29, 46, 107, 1);
 }
 
 .login-page form {
-    border: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding-bottom: .3rem;
+	border: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	padding-bottom: 0.3rem;
 }
 
 .login-page a,
 .login-page a:visited {
-    color: #fff;
+	color: #fff;
 }
 
 .login-page input,
 .login-page button,
 .login-page textarea {
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    padding: 0.3rem;
-    border-radius: 0.5rem;
-    width: 100%;
+	border: none;
+	font-family: 'Nunito', sans-serif;
+	font-size: 1rem;
+	padding: 0.3rem;
+	border-radius: 0.5rem;
+	width: 100%;
 }
 
 .login-page label,
 .login-page button {
-    margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 .login-page button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 0.5rem;
-    width: 9rem;
-    align-self: center;
-    transition: background-color 0.2s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	font-weight: bold;
+	padding: 0.5rem;
+	width: 9rem;
+	align-self: center;
+	transition: background-color 0.2s;
 }
 
 .login-page button:hover:not(:disabled) {
-    background-color: rgba(255, 223, 152, 1);
+	background-color: rgba(255, 223, 152, 1);
 }
 
 .login-page button:disabled {
-    cursor: not-allowed;
-    background-color: rgba(189, 189, 189, 0.9);
+	cursor: not-allowed;
+	background-color: rgba(189, 189, 189, 0.9);
 }
 
 .login-page .errmsg {
-    background-color: lightpink;
-    border-radius: 8px;
-    color: firebrick;
-    font-weight: bold;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
+	background-color: lightpink;
+	border-radius: 8px;
+	color: firebrick;
+	font-weight: bold;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
 }
 
 .login-page .offscreen {
-    position: absolute;
-    left: -9999px;
+	position: absolute;
+	left: -9999px;
 }
 
 .login-page .line {
-    display: inline-block;
+	display: inline-block;
 }
 
 .password-container {
-    position: relative;
-    width: 100%;
+	position: relative;
+	width: 100%;
 }
 
 .password-container input {
-    width: 100%;
+	width: 100%;
 }
 
 .pwd-icon {
-    position: absolute;
-    width: 1.1rem;
-    color: #494949;
-    right: 2.5%;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
+	position: absolute;
+	width: 1.1rem;
+	color: #494949;
+	right: 2.5%;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
 }

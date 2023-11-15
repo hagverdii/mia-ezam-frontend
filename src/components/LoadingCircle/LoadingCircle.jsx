@@ -1,9 +1,7 @@
 import './LoadingCircle.css'
 
 const LoadingCircle = () => {
-    return (
-        <div className="custom-loader"></div>
-    );
-};
+	return <div className='custom-loader'></div>
+}
 
-export default LoadingCircle;
+export default LoadingCircle

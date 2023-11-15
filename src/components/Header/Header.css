@@ -1,96 +1,96 @@
 header {
-    background-color: rgba(10, 25, 78, 1);
-    position: fixed;
-    z-index: 9999;
+	background-color: rgba(10, 25, 78, 1);
+	position: fixed;
+	z-index: 9999;
 }
 
 .login-header {
-    width: 100%;
-    padding: .3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    font-size: .8rem;
+	width: 100%;
+	padding: 0.3rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	font-size: 0.8rem;
 }
 
 .login-header img {
-    width: 2rem;
-    margin-left: 0;
+	width: 2rem;
+	margin-left: 0;
 }
 
 .main-header {
-    width: 100%;
-    padding: .3rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 1rem;
-    font-size: .8rem;
+	width: 100%;
+	padding: 0.3rem;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 1rem;
+	font-size: 0.8rem;
 }
 
 .main-header img {
-    width: 2rem;
-    margin-left: 1rem;
+	width: 2rem;
+	margin-left: 1rem;
 }
 
 nav {
-    flex-grow: 1;
-    font-size: .75rem;
+	flex-grow: 1;
+	font-size: 0.75rem;
 }
 
 nav ul {
-    display: flex;
-    list-style: none;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	list-style: none;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
 }
 
 .nav-element {
-    padding: .4rem 2.3rem;
-    border: none;
-    background-color: rgba(29, 46, 107, 1);
-    border-radius: 8px;
-    text-decoration: none;
-    color: white;
-    transition: all 0.2s;
+	padding: 0.4rem 2.3rem;
+	border: none;
+	background-color: rgba(29, 46, 107, 1);
+	border-radius: 8px;
+	text-decoration: none;
+	color: white;
+	transition: all 0.2s;
 }
 
 .nav-element.active {
-    background-color: rgba(75, 91, 151, 1);
-    padding: .4rem 3rem;
+	background-color: rgba(75, 91, 151, 1);
+	padding: 0.4rem 3rem;
 }
 
 .nav-element:hover {
-    background-color: rgba(75, 91, 151, 1);
-    padding: .4rem 3rem;
+	background-color: rgba(75, 91, 151, 1);
+	padding: 0.4rem 3rem;
 }
 
 .user-bar {
-    margin-right: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    font-size: .75rem;
+	margin-right: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	font-size: 0.75rem;
 }
 
 .user-bar button {
-    background-color: rgba(29, 46, 107, 1);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    padding: .3rem .7rem 0.1rem .7rem;
-    transition: 0.2s;
+	background-color: rgba(29, 46, 107, 1);
+	border: none;
+	border-radius: 8px;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	padding: 0.3rem 0.7rem 0.1rem 0.7rem;
+	transition: 0.2s;
 }
 
 .user-bar button:hover {
-    background-color: rgba(75, 91, 151, 1);
+	background-color: rgba(75, 91, 151, 1);
 }
 
 .user-bar button svg {
-    width: 1.2rem;
+	width: 1.2rem;
 }

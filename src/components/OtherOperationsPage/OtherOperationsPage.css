@@ -1,124 +1,124 @@
 .dialog-loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: none;
-    border-radius: 10px;
-    height: 20rem;
-    width: 30rem;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: none;
+	border-radius: 10px;
+	height: 20rem;
+	width: 30rem;
 }
 
 .dialog-loading::backdrop {
-    background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.6);
 }
 
 .other-operations-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: none;
-    border-radius: 10px;
-    height: fit-content;
-    padding: 2rem;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: none;
+	border-radius: 10px;
+	height: fit-content;
+	padding: 2rem;
 
-    .container {
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        border-radius: 10px;
+	.container {
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		border-radius: 10px;
 
-        .close {
-            align-self: flex-end;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: .4rem;
-            font-weight: bold;
-        }
+		.close {
+			align-self: flex-end;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0.4rem;
+			font-weight: bold;
+		}
 
-        & form {
-            display: flex;
-            flex-direction: column;
-            border-radius: 10px;
-            width: 15rem;
-            font-size: 1rem;
-            gap: 1rem;
+		& form {
+			display: flex;
+			flex-direction: column;
+			border-radius: 10px;
+			width: 15rem;
+			font-size: 1rem;
+			gap: 1rem;
 
-            .title {
-                text-align: center;
-                font-size: 1.3rem;
-                font-weight: bold;
-            }
+			.title {
+				text-align: center;
+				font-size: 1.3rem;
+				font-weight: bold;
+			}
 
-            & input {
-                width: 100%;
-                padding: .3rem .3rem .3rem .5rem;
-                font-size: 1rem;
-                border: 1px solid grey;
-            }
+			& input {
+				width: 100%;
+				padding: 0.3rem 0.3rem 0.3rem 0.5rem;
+				font-size: 1rem;
+				border: 1px solid grey;
+			}
 
-            .submit {
-                padding: .55rem 1.5rem;
-                font-weight: normal;
-                align-self: center;
-            }
-        }
-    }
+			.submit {
+				padding: 0.55rem 1.5rem;
+				font-weight: normal;
+				align-self: center;
+			}
+		}
+	}
 }
 
 .other-operations-dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.6);
 }
 
 .other-operations-dialog[open] {
-    animation: toggle-modal .2s ease-in-out;
+	animation: toggle-modal 0.2s ease-in-out;
 }
 
 @keyframes toggle-modal {
-    from {
-        opacity: 0;
-        scale: .9;
-    }
-    to {
-        opacity: 1;
-        scale: 1;
-    }
+	from {
+		opacity: 0;
+		scale: 0.9;
+	}
+	to {
+		opacity: 1;
+		scale: 1;
+	}
 }
 
 .other-operations-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem 0 4rem 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem 0 4rem 0;
 
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: .7rem;
-        background-color: rgba(10, 25, 78, 1);
-        width: fit-content;
-        padding: 1.5rem;
-        border-radius: 10px;
+	.container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.7rem;
+		background-color: rgba(10, 25, 78, 1);
+		width: fit-content;
+		padding: 1.5rem;
+		border-radius: 10px;
 
-        .row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-        }
-    }
+		.row {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 2rem;
+		}
+	}
 
-    .edit-button {
-        width: 5.5rem;
-    }
+	.edit-button {
+		width: 5.5rem;
+	}
 
-    .delete-button {
-        width: 5rem;
-    }
+	.delete-button {
+		width: 5rem;
+	}
 }

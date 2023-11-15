@@ -1,37 +1,37 @@
 .operations-page-container {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 4rem;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 4rem;
 }
 
 .navigation-buttons {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	margin-top: 1.5rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .navigation-buttons .menu-button {
-    font-weight: normal;
-    padding: .5rem 2rem;
-    border-radius: 0;
-    border: 1px solid #7280B3;
-    background-color: rgba(29, 46, 107, 1);
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	font-weight: normal;
+	padding: 0.5rem 2rem;
+	border-radius: 0;
+	border: 1px solid #7280b3;
+	background-color: rgba(29, 46, 107, 1);
+	color: white;
+	cursor: pointer;
+	transition: all 0.2s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .navigation-buttons .menu-button:hover:not(:disabled) {
-    opacity: .9;
+	opacity: 0.9;
 }
 
 .navigation-buttons .active-menu {
-    background-color: rgba(114, 128, 179, 1);
+	background-color: rgba(114, 128, 179, 1);
 }

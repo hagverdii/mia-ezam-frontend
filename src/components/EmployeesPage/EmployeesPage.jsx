@@ -1,9 +1,7 @@
-import EmployeesPageableTable from "./EmployeesPageableTable.jsx";
+import EmployeesPageableTable from './EmployeesPageableTable.jsx'
 
 const EmployeesPage = () => {
-    return (
-        <EmployeesPageableTable />
-    );
-};
+	return <EmployeesPageableTable />
+}
 
-export default EmployeesPage;
+export default EmployeesPage

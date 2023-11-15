@@ -1,205 +1,204 @@
 .businessTrips-container {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 1rem;
-    font-family: 'Nunito', sans-serif;
-    padding: 1.5rem 0 4rem 0;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 1rem;
+	font-family: 'Nunito', sans-serif;
+	padding: 1.5rem 0 4rem 0;
 
-    .businessTrips-search-container {
-        background-color: rgba(10, 25, 78, 1);
-        display: flex;
-        border: none;
-        width: 95%;
-        font-size: .9rem;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        padding: .7rem 1.5rem;
-        gap: 1rem;
-        align-items: center;
-        justify-content: space-between;
+	.businessTrips-search-container {
+		background-color: rgba(10, 25, 78, 1);
+		display: flex;
+		border: none;
+		width: 95%;
+		font-size: 0.9rem;
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+		border-radius: 8px;
+		margin-bottom: 1rem;
+		padding: 0.7rem 1.5rem;
+		gap: 1rem;
+		align-items: center;
+		justify-content: space-between;
 
-        & form {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
+		& form {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			position: relative;
 
-            & input {
-                border: none;
-                outline-width: 0;
-                border-radius: 5px;
-                font-size: .9rem;
-                padding: .17rem .6rem;
-                width: 14rem;
-                transition: all 0.2s;
-            }
+			& input {
+				border: none;
+				outline-width: 0;
+				border-radius: 5px;
+				font-size: 0.9rem;
+				padding: 0.17rem 0.6rem;
+				width: 14rem;
+				transition: all 0.2s;
+			}
 
-            & input:focus {
-                width: 20rem;
-            }
+			& input:focus {
+				width: 20rem;
+			}
 
-            & button {
-                position: absolute;
-                right: -2px;
-                transform: translateX(2px);
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-                padding: .19rem .6rem;
-                z-index: 1;
-            }
+			& button {
+				position: absolute;
+				right: -2px;
+				transform: translateX(2px);
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				padding: 0.19rem 0.6rem;
+				z-index: 1;
+			}
 
-            & button svg {
-                width: 1.2rem;
-            }
-        }
+			& button svg {
+				width: 1.2rem;
+			}
+		}
 
-        & div {
-            display: flex;
-            gap: .5rem;
-            justify-content: space-between;
-            align-items: center;
+		& div {
+			display: flex;
+			gap: 0.5rem;
+			justify-content: space-between;
+			align-items: center;
 
-            & select {
-                border: none;
-                border-radius: 5px;
-                font-size: .8rem;
-                padding: .15rem;
-                outline: none;
-            }
+			& select {
+				border: none;
+				border-radius: 5px;
+				font-size: 0.8rem;
+				padding: 0.15rem;
+				outline: none;
+			}
 
-            & button {
-                padding: .15rem .5rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-weight: normal;
-            }
+			& button {
+				padding: 0.15rem 0.5rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: normal;
+			}
 
-            & button svg {
-                width: 1.2rem;
-            }
-        }
-    }
+			& button svg {
+				width: 1.2rem;
+			}
+		}
+	}
 
-    .businessTrips-table {
-        display: flex;
-        flex-direction: column;
-        border: none;
-        width: 95%;
-        font-size: .9rem;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
+	.businessTrips-table {
+		display: flex;
+		flex-direction: column;
+		border: none;
+		width: 95%;
+		font-size: 0.9rem;
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+		border-radius: 8px;
 
-        .top-row {
-            background-color: rgba(10, 25, 78, 1);
-            border-top-right-radius: 8px;
-            border-top-left-radius: 8px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: .7rem 1.5rem;
+		.top-row {
+			background-color: rgba(10, 25, 78, 1);
+			border-top-right-radius: 8px;
+			border-top-left-radius: 8px;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			padding: 0.7rem 1.5rem;
 
-            & label {
-                font-size: .9rem;
-            }
+			& label {
+				font-size: 0.9rem;
+			}
 
-            & select {
-                border: none;
-                border-radius: 5px;
-                font-size: .8rem;
-                padding: .15rem;
-            }
-        }
+			& select {
+				border: none;
+				border-radius: 5px;
+				font-size: 0.8rem;
+				padding: 0.15rem;
+			}
+		}
 
-        .middle-row {
-            display: flex;
-            border: none;
-            min-height: 500px;
+		.middle-row {
+			display: flex;
+			border: none;
+			min-height: 500px;
 
-            .loading {
-                flex-grow: 1;
-            }
+			.loading {
+				flex-grow: 1;
+			}
 
-            & table {
-                color: black;
-                border-collapse: collapse;
-                width: 100%;
-                height: 100px;
+			& table {
+				color: black;
+				border-collapse: collapse;
+				width: 100%;
+				height: 100px;
 
-                & thead {
-                    background-color: rgba(255, 240, 150, .7);
-                }
+				& thead {
+					background-color: rgba(255, 240, 150, 0.7);
+				}
 
-                & td, & th {
-                    border: 1px solid #9a9a9a;
-                    padding: 8px;
-                    text-align: left;
-                    max-height: fit-content;
-                }
+				& td,
+				& th {
+					border: 1px solid #9a9a9a;
+					padding: 8px;
+					text-align: left;
+					max-height: fit-content;
+				}
 
-                & button {
-                    position: absolute;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
-                    padding: .3rem 1rem;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: .1rem;
+				& button {
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					transform: translate(-50%, -50%);
+					padding: 0.3rem 1rem;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					gap: 0.1rem;
 
-                    & svg {
-                        width: 1rem;
-                    }
-                }
+					& svg {
+						width: 1rem;
+					}
+				}
 
-                .employee-details {
-                    margin-bottom: .4rem;
-                }
+				.employee-details {
+					margin-bottom: 0.4rem;
+				}
 
-                .employee-details:last-child {
-                    margin-bottom: 0;
-                }
-            }
-        }
+				.employee-details:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
 
-        .bottom-row {
-            background-color: rgba(10, 25, 78, 1);
-            border-bottom-right-radius: 8px;
-            border-bottom-left-radius: 8px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: .7rem 1.5rem;
-            outline-width: 0;
+		.bottom-row {
+			background-color: rgba(10, 25, 78, 1);
+			border-bottom-right-radius: 8px;
+			border-bottom-left-radius: 8px;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			padding: 0.7rem 1.5rem;
+			outline-width: 0;
 
-            & label {
-                font-size: .9rem;
-            }
+			& label {
+				font-size: 0.9rem;
+			}
 
-            & select {
-                border: none;
-                border-radius: 5px;
-                font-size: .8rem;
-                padding: .15rem;
-            }
+			& select {
+				border: none;
+				border-radius: 5px;
+				font-size: 0.8rem;
+				padding: 0.15rem;
+			}
 
-            .page-navigation {
-                display: flex;
-                justify-content: space-between;
-                gap: .5rem;
+			.page-navigation {
+				display: flex;
+				justify-content: space-between;
+				gap: 0.5rem;
 
-                & button svg {
-                    width: 1rem;
-                }
-            }
-        }
-    }
+				& button svg {
+					width: 1rem;
+				}
+			}
+		}
+	}
 }
-
-

@@ -1,26 +1,26 @@
 .new-business-trip-container {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    font-size: 1rem;
-    background-color: rgba(28, 45, 107, 1);
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	margin-top: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1rem;
+	font-size: 1rem;
+	background-color: rgba(28, 45, 107, 1);
+	border-radius: 10px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
 }
 
 .new-business-trip-container .title {
-    font-weight: bold;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    color: white;
+	font-weight: bold;
+	font-size: 1.3rem;
+	margin-bottom: 1rem;
+	color: white;
 }
 
 .new-business-trip-container form {
-    display: flex;
-    flex-direction: column;
-    gap: .8rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
 }
 
 .new-business-trip-container .first-row,
@@ -28,45 +28,45 @@
 .new-business-trip-container .third-row,
 .new-business-trip-container .fourth-row,
 .new-business-trip-container .fifth-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 1rem;
 }
 
 .new-business-trip-container .fourth-row {
-    justify-content: flex-start;
-    gap: 1.1rem;
+	justify-content: flex-start;
+	gap: 1.1rem;
 }
 
 .new-business-trip-container .fifth-row {
-    margin-top: 1rem;
-    justify-content: center;
+	margin-top: 1rem;
+	justify-content: center;
 }
 
 .new-business-trip-container .fifth-row button {
-    padding: .5rem 3rem;
-    font-size: 1rem;
+	padding: 0.5rem 3rem;
+	font-size: 1rem;
 }
 
 .new-business-trip-container .dates-container {
-    display: flex;
-    flex-direction: column;
-    gap: .4rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
 }
 
 .new-business-trip-container .dates-container #trip-regions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: .05rem .7rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.05rem 0.7rem;
 }
 
 .new-business-trip-container .dates-container #trip-regions svg {
-    width: 1.3rem;
+	width: 1.3rem;
 }
 
-.new-business-trip-container input[type="checkbox"] {
-    width: 1rem;
-    height: 1rem;
+.new-business-trip-container input[type='checkbox'] {
+	width: 1rem;
+	height: 1rem;
 }

@@ -1,13 +1,13 @@
-import useAuth from "./useAuth.js";
+import useAuth from './useAuth.js'
 
 const useLogout = () => {
-    const {setAuth} = useAuth()
+	const { setAuth } = useAuth()
 
-    return () => {
-        setAuth({})
-        localStorage.removeItem("token");
-        localStorage.removeItem("name");
-    }
+	return () => {
+		setAuth({})
+		localStorage.removeItem('token')
+		localStorage.removeItem('name')
+	}
 }
 
 export default useLogout
