@@ -64,8 +64,9 @@ const TripDetailsPageEditor = () => {
 				findTripByIdQuery?.data?.data?.employeeMoneyDetails
 					?.map((option) => {
 						return {
-							value: option.employee.id,
-							label:
+							employeeId: option.employee.id,
+							amount: option.amount,
+							employeeName:
 								option.employee.lastName +
 								' ' +
 								option.employee.firstName +
@@ -73,8 +74,12 @@ const TripDetailsPageEditor = () => {
 								option.employee.fatherName,
 						}
 					})
-					.map((employee) => {
-						return { name: employee.label, value: 0, id: employee.value }
+					.map((moneyDetail) => {
+						return {
+							name: moneyDetail.employeeName,
+							value: moneyDetail.amount,
+							id: moneyDetail.employeeId,
+						}
 					})
 			)
 			setPurposeList((prev) =>
@@ -188,8 +193,8 @@ const TripDetailsPageEditor = () => {
 	}
 
 	const addMoneyAsEditorMutation = useMutation({
-		mutationFn: ({ tripId, moneyDetails }) =>
-			addMoneyAsEditor(auth.jwtToken, tripId, moneyDetails),
+		mutationFn: ({ moneyDetails }) =>
+			addMoneyAsEditor(auth.jwtToken, moneyDetails),
 	})
 
 	if (findTripByIdQuery.isError) return <MissingPage />
@@ -200,18 +205,23 @@ const TripDetailsPageEditor = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		const moneyDetails = [
-			findTripByIdQuery?.data?.data?.employeeMoneyDetails.map((detail) => {
-				return {
-					id: detail.id,
-					amount:
-						inputs.find((input) => input.id === detail.employee.id).value || 0,
+		const moneyDetails = {
+			moneyDtos: findTripByIdQuery?.data?.data?.employeeMoneyDetails.map(
+				(detail) => {
+					return {
+						id: Number(detail.id),
+						amount:
+							Number(
+								inputs.find((input) => input.id === detail.employee.id).value
+							) || 0,
+					}
 				}
-			}),
-		]
+			),
+		}
+		console.log(moneyDetails)
 		try {
 			addMoneyAsEditorMutation.mutate(
-				{ tripId: id, moneyDetails },
+				{ moneyDetails },
 				{
 					onSuccess: (data) => {
 						notifySuccess()
@@ -238,12 +248,6 @@ const TripDetailsPageEditor = () => {
 	return (
 		<div className='container'>
 			<div className='trip-container'>
-				<button
-					type='button'
-					onClick={() => console.log(inputs)}
-				>
-					Test
-				</button>
 				<button
 					style={{ alignSelf: 'flex-start' }}
 					type='button'

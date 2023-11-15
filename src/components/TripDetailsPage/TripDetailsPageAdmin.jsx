@@ -456,7 +456,7 @@ const TripDetailsPageAdmin = () => {
 		return <Loading />
 	}
 
-	const handleSubmitAdmin = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault()
 		const newBusinessTrip = {
 			businessTripDetails: regionValues.map((region, index) => {
@@ -519,50 +519,6 @@ const TripDetailsPageAdmin = () => {
 		}
 	}
 
-	const handleSubmitEditor = (e) => {
-		e.preventDefault()
-		const moneyDetails = [
-			findTripByIdQuery?.data?.data?.employeeMoneyDetails.map(
-				(detail, index) => {
-					return {
-						id: detail.id,
-						amount: employeesList.map((employee) => {
-							return (
-								inputs.find((input) => input.id === employee.value).value || 0
-							)
-						}),
-					}
-				}
-			),
-		]
-		try {
-			addMoneyAsEditorMutation.mutate(
-				{ tripId: id, moneyDetails },
-				{
-					onSuccess: (data) => {
-						notifySuccess()
-					},
-					onError: (error) => {
-						if (error.response?.status === 404) {
-							notifyErrorNotFound()
-						} else {
-							notifyError()
-						}
-						console.log(error.message)
-					},
-					onSettled: (data) => {
-						queryClient.invalidateQueries(['businessTrips'])
-						navigate(-1)
-					},
-				}
-			)
-		} catch (err) {
-			console.log(err.message)
-		} finally {
-			setFocusedRegionDayInput(null)
-		}
-	}
-
 	return (
 		<div className='container'>
 			<div className='trip-container'>
@@ -594,17 +550,7 @@ const TripDetailsPageAdmin = () => {
 						{!isEdit ? 'aktivləşdir' : 'deaktivləşdir'}
 					</button>
 				</div>
-				<form
-					onSubmit={
-						auth.roles.find((role) => role === 'ROLE_ADMIN')
-							? handleSubmitAdmin
-							: auth.roles.find((role) => role === 'ROLE_EDITOR')
-							? handleSubmitEditor
-							: () => {
-									return
-							  }
-					}
-				>
+				<form onSubmit={handleSubmit}>
 					<div>
 						<label htmlFor='trip-employees'>Ezamiyyətə gedən işçilər:</label>
 						<br />
