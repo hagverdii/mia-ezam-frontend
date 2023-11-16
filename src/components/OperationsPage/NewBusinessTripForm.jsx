@@ -1,9 +1,10 @@
-import './NewBusinessTripForm.css'
-import React, { useCallback, useLayoutEffect, useState } from 'react'
-import Select, { components } from 'react-select'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import useAuth from '../../hooks/useAuth.js'
-import Loading from '../Loading/Loading.jsx'
+import { format, startOfMonth } from 'date-fns'
+import { nanoid } from 'nanoid'
+import React, { useCallback, useLayoutEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import Select, { createFilter } from 'react-select'
+import CustomMenuList from './CustomMenuList.jsx'
 import {
 	addNewBusinessTrip,
 	getAllEmployees,
@@ -14,12 +15,14 @@ import {
 	getAllRegions,
 	getAllResulConclusions,
 } from '../../api/axiosApi.js'
-import { format, startOfMonth } from 'date-fns'
-import DatePicker from './DatePicker.jsx'
-import { nanoid } from 'nanoid'
 import { PlusIcon, TrashIcon } from '../../assets/heroicons.jsx'
+import useAuth from '../../hooks/useAuth.js'
+import Loading from '../Loading/Loading.jsx'
+import CustomOption from './CustomOption.jsx'
+import DatePicker from './DatePicker.jsx'
+import './NewBusinessTripForm.css'
 import RegionDayInputField from './RegionDayInputField.jsx'
-import toast from 'react-hot-toast'
+import customMultiValueLabel from './customMultiValueLabel.jsx'
 
 const NewBusinessTripForm = () => {
 	const { auth } = useAuth()
@@ -89,7 +92,7 @@ const NewBusinessTripForm = () => {
 		}),
 		menuList: (provided) => ({
 			...provided,
-			maxHeight: '200px',
+			maxHeight: '180px',
 			overflowY: 'auto',
 		}),
 		menu: (provided) => ({
@@ -137,15 +140,6 @@ const NewBusinessTripForm = () => {
 			fontSize: '.9rem',
 			color: 'black',
 		}),
-	}
-
-	const customMultiValueLabel = ({ children, ...props }) => {
-		const parts = children.split(' ')
-		return (
-			<components.MultiValueLabel {...props}>
-				{parts[0] + ' ' + parts[1] + ' ' + parts[2]}
-			</components.MultiValueLabel>
-		)
 	}
 
 	const getAllEmployeesQuery = useQuery({
@@ -333,7 +327,9 @@ const NewBusinessTripForm = () => {
 						<label htmlFor='trip-employees'>Ezamiyyətə gedən işçilər:</label>
 						<br />
 						<Select
-							id={'trip-employees'}
+							classNamePrefix='custom-select'
+							captureMenuScroll={false}
+							filterOption={createFilter({ ignoreAccents: false })}
 							value={employeesList}
 							onChange={setEmployeesList}
 							options={employeeOptions}
@@ -343,7 +339,11 @@ const NewBusinessTripForm = () => {
 							required
 							styles={customStyles}
 							closeMenuOnSelect={false}
-							components={{ MultiValueLabel: customMultiValueLabel }}
+							components={{
+								MultiValueLabel: customMultiValueLabel,
+								Option: CustomOption,
+								MenuList: CustomMenuList,
+							}}
 						/>
 					</div>
 					<div>
