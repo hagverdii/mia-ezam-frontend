@@ -1,5 +1,6 @@
 header {
-	background-color: rgba(10, 25, 78, 1);
+	/* background-color: rgba(10, 25, 78, 1); */
+	background-color: #00111c;
 	position: fixed;
 	z-index: 9999;
 }
@@ -50,20 +51,18 @@ nav ul {
 .nav-element {
 	padding: 0.4rem 2.3rem;
 	border: none;
-	background-color: rgba(29, 46, 107, 1);
+	/* background-color: rgba(29, 46, 107, 1); */
+	background-color: #002137;
 	border-radius: 8px;
 	text-decoration: none;
 	color: white;
 	transition: all 0.2s;
 }
 
-.nav-element.active {
-	background-color: rgba(75, 91, 151, 1);
-	padding: 0.4rem 3rem;
-}
-
+.nav-element.active,
 .nav-element:hover {
-	background-color: rgba(75, 91, 151, 1);
+	/* background-color: rgba(75, 91, 151, 1); */
+	background-color: #003356;
 	padding: 0.4rem 3rem;
 }
 
@@ -77,7 +76,8 @@ nav ul {
 }
 
 .user-bar button {
-	background-color: rgba(29, 46, 107, 1);
+	/* background-color: rgba(29, 46, 107, 1); */
+	background-color: #002137;
 	border: none;
 	border-radius: 8px;
 	color: white;
@@ -88,7 +88,7 @@ nav ul {
 }
 
 .user-bar button:hover {
-	background-color: rgba(75, 91, 151, 1);
+	filter: brightness(135%);
 }
 
 .user-bar button svg {

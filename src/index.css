@@ -84,7 +84,8 @@ body {
 
 /*Default button styles*/
 .default-button {
-	background-color: rgba(29, 46, 107, 1);
+	/* background-color: rgba(29, 46, 107, 1); */
+	background-color: #002e4e;
 	border-radius: 5px;
 	border: none;
 	color: white;
@@ -102,7 +103,7 @@ body {
 }
 
 .default-button:hover:not(:disabled) {
-	filter: brightness(120%);
+	filter: brightness(118%);
 }
 
 .default-button:disabled {

@@ -73,7 +73,12 @@ const LoginPage = () => {
 					</p>
 					<h1 style={{ textAlign: 'center' }}>Daxil ol</h1>
 					<form onSubmit={handleSubmit}>
-						<label htmlFor='username'>Istifadəçi:</label>
+						<label
+							style={{ marginBottom: '.2rem' }}
+							htmlFor='username'
+						>
+							İstifadəçi:
+						</label>
 						<input
 							type='text'
 							id='username'
@@ -83,7 +88,12 @@ const LoginPage = () => {
 							onChange={(e) => setUser(e.target.value)}
 							required
 						/>
-						<label htmlFor='password'>Şifrə:</label>
+						<label
+							style={{ marginBottom: '.2rem' }}
+							htmlFor='password'
+						>
+							Şifrə:
+						</label>
 						<div className='password-container'>
 							<input
 								type={showPassword ? 'text' : 'password'}

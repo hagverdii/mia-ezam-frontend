@@ -10,8 +10,7 @@
 .login-footer {
 	width: 100%;
 	padding: 0.3rem;
-	/*background-color: rgba(7, 18, 58, 1);*/
-	background-color: rgba(10, 25, 78, 1);
+	background-color: #00111c;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -37,7 +36,7 @@
 	border-radius: 8px;
 	border: none;
 	/*background-color: rgb(57, 66, 148);*/
-	background-color: rgba(29, 46, 107, 1);
+	background-color: #001a2c;
 }
 
 .login-page form {
@@ -56,6 +55,7 @@
 .login-page input,
 .login-page button,
 .login-page textarea {
+	outline: none;
 	border: none;
 	font-family: 'Nunito', sans-serif;
 	font-size: 1rem;
@@ -79,6 +79,7 @@
 	width: 9rem;
 	align-self: center;
 	transition: background-color 0.2s;
+	margin-top: 1.2rem;
 }
 
 .login-page button:hover:not(:disabled) {

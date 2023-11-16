@@ -280,7 +280,7 @@ const BusinessTripsPageableTable = () => {
 			<div className='businessTrips-table'>
 				<div className='top-row'>
 					<div>
-						<label htmlFor='pageSize'>İşçi göstər: </label>
+						<label htmlFor='pageSize'>Ezamiyyət göstər: </label>
 						<select
 							id='pageSize'
 							onChange={handlePageSizeChange}
@@ -327,11 +327,16 @@ const BusinessTripsPageableTable = () => {
 																	key={nanoid()}
 																>
 																	<strong>
-																		{employeeDetail?.employee?.lastName +
+																		{(
+																			employeeDetail?.employee?.lastName +
 																			' ' +
 																			employeeDetail?.employee?.firstName +
 																			' ' +
-																			employeeDetail?.employee?.fatherName}
+																			employeeDetail?.employee?.fatherName
+																		)
+																			.replace(/\s+/g, ' ')
+																			.trim()
+																			.slice(0, 40)}
 																	</strong>
 																	{' - [' +
 																		employeeDetail?.employee?.rank?.name +

@@ -244,7 +244,10 @@ const EmployeesPageableTable = () => {
 														employee?.firstName +
 														' ' +
 														employee?.fatherName
-													).slice(0, 35)}
+													)
+														.replace(/\s+/g, ' ')
+														.trim()
+														.slice(0, 40)}
 												</td>
 												<td>{'AZ-' + employee?.policeCard}</td>
 												<td>{employee?.rank?.name}</td>

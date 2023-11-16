@@ -18,8 +18,8 @@
 	font-weight: normal;
 	padding: 0.5rem 2rem;
 	border-radius: 0;
-	border: 1px solid #7280b3;
-	background-color: rgba(29, 46, 107, 1);
+	border: none;
+	background-color: #001a2c;
 	color: white;
 	cursor: pointer;
 	transition: all 0.2s;
@@ -33,5 +33,6 @@
 }
 
 .navigation-buttons .active-menu {
-	background-color: rgba(114, 128, 179, 1);
+	background-color: #003a61;
+	text-decoration: underline;
 }

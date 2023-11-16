@@ -16,13 +16,12 @@
 	justify-content: center;
 	padding: 1rem;
 	font-size: 1rem;
-	background-color: rgba(28, 45, 107, 1);
+	background-color: #001a2c;
 	border-radius: 10px;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
 	width: 45rem;
 
 	.back {
-		background-color: rgba(73, 90, 151, 1);
 		font-weight: bold;
 		font-size: 0.9rem;
 		padding: 0.5rem 1.2rem;

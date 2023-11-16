@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://10.14.33.67:8080'
+const BASE_URL = 'http://172.16.7.222:8080'
 
 export const verifyJwt = (jwtToken) => {
 	return axios.post(
