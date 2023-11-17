@@ -63,6 +63,7 @@ nav ul {
 .nav-element:hover {
 	/* background-color: rgba(75, 91, 151, 1); */
 	background-color: #003356;
+	text-decoration: underline;
 	padding: 0.4rem 3rem;
 }
 

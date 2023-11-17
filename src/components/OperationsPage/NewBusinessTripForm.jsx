@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid'
 import React, { useCallback, useLayoutEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Select, { createFilter } from 'react-select'
-import CustomMenuList from './CustomMenuList.jsx'
 import {
 	addNewBusinessTrip,
 	getAllEmployees,
@@ -18,11 +17,17 @@ import {
 import { PlusIcon, TrashIcon } from '../../assets/heroicons.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
+import CustomMenuList from './CustomMenuList.jsx'
 import CustomOption from './CustomOption.jsx'
 import DatePicker from './DatePicker.jsx'
 import './NewBusinessTripForm.css'
 import RegionDayInputField from './RegionDayInputField.jsx'
 import customMultiValueLabel from './customMultiValueLabel.jsx'
+import { debounce } from 'lodash'
+
+const mapDataToOptions = (data) => {
+	return data.map((item) => ({ value: item.id, label: item.name }))
+}
 
 const NewBusinessTripForm = () => {
 	const { auth } = useAuth()
@@ -172,7 +177,7 @@ const NewBusinessTripForm = () => {
 		staleTime: 1000 * 60 * 10,
 	})
 
-	const getAllPosResultConclusionsQuery = useQuery({
+	const getAllResultConclusionsQuery = useQuery({
 		queryKey: ['allResultConclusions'],
 		queryFn: () => getAllResulConclusions(auth.jwtToken),
 		staleTime: 1000 * 60 * 10,
@@ -183,6 +188,44 @@ const NewBusinessTripForm = () => {
 		queryFn: () => getAllRegions(auth.jwtToken),
 		staleTime: 1000 * 60 * 10,
 	})
+
+	const employeeOptions = getAllEmployeesQuery?.data?.data
+		? getAllEmployeesQuery?.data?.data?.map((employee) => {
+				return {
+					value: Number(employee.id),
+					label:
+						employee.lastName +
+						' ' +
+						employee.firstName +
+						' ' +
+						employee.fatherName +
+						' - [' +
+						employee.rank.name +
+						', ' +
+						employee.department.name +
+						']',
+				}
+		  })
+		: []
+	const purposeOptions = getAllPurposesQuery?.data?.data
+		? mapDataToOptions(getAllPurposesQuery.data.data)
+		: []
+	const reasonOptions = getAllReasonsQuery?.data?.data
+		? mapDataToOptions(getAllReasonsQuery.data.data)
+		: []
+	const helpOptions = getAllHelpsQuery?.data?.data
+		? mapDataToOptions(getAllHelpsQuery.data.data)
+		: []
+	const posResultOptions = getAllPosResultsQuery?.data?.data
+		? mapDataToOptions(getAllPosResultsQuery.data.data)
+		: []
+	const resultConclusionOptions = getAllResultConclusionsQuery?.data?.data
+		? mapDataToOptions(getAllResultConclusionsQuery.data.data)
+		: []
+
+	const regionOptions = getAllRegionsQuery?.data?.data
+		? mapDataToOptions(getAllRegionsQuery.data.data)
+		: []
 
 	const addBusinessTripMutation = useMutation({
 		mutationFn: ({ newBusinessTrip }) =>
@@ -205,64 +248,6 @@ const NewBusinessTripForm = () => {
 	) {
 		return <Loading />
 	}
-
-	const employeeOptions = !getAllEmployeesQuery.isLoading
-		? getAllEmployeesQuery.data.data.map((employee) => {
-				return {
-					value: Number(employee.id),
-					label:
-						employee.lastName +
-						' ' +
-						employee.firstName +
-						' ' +
-						employee.fatherName +
-						' - [' +
-						employee.rank.name +
-						', ' +
-						employee.department.name +
-						']',
-				}
-		  })
-		: null
-
-	const purposeOptions = !getAllPurposesQuery.isLoading
-		? getAllPurposesQuery.data.data.map((purpose) => {
-				return { value: Number(purpose.id), label: purpose.name }
-		  })
-		: null
-
-	const reasonOptions = !getAllReasonsQuery.isLoading
-		? getAllReasonsQuery.data.data.map((reason) => {
-				return { value: Number(reason.id), label: reason.name }
-		  })
-		: null
-
-	const helpOptions = !getAllHelpsQuery.isLoading
-		? getAllHelpsQuery.data.data.map((help) => {
-				return { value: Number(help.id), label: help.name }
-		  })
-		: null
-
-	const posResultOptions = !getAllPosResultsQuery.isLoading
-		? getAllPosResultsQuery.data.data.map((posResult) => {
-				return { value: Number(posResult.id), label: posResult.name }
-		  })
-		: null
-
-	const resultConclusionOptions = !getAllPosResultConclusionsQuery.isLoading
-		? getAllPosResultConclusionsQuery.data.data.map((resultConclusion) => {
-				return {
-					value: Number(resultConclusion.id),
-					label: resultConclusion.name,
-				}
-		  })
-		: null
-
-	const regionOptions = !getAllRegionsQuery.isLoading
-		? getAllRegionsQuery.data.data.map((region) => {
-				return { value: Number(region.id), label: region.name }
-		  })
-		: null
 
 	const handleSubmit = (e) => {
 		e.preventDefault()

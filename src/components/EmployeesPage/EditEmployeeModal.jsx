@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import './EditEmployeeModal.css'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import Select from 'react-select'
 import {
 	getAllDepartments,
 	getAllPositions,
 	getAllRanks,
 	updateEmployeeById,
 } from '../../api/axiosApi.js'
+import { CloseIcon } from '../../assets/heroicons.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
-import Select from 'react-select'
-import { CloseIcon } from '../../assets/heroicons.jsx'
-import toast from 'react-hot-toast'
+import './EditEmployeeModal.css'
+
+const mapDataToOptions = (data) => {
+	return data.map((item) => ({ value: item.id, label: item.name }))
+}
 
 const EditEmployeeModal = ({
 	selectedEmployee,
@@ -43,23 +47,15 @@ const EditEmployeeModal = ({
 		staleTime: 1000 * 60 * 10,
 	})
 
-	const rankOptions = !allRanksQuery.isLoading
-		? allRanksQuery.data.data.map((rank) => {
-				return { value: Number(rank.id), label: rank.name }
-		  })
-		: null
-
-	const departmentOptions = !allDepartmentsQuery.isLoading
-		? allDepartmentsQuery.data.data.map((department) => {
-				return { value: Number(department.id), label: department.name }
-		  })
-		: null
-
-	const positionOptions = !allPositionsQuery.isLoading
-		? allPositionsQuery.data.data.map((position) => {
-				return { value: Number(position.id), label: position.name }
-		  })
-		: null
+	const rankOptions = allRanksQuery?.data?.data
+		? mapDataToOptions(allRanksQuery.data.data)
+		: []
+	const departmentOptions = allDepartmentsQuery?.data?.data
+		? mapDataToOptions(allDepartmentsQuery.data.data)
+		: []
+	const positionOptions = allPositionsQuery?.data?.data
+		? mapDataToOptions(allPositionsQuery.data.data)
+		: []
 
 	const [editFirstName, setEditFirstName] = useState('')
 	const [editLastName, setEditLastName] = useState('')

@@ -1,5 +1,7 @@
-import './NewEmployeeForm.css'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import Select from 'react-select'
 import {
 	addNewEmployee,
 	getAllDepartments,
@@ -8,9 +10,11 @@ import {
 } from '../../api/axiosApi.js'
 import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
-import React, { useState } from 'react'
-import Select from 'react-select'
-import toast from 'react-hot-toast'
+import './NewEmployeeForm.css'
+
+const mapDataToOptions = (data) => {
+	return data.map((item) => ({ value: item.id, label: item.name }))
+}
 
 const NewEmployeeForm = () => {
 	const { auth } = useAuth()
@@ -46,6 +50,16 @@ const NewEmployeeForm = () => {
 		staleTime: 1000 * 60 * 10,
 	})
 
+	const rankOptions = allRanksQuery?.data?.data
+		? mapDataToOptions(allRanksQuery.data.data)
+		: []
+	const departmentOptions = allDepartmentsQuery?.data?.data
+		? mapDataToOptions(allDepartmentsQuery.data.data)
+		: []
+	const positionOptions = allPositionsQuery?.data?.data
+		? mapDataToOptions(allPositionsQuery.data.data)
+		: []
+
 	const addNewEmployeeMutation = useMutation({
 		mutationFn: ({ newEmployee }) => addNewEmployee(auth.jwtToken, newEmployee),
 		onMutate: () => setIsLoading(true),
@@ -67,24 +81,6 @@ const NewEmployeeForm = () => {
 	) {
 		return <Loading />
 	}
-
-	const rankOptions = !allRanksQuery.isLoading
-		? allRanksQuery.data.data.map((rank) => {
-				return { value: Number(rank.id), label: rank.name }
-		  })
-		: null
-
-	const departmentOptions = !allDepartmentsQuery.isLoading
-		? allDepartmentsQuery.data.data.map((department) => {
-				return { value: Number(department.id), label: department.name }
-		  })
-		: null
-
-	const positionOptions = !allPositionsQuery.isLoading
-		? allPositionsQuery.data.data.map((position) => {
-				return { value: Number(position.id), label: position.name }
-		  })
-		: null
 
 	const customStyles = {
 		control: (provided) => ({

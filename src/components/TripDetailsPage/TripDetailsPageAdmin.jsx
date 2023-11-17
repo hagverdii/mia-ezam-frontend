@@ -1,8 +1,10 @@
-import useAuth from '../../hooks/useAuth.js'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { format, parse, startOfMonth } from 'date-fns'
-import Select, { components } from 'react-select'
+import { nanoid } from 'nanoid'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import Select, { components, createFilter } from 'react-select'
 import {
 	addMoneyAsEditor,
 	findBusinessTripById,
@@ -15,22 +17,24 @@ import {
 	getAllResulConclusions,
 	updateBusinessTrip,
 } from '../../api/axiosApi.js'
-import Loading from '../Loading/Loading.jsx'
-import DatePicker from '../OperationsPage/DatePicker.jsx'
 import {
 	BackIcon,
 	EditIcon,
 	PlusIcon,
 	TrashIcon,
 } from '../../assets/heroicons.jsx'
-import { nanoid } from 'nanoid'
-import RegionDayInputField from '../OperationsPage/RegionDayInputField.jsx'
-import './TripDetailsPage.css'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth.js'
+import Loading from '../Loading/Loading.jsx'
 import MissingPage from '../MissingPage/MissingPage.jsx'
-import toast from 'react-hot-toast'
-import CustomOption from './CustomOption.jsx'
+import DatePicker from '../OperationsPage/DatePicker.jsx'
+import RegionDayInputField from '../OperationsPage/RegionDayInputField.jsx'
 import CustomMenuList from './CustomMenuList.jsx'
+import CustomOption from './CustomOption.jsx'
+import './TripDetailsPage.css'
+
+const mapDataToOptions = (data) => {
+	return data.map((item) => ({ value: item.id, label: item.name }))
+}
 
 const TripDetailsPageAdmin = () => {
 	const { auth } = useAuth()
@@ -47,17 +51,89 @@ const TripDetailsPageAdmin = () => {
 		retry: 1,
 	})
 
+	const getAllEmployeesQuery = useQuery({
+		queryKey: ['allEmployees'],
+		queryFn: () => getAllEmployees(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const getAllPurposesQuery = useQuery({
+		queryKey: ['allPurposes'],
+		queryFn: () => getAllPurposes(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const getAllReasonsQuery = useQuery({
+		queryKey: ['allReasons'],
+		queryFn: () => getAllReasons(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const getAllHelpsQuery = useQuery({
+		queryKey: ['allHelps'],
+		queryFn: () => getAllHelps(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const getAllPosResultsQuery = useQuery({
+		queryKey: ['allPosResults'],
+		queryFn: () => getAllPosResults(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const getAllResultConclusionsQuery = useQuery({
+		queryKey: ['allResultConclusions'],
+		queryFn: () => getAllResulConclusions(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const getAllRegionsQuery = useQuery({
+		queryKey: ['allRegions'],
+		queryFn: () => getAllRegions(auth.jwtToken),
+		staleTime: 1000 * 60 * 10,
+	})
+
+	const employeeOptions = getAllEmployeesQuery?.data?.data
+		? getAllEmployeesQuery?.data?.data?.map((employee) => {
+				return {
+					value: Number(employee.id),
+					label:
+						employee.lastName +
+						' ' +
+						employee.firstName +
+						' ' +
+						employee.fatherName +
+						' - [' +
+						employee.rank.name +
+						', ' +
+						employee.department.name +
+						']',
+				}
+		  })
+		: []
+	const purposeOptions = getAllPurposesQuery?.data?.data
+		? mapDataToOptions(getAllPurposesQuery.data.data)
+		: []
+	const reasonOptions = getAllReasonsQuery?.data?.data
+		? mapDataToOptions(getAllReasonsQuery.data.data)
+		: []
+	const helpOptions = getAllHelpsQuery?.data?.data
+		? mapDataToOptions(getAllHelpsQuery.data.data)
+		: []
+	const posResultOptions = getAllPosResultsQuery?.data?.data
+		? mapDataToOptions(getAllPosResultsQuery.data.data)
+		: []
+	const resultConclusionOptions = getAllResultConclusionsQuery?.data?.data
+		? mapDataToOptions(getAllResultConclusionsQuery.data.data)
+		: []
+
+	const regionOptions = getAllRegionsQuery?.data?.data
+		? mapDataToOptions(getAllRegionsQuery.data.data)
+		: []
+
 	const notifySuccess = () => toast.success('Ezamiyyət uğurla redaktə olundu')
 	const notifyError = () => toast.error('Ezamiyyət redaktə olunmadı')
 	const notifyErrorNotFound = () => toast.error('Ezamiyyət bazada tapılmadı')
-
-	const [employeeOptions, setEmployeeOptions] = useState([])
-	const [purposeOptions, setPurposeOptions] = useState([])
-	const [reasonOptions, setReasonOptions] = useState([])
-	const [helpOptions, setHelpOptions] = useState([])
-	const [posResultOptions, setPosResultOptions] = useState([])
-	const [resultConclusionOptions, setResultConclusionOptions] = useState([])
-	const [regionOptions, setRegionOptions] = useState([])
 
 	const [employeesList, setEmployeesList] = useState([])
 	const [purposeList, setPurposeList] = useState([])
@@ -217,8 +293,8 @@ const TripDetailsPageAdmin = () => {
 		id,
 		employeeOptions,
 		purposeOptions,
-		reasonOptions,
 		helpOptions,
+		reasonOptions,
 		posResultOptions,
 		resultConclusionOptions,
 	])
@@ -301,149 +377,6 @@ const TripDetailsPageAdmin = () => {
 			</components.MultiValueLabel>
 		)
 	}
-
-	const getAllEmployeesQuery = useQuery({
-		queryKey: ['allEmployees'],
-		queryFn: () => getAllEmployees(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	const getAllPurposesQuery = useQuery({
-		queryKey: ['allPurposes'],
-		queryFn: () => getAllPurposes(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	const getAllReasonsQuery = useQuery({
-		queryKey: ['allReasons'],
-		queryFn: () => getAllReasons(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	const getAllHelpsQuery = useQuery({
-		queryKey: ['allHelps'],
-		queryFn: () => getAllHelps(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	const getAllPosResultsQuery = useQuery({
-		queryKey: ['allPosResults'],
-		queryFn: () => getAllPosResults(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	const getAllResultConclusionsQuery = useQuery({
-		queryKey: ['allResultConclusions'],
-		queryFn: () => getAllResulConclusions(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	const getAllRegionsQuery = useQuery({
-		queryKey: ['allRegions'],
-		queryFn: () => getAllRegions(auth.jwtToken),
-		staleTime: 1000 * 60 * 10,
-	})
-
-	useEffect(() => {
-		if (!getAllEmployeesQuery.isLoading) {
-			setEmployeeOptions(
-				getAllEmployeesQuery?.data?.data?.map((employee) => {
-					return {
-						value: Number(employee.id),
-						label:
-							employee.lastName +
-							' ' +
-							employee.firstName +
-							' ' +
-							employee.fatherName +
-							' - [' +
-							employee.rank.name +
-							', ' +
-							employee.department.name +
-							']',
-					}
-				})
-			)
-		}
-	}, [getAllEmployeesQuery.isLoading])
-
-	useEffect(() => {
-		if (!getAllPurposesQuery.isLoading) {
-			setPurposeOptions(
-				getAllPurposesQuery?.data?.data?.map((purpose) => {
-					return {
-						value: Number(purpose.id),
-						label: purpose.name,
-					}
-				})
-			)
-		}
-	}, [getAllPurposesQuery.isLoading])
-
-	useEffect(() => {
-		if (!getAllReasonsQuery.isLoading) {
-			setReasonOptions(
-				getAllReasonsQuery?.data?.data?.map((reason) => {
-					return {
-						value: Number(reason.id),
-						label: reason.name,
-					}
-				})
-			)
-		}
-	}, [getAllReasonsQuery.isLoading])
-
-	useEffect(() => {
-		if (!getAllHelpsQuery.isLoading) {
-			setHelpOptions(
-				getAllHelpsQuery?.data?.data?.map((help) => {
-					return {
-						value: Number(help.id),
-						label: help.name,
-					}
-				})
-			)
-		}
-	}, [getAllHelpsQuery.isLoading])
-
-	useEffect(() => {
-		if (!getAllPosResultsQuery.isLoading) {
-			setPosResultOptions(
-				getAllPosResultsQuery?.data?.data?.map((result) => {
-					return {
-						value: Number(result.id),
-						label: result.name,
-					}
-				})
-			)
-		}
-	}, [getAllPosResultsQuery.isLoading])
-
-	useEffect(() => {
-		if (!getAllResultConclusionsQuery.isLoading) {
-			setResultConclusionOptions(
-				getAllResultConclusionsQuery?.data?.data?.map((conclusion) => {
-					return {
-						value: Number(conclusion.id),
-						label: conclusion.name,
-					}
-				})
-			)
-		}
-	}, [getAllResultConclusionsQuery.isLoading])
-
-	useEffect(() => {
-		if (!getAllRegionsQuery.isLoading) {
-			setRegionOptions(
-				getAllRegionsQuery?.data?.data?.map((region) => {
-					return {
-						value: Number(region.id),
-						label: region.name,
-					}
-				})
-			)
-		}
-	}, [getAllRegionsQuery.isLoading])
 
 	if (findTripByIdQuery.isError) return <MissingPage />
 
@@ -575,6 +508,8 @@ const TripDetailsPageAdmin = () => {
 							}}
 							options={employeeOptions}
 							classNamePrefix='custom-select'
+							captureMenuScroll={false}
+							filterOption={createFilter({ ignoreAccents: false })}
 							isSearchable
 							isMulti
 							isClearable
