@@ -29,6 +29,8 @@ import './TripDetailsPage.css'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MissingPage from '../MissingPage/MissingPage.jsx'
 import toast from 'react-hot-toast'
+import CustomOption from './CustomOption.jsx'
+import CustomMenuList from './CustomMenuList.jsx'
 
 const TripDetailsPageAdmin = () => {
 	const { auth } = useAuth()
@@ -572,6 +574,7 @@ const TripDetailsPageAdmin = () => {
 								setInputs(newInputs)
 							}}
 							options={employeeOptions}
+							classNamePrefix='custom-select'
 							isSearchable
 							isMulti
 							isClearable
@@ -582,7 +585,11 @@ const TripDetailsPageAdmin = () => {
 							}}
 							styles={customStyles}
 							closeMenuOnSelect={false}
-							components={{ MultiValueLabel: customMultiValueLabel }}
+							components={{
+								MultiValueLabel: customMultiValueLabel,
+								Option: CustomOption,
+								MenuList: CustomMenuList,
+							}}
 						/>
 					</div>
 					<div>
