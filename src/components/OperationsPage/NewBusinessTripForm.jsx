@@ -23,7 +23,6 @@ import DatePicker from './DatePicker.jsx'
 import './NewBusinessTripForm.css'
 import RegionDayInputField from './RegionDayInputField.jsx'
 import customMultiValueLabel from './customMultiValueLabel.jsx'
-import { debounce } from 'lodash'
 
 const mapDataToOptions = (data) => {
 	return data.map((item) => ({ value: item.id, label: item.name }))
@@ -194,11 +193,13 @@ const NewBusinessTripForm = () => {
 				return {
 					value: Number(employee.id),
 					label:
-						employee.lastName +
-						' ' +
-						employee.firstName +
-						' ' +
-						employee.fatherName +
+						(
+							employee.lastName +
+							' ' +
+							employee.firstName +
+							' ' +
+							employee.fatherName
+						).slice(0, 35) +
 						' - [' +
 						employee.rank.name +
 						', ' +

@@ -98,11 +98,13 @@ const TripDetailsPageAdmin = () => {
 				return {
 					value: Number(employee.id),
 					label:
-						employee.lastName +
-						' ' +
-						employee.firstName +
-						' ' +
-						employee.fatherName +
+						(
+							employee.lastName +
+							' ' +
+							employee.firstName +
+							' ' +
+							employee.fatherName
+						).slice(0, 35) +
 						' - [' +
 						employee.rank.name +
 						', ' +
