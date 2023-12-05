@@ -1,12 +1,11 @@
 import { Suspense, lazy } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Header from './components/Header/Header.jsx'
 import Layout from './components/Layout/Layout.jsx'
 import Loading from './components/Loading/Loading.jsx'
 import LoginPage from './components/LoginPage/LoginPage.jsx'
 import RequireAuth from './components/RequireAuth/RequireAuth.jsx'
-import useAuth from './hooks/useAuth.js'
+import { useAuth } from './context/AuthContext.jsx'
 const MissingPage = lazy(() =>
 	import('./components/MissingPage/MissingPage.jsx')
 )
@@ -44,7 +43,6 @@ const App = () => {
 				position='bottom-right'
 				reverseOrder={false}
 			/>
-			<Header />
 			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route

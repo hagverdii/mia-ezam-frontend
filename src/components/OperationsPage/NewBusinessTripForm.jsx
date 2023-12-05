@@ -15,7 +15,6 @@ import {
 	getAllResulConclusions,
 } from '../../api/axiosApi.js'
 import { PlusIcon, TrashIcon } from '../../assets/heroicons.jsx'
-import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
 import CustomMenuList from './CustomMenuList.jsx'
 import CustomOption from './CustomOption.jsx'
@@ -23,6 +22,7 @@ import DatePicker from './DatePicker.jsx'
 import './NewBusinessTripForm.css'
 import RegionDayInputField from './RegionDayInputField.jsx'
 import customMultiValueLabel from './customMultiValueLabel.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const mapDataToOptions = (data) => {
 	return data.map((item) => ({ value: item.id, label: item.name }))

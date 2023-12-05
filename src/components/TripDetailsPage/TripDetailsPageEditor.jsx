@@ -1,4 +1,3 @@
-import useAuth from '../../hooks/useAuth.js'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useLayoutEffect, useState } from 'react'
 import Select from 'react-select'
@@ -10,6 +9,7 @@ import './TripDetailsPage.css'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MissingPage from '../MissingPage/MissingPage.jsx'
 import toast from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const TripDetailsPageEditor = () => {
 	const { auth } = useAuth()

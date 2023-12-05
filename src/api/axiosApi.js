@@ -13,11 +13,16 @@ export const verifyJwt = (jwtToken) => {
 	)
 }
 
-export const loginUser = (credentials) => {
-	return axios.post(`${BASE_URL}/api/auth/signin`, credentials, {
-		headers: { 'Content-Type': 'application/json' },
-		withCredentials: true,
-	})
+export const loginUser = async (credentials) => {
+	const response = await axios.post(
+		`${BASE_URL}/api/auth/signin`,
+		credentials,
+		{
+			headers: { 'Content-Type': 'application/json' },
+			withCredentials: true,
+		}
+	)
+	return response.data
 }
 
 export const getAllEmployeesPageable = (

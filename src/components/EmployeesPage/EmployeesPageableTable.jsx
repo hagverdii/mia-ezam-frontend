@@ -3,7 +3,6 @@ import { getAllEmployeesPageable } from '../../api/axiosApi.js'
 import React, { useEffect, useRef, useState } from 'react'
 import './EmployeesPageableTable.css'
 import { useSearchParams } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
 import {
 	BackIcon,
@@ -17,6 +16,7 @@ import {
 import EditEmployeeModal from './EditEmployeeModal.jsx'
 import DeleteEmployeeModal from './DeleteEmployeeModal.jsx'
 import { nanoid } from 'nanoid'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const EmployeesPageableTable = () => {
 	const [searchParams, setSearchParams] = useSearchParams({

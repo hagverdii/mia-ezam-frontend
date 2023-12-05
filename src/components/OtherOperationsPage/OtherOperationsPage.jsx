@@ -30,11 +30,11 @@ import {
 	getAllResulConclusions,
 } from '../../api/axiosApi.js'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import useAuth from '../../hooks/useAuth.js'
 import './OtherOperationsPage.css'
 import { CloseIcon, PlusIcon, TrashIcon } from '../../assets/heroicons.jsx'
 import Loading from '../Loading/Loading.jsx'
 import toast from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const OtherOperationsPage = () => {
 	const { auth } = useAuth()

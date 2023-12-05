@@ -23,7 +23,6 @@ import {
 	PlusIcon,
 	TrashIcon,
 } from '../../assets/heroicons.jsx'
-import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
 import MissingPage from '../MissingPage/MissingPage.jsx'
 import DatePicker from '../OperationsPage/DatePicker.jsx'
@@ -31,6 +30,7 @@ import RegionDayInputField from '../OperationsPage/RegionDayInputField.jsx'
 import CustomMenuList from './CustomMenuList.jsx'
 import CustomOption from './CustomOption.jsx'
 import './TripDetailsPage.css'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const mapDataToOptions = (data) => {
 	return data.map((item) => ({ value: item.id, label: item.name }))

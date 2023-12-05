@@ -9,9 +9,9 @@ import {
 	updateEmployeeById,
 } from '../../api/axiosApi.js'
 import { CloseIcon } from '../../assets/heroicons.jsx'
-import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
 import './EditEmployeeModal.css'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const mapDataToOptions = (data) => {
 	return data.map((item) => ({ value: item.id, label: item.name }))

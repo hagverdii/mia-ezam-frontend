@@ -8,9 +8,9 @@ import {
 	getAllPositions,
 	getAllRanks,
 } from '../../api/axiosApi.js'
-import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
 import './NewEmployeeForm.css'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const mapDataToOptions = (data) => {
 	return data.map((item) => ({ value: item.id, label: item.name }))

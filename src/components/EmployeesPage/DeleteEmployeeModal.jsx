@@ -5,9 +5,9 @@ import {
 } from '../../api/axiosApi.js'
 import React, { useEffect, useState } from 'react'
 import './DeleteEmployeeModal.css'
-import useAuth from '../../hooks/useAuth.js'
 import { CloseIcon } from '../../assets/heroicons.jsx'
 import toast from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const DeleteEmployeeModal = ({
 	selectedEmployee,

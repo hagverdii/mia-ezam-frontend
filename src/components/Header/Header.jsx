@@ -1,12 +1,10 @@
 import './Header.css'
 import { NavLink, useNavigate } from 'react-router-dom'
-import useLogout from '../../hooks/useLogout.js'
 import { LogOutIcon } from '../../assets/heroicons.jsx'
-import useAuth from '../../hooks/useAuth.js'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const Header = () => {
-	const { auth } = useAuth()
-	const logout = useLogout()
+	const { auth, logout } = useAuth()
 	const navigate = useNavigate()
 
 	const signOut = () => {
@@ -14,7 +12,7 @@ const Header = () => {
 		navigate('/login')
 	}
 
-	return auth?.authenticated ? (
+	return (
 		<header className='main-header'>
 			<img
 				src='/mia-logo.png'
@@ -26,7 +24,7 @@ const Header = () => {
 			</div>
 			<nav>
 				<ul>
-					{auth?.roles.includes('ROLE_ADMIN') ? (
+					{auth?.roles?.includes('ROLE_ADMIN') ? (
 						<>
 							<li>
 								<NavLink
@@ -69,7 +67,7 @@ const Header = () => {
 								</NavLink>
 							</li>
 						</>
-					) : auth?.roles.includes('ROLE_EDITOR') ? (
+					) : auth?.roles?.includes('ROLE_EDITOR') ? (
 						<li>
 							<NavLink
 								className='nav-element'
@@ -85,22 +83,11 @@ const Header = () => {
 				<p>
 					<strong>Istifadəçi:</strong>
 					<br />
-					{auth.name}
+					{auth?.name}
 				</p>
 				<button onMouseDown={signOut}>
 					<LogOutIcon />
 				</button>
-			</div>
-		</header>
-	) : (
-		<header className='login-header'>
-			<img
-				src='/mia-logo.png'
-				alt='logo'
-			/>
-			<div>
-				<p>Daxili İşlər Nazirliyi</p>
-				<p>Ezamiyyət Sistemi</p>
 			</div>
 		</header>
 	)

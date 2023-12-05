@@ -3,7 +3,6 @@ import { getBusinessTripsPageable } from '../../api/axiosApi.js'
 import React, { useEffect, useRef, useState } from 'react'
 import './BusinessTripsPageableTable.css'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth.js'
 import Loading from '../Loading/Loading.jsx'
 import {
 	BackIcon,
@@ -17,6 +16,7 @@ import {
 } from '../../assets/heroicons.jsx'
 import { nanoid } from 'nanoid'
 import DeleteBusinessTripModal from './DeleteBusinessTripModal.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const BusinessTripsPageableTable = () => {
 	const navigate = useNavigate()

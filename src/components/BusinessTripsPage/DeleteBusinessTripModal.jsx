@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import useAuth from '../../hooks/useAuth.js'
 import toast from 'react-hot-toast'
 import {
 	deleteBusinessTripById,
@@ -8,6 +7,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { CloseIcon } from '../../assets/heroicons.jsx'
 import './DeleteBusinessTripModal.css'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 const DeleteBusinessTripModal = ({
 	selectedTrip,
