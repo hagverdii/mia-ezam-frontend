@@ -15,7 +15,7 @@ const LoginPage = () => {
 	// React router variables
 	const navigate = useNavigate()
 	const location = useLocation()
-	const from = location.state?.from?.pathname || '/'
+	const from = location?.state?.from?.pathname + location?.state?.from?.search || '/'
 
 	const userRef = useRef()
 	const errRef = useRef()
